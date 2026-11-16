@@ -570,10 +570,17 @@ input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; flex-shrink: 
                     </select>
                   </div>
                 </div>
+                <div class="field-row" id="mutLocRow">
+                  <label for="mutLoc">Location</label>
+                  <select id="mutLoc" onchange="onMutTypeChange()">
+                    <option value="inside" selected>Inside the reading frame (start to stop codon)</option>
+                    <option value="outside">Outside the reading frame (before start or after stop)</option>
+                  </select>
+                </div>
                 <div class="grid-2">
                   <div class="field-row">
                     <label for="mutPosMode">Position</label>
-                    <select id="mutPosMode" onchange="toggleDisabled('mutPos', this.value !== 'specific'); newMutation()">
+                    <select id="mutPosMode" onchange="toggleDisabled('mutPos', this.value !== 'specific'); onMutTypeChange()">
                       <option value="random" selected>Random</option>
                       <option value="specific">At base #</option>
                     </select>
@@ -1508,7 +1515,11 @@ function onMutToggle() {
 }
 function onMutTypeChange() {
   const t = $('mutType').value;
-  $('mutEffectRow').classList.toggle('hidden', t !== 'sub');
+  const specific = $('mutPosMode').value === 'specific';
+  const outside = !specific && $('mutLoc').value === 'outside';
+  // A specific base number decides the location itself; outside mutations never change the protein
+  $('mutLocRow').classList.toggle('hidden', specific);
+  $('mutEffectRow').classList.toggle('hidden', t !== 'sub' || outside);
   $('mutLenRow').classList.toggle('hidden', t === 'sub');
   $('mutBaseRow').classList.toggle('hidden', t === 'del');
   $('mutBaseLabel').textContent = t === 'ins' ? 'Inserted Base(s)' : 'New Base (coding strand)';
@@ -1555,6 +1566,15 @@ function newMutation() {
   if (regHi <= regLo) { regLo = 0; regHi = L; }
   const otherBase = ex => pick('ACGT'.split('').filter(b => b !== ex));
   $('mutPos').max = L;
+
+  if (o.mutPosMode !== 'specific' && o.mutLoc === 'outside') {
+    const m = outsideMutation(seq, tO, o);
+    if (m.error) { $('mutWarn').textContent = m.error; renderProblems(); return; }
+    probMutation = m;
+    $('mutPos').value = probMutation.pos + 1;
+    renderProblems();
+    return;
+  }
 
   if (o.mutType === 'sub') {
     let p, to;
@@ -1609,15 +1629,56 @@ function newMutation() {
   renderProblems();
 }
 
+// A random mutation placed before the start codon or after the stop codon that leaves the protein unchanged
+function outsideMutation(seq, tO, o) {
+  const L = seq.length;
+  if (tO.start < 0 || !tO.aas.length) {
+    return { error: 'There is no reading frame in this strand (no start codon), so every base is already outside it. Choose "Inside the reading frame" or add a start codon.' };
+  }
+  const before = tO.start, after = tO.end;   // outside bases: [0, before) and [after, L)
+  const protO = protStr(tO);
+  const n = o.mutType === 'sub' ? 1 : o.mutLen;
+  const randBases = () => { let s = ''; for (let i = 0; i < n; i++) s += o.mutBase === 'random' ? pick(['A', 'C', 'G', 'T']) : o.mutBase; return s; };
+  const cands = [];
+  if (o.mutType === 'sub') {
+    for (let q = 0; q < L; q++) {
+      if (q >= before && q < after) continue;
+      'ACGT'.split('').forEach(b => {
+        if (b !== seq[q] && (o.mutBase === 'random' || b === o.mutBase)) cands.push({ type: 'sub', pos: q, from: seq[q], to: b });
+      });
+    }
+  } else if (o.mutType === 'ins') {
+    for (let q = 0; q <= L; q++) if (q <= before || q >= after) cands.push({ type: 'ins', pos: q, bases: randBases() });
+  } else {
+    for (let q = 0; q + n <= L; q++) if (q + n <= before || q >= after) cands.push({ type: 'del', pos: q, len: n, removed: seq.substr(q, n) });
+  }
+  // Skip changes that would create a new start codon or otherwise alter the protein
+  const ok = cands.filter(m => protStr(translate(toMrna(applyMutation(seq, m)), o.from)) === protO);
+  if (!ok.length) {
+    const noRoom = (o.mutType === 'del' ? Math.max(before, L - after) < n : before === 0 && after >= L);
+    return {
+      error: noRoom
+        ? 'This strand has no room outside the reading frame: it starts with the start codon and ends with the stop codon. Make the strand longer, or move the start codon later or the stop codon earlier.'
+        : 'No mutation outside the reading frame is possible here without changing the protein. Try a different base or type, or make the strand longer.'
+    };
+  }
+  return pick(ok);
+}
+
 function classifyMutation(orig, m, tO, tM, o) {
   const ab = a => a === '*' ? 'STOP' : AA_INFO[a].abbr;
   if (tO.start < 0) return { label: 'No protein', detail: 'the original strand has no start codon' };
   const pO = protStr(tO), pM = protStr(tM);
-  const inRegion = m.pos >= tO.start && m.pos < tO.end;
+  let inRegion;
+  if (m.type === 'sub') inRegion = m.pos >= tO.start && m.pos < tO.end;
+  else if (m.type === 'ins') inRegion = m.pos > tO.start && m.pos < tO.end;   // inserting right before AUG or after the stop is outside
+  else inRegion = m.pos < tO.end && m.pos + m.len > tO.start;
+  const where = m.pos < tO.start ? 'before the start codon' : 'after the stop codon';
+  const outsideNoEffect = { label: 'No effect on the protein (outside the reading frame)', detail: `the change is ${where}, so it is not translated` };
   if (m.type === 'sub') {
     if (!inRegion) {
       return pO === pM
-        ? { label: 'No effect on the protein', detail: 'the change is outside the translated region' }
+        ? outsideNoEffect
         : { label: 'Changes where translation starts', detail: 'the change creates a new start codon (AUG) upstream' };
     }
     const k = Math.floor((m.pos - tO.start) / 3);
@@ -1635,7 +1696,7 @@ function classifyMutation(orig, m, tO, tM, o) {
   const n = m.type === 'ins' ? m.bases.length : m.len;
   if (!inRegion) {
     return pO === pM
-      ? { label: 'No effect on the protein', detail: 'the change is outside the translated region' }
+      ? outsideNoEffect
       : { label: 'Changes the protein', detail: 'the change alters where translation starts' };
   }
   if (n % 3 !== 0) return { label: 'Frameshift', detail: 'every codon after the mutation is read in a new reading frame' };
@@ -1676,6 +1737,7 @@ function probOpts() {
     mutType: $('mutType').value,
     mutLen: parseInt($('mutLen').value, 10),
     mutEffect: $('mutEffect').value,
+    mutLoc: $('mutLoc').value,
     mutPosMode: $('mutPosMode').value,
     mutPos: intVal('mutPos', 1),
     mutBase: $('mutBase').value,
@@ -1817,7 +1879,7 @@ function renderProblems() {
       const d = describeMutation(orig, m, tO, tM, o);
       notes.push({ bold: 'Mutation: ', text: d.what });
       if (o.answerKey) notes.push({ bold: 'Effect: ', text: d.effect + (d.detail ? ' — ' + d.detail + '.' : '.') });
-      else notes.push({ bold: 'Effect: ', text: 'Silent, missense, nonsense, or frameshift? ____________________' });
+      else notes.push({ bold: 'Effect: ', text: 'Silent, missense, nonsense, frameshift, or no effect? ____________________' });
     }
   } else {
     tables.push(...buildSection(orig, tO, o, null, null, ''));
