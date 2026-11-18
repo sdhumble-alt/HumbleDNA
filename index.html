@@ -400,7 +400,7 @@ input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; flex-shrink: 
               </div>
               <div class="field-row">
                 <label for="markStart">Mark AUG as the Start Codon</label>
-                <select id="markStart" onchange="renderRef()">
+                <select id="markStart" onchange="storeModeField('markStart', this.value); renderRef()">
                   <option value="none">Don't mark it</option>
                   <option value="star">Asterisk only &mdash; Methionine (Met)*</option>
                   <option value="note" selected>Asterisk + explanation at the bottom</option>
@@ -1015,8 +1015,8 @@ function setPrintPage(css) { $('print-page-style').textContent = css; }
    ════════════════════════════════════════════════ */
 let mode = 'chart';
 const modeFields = {
-  chart: { title: 'mRNA Codon Chart', key: false },
-  wheel: { title: 'mRNA Codon Wheel', key: true }
+  chart: { title: 'mRNA Codon Chart', key: false, markStart: 'star' },
+  wheel: { title: 'mRNA Codon Wheel', key: false, markStart: 'star' }
 };
 
 function storeModeField(field, val) {
@@ -1037,6 +1037,7 @@ function setMode(m) {
     $('bodyTextLabel').textContent = m === 'wheel' ? 'Wheel Text' : 'Chart Text';
     $('refTitle').value = modeFields[m].title;
     $('showKey').checked = modeFields[m].key;
+    $('markStart').value = modeFields[m].markStart;
     renderRef();
   } else {
     renderProblems();
