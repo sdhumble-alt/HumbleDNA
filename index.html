@@ -212,6 +212,37 @@ input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; flex-shrink: 
 
 .hidden { display: none !important; }
 
+/* Color picker dropdown (presets + hex) */
+.cpick { position: relative; }
+.cpick-btn {
+  width: 100%; display: flex; align-items: center; gap: 7px; padding: 5px 8px;
+  border: 1.5px solid var(--input-border); border-radius: 6px; background: #fff; cursor: pointer;
+  font-size: 9.5pt; font-family: Arial, sans-serif; color: var(--input-text); text-align: left;
+}
+.cpick-btn:hover { border-color: var(--input-border-hover); }
+.cpick.open .cpick-btn { border-color: var(--input-border-focus); box-shadow: 0 0 0 3px var(--input-focus-ring); }
+.cpick-btn .cpick-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cpick-btn i { font-size: 13px; color: #64748b; }
+.cpick-sw { width: 16px; height: 16px; border-radius: 3px; border: 1px solid rgba(0,0,0,.25); flex-shrink: 0; }
+.cpick-menu {
+  position: absolute; z-index: 50; top: calc(100% + 4px); left: 0; width: 248px; max-height: 360px; overflow-y: auto;
+  background: #fff; border: 1px solid var(--card-border); border-radius: 8px; box-shadow: 0 8px 24px rgba(15,23,42,.18);
+  padding: 8px; display: none;
+}
+.cpick.open .cpick-menu { display: block; }
+.cpick.align-right .cpick-menu { left: auto; right: 0; }
+.cpick-group { font-size: 7.5pt; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: .05em; margin: 4px 2px 5px; }
+.cpick-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px; margin-bottom: 8px; }
+.cpick-opt { aspect-ratio: 1; border-radius: 4px; border: 1px solid rgba(0,0,0,.2); cursor: pointer; padding: 0; }
+.cpick-opt:hover { transform: scale(1.12); box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+.cpick-opt.sel { outline: 2px solid var(--btn-primary); outline-offset: 1px; }
+.cpick-custom { display: flex; gap: 6px; align-items: center; border-top: 1px solid var(--card-header-border); padding-top: 8px; }
+.cpick-custom input[type=color] { width: 38px; height: 30px; flex-shrink: 0; padding: 1px 2px; }
+.cpick-custom input[type=text] { font-family: 'Courier New', monospace; text-transform: uppercase; padding: 5px 7px; }
+.band-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.opt-group:has(.cpick) { overflow: visible; }
+.opt-group:has(.cpick) .opt-group-header { border-radius: 8px 8px 0 0; }
+
 /* Print */
 #print-area { display: none; }
 @media print {
@@ -236,7 +267,7 @@ input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; flex-shrink: 
         <div id="app-subtitle">Codon Chart, Codon Wheel &amp; Protein Synthesis Problem Builder &mdash; Built by Steven Humble</div>
       </div>
     </div>
-    <div class="toolbar-ver">V 1.0.0 &mdash; 2026-11-16</div>
+    <div class="toolbar-ver">V 1.1.0 &mdash; 2026-11-18</div>
   </header>
 
   <main class="content">
@@ -284,23 +315,43 @@ input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; flex-shrink: 
                   </select>
                 </div>
               </div>
+              <div class="field-row">
+                <label for="chartScale">Chart Size (%)</label>
+                <input type="number" id="chartScale" value="100" min="40" max="100" step="5" oninput="renderRef()">
+              </div>
+
+              <div class="divider"></div>
+              <span class="sub-label">Title</span>
+              <div class="field-row">
+                <label for="refTitle">Title Text</label>
+                <input type="text" id="refTitle" value="mRNA Codon Chart" oninput="storeModeField('title', this.value); renderRef()">
+              </div>
               <div class="grid-2">
                 <div class="field-row">
-                  <label for="chartScale">Chart Size (%)</label>
-                  <input type="number" id="chartScale" value="100" min="40" max="100" step="5" oninput="renderRef()">
+                  <label for="titleFont">Font</label>
+                  <select id="titleFont" class="font-select" data-default="Arial" onchange="renderRef()"></select>
                 </div>
                 <div class="field-row">
-                  <label for="refFontSize">Text Size (pt)</label>
-                  <input type="number" id="refFontSize" value="" min="4" max="48" step="0.5" placeholder="Auto" oninput="renderRef()">
+                  <label for="titleSize">Size (pt)</label>
+                  <input type="number" id="titleSize" value="" min="6" max="72" step="1" placeholder="Auto" oninput="renderRef()">
                 </div>
-              </div>
-              <div class="field-row">
-                <label for="refTitle">Title</label>
-                <input type="text" id="refTitle" value="mRNA Codon Chart" oninput="storeModeField('title', this.value); renderRef()">
               </div>
               <div class="toggle-row">
                 <input type="checkbox" id="showRefTitle" checked onchange="renderRef()">
                 <label for="showRefTitle">Show title</label>
+              </div>
+
+              <div class="divider"></div>
+              <span class="sub-label" id="bodyTextLabel">Chart Text</span>
+              <div class="grid-2" style="margin-bottom:-10px;">
+                <div class="field-row">
+                  <label for="bodyFont">Font</label>
+                  <select id="bodyFont" class="font-select" data-default="Arial" onchange="renderRef()"></select>
+                </div>
+                <div class="field-row">
+                  <label for="refFontSize">Size (pt)</label>
+                  <input type="number" id="refFontSize" value="" min="4" max="48" step="0.5" placeholder="Auto" oninput="renderRef()">
+                </div>
               </div>
             </div>
           </div>
@@ -382,13 +433,35 @@ input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; flex-shrink: 
               </div>
               <div class="grid-2" style="margin-top:8px;">
                 <div class="field-row">
-                  <label for="borderColor">Line Color</label>
-                  <input type="color" id="borderColor" value="#1e2a3a" oninput="renderRef()">
+                  <label>Line Color</label>
+                  <div class="cpick" data-id="borderColor" data-value="#1e2a3a"></div>
                 </div>
-                <div class="field-row">
-                  <label for="shadeColor">Shading Color</label>
-                  <input type="color" id="shadeColor" value="#e8ecf1" oninput="renderRef()">
+                <div class="field-row only-chart">
+                  <label>Shading Color</label>
+                  <div class="cpick align-right" data-id="shadeColor" data-value="#e8ecf1"></div>
                 </div>
+              </div>
+              <div class="only-wheel">
+                <span class="sub-label" style="margin-top:6px;">Band Shading (center &rarr; outside)</span>
+                <div class="band-grid">
+                  <div class="field-row">
+                    <label>1st Base (center)</label>
+                    <div class="cpick" data-id="band1Color" data-value="#e8ecf1"></div>
+                  </div>
+                  <div class="field-row">
+                    <label>2nd Base</label>
+                    <div class="cpick align-right" data-id="band2Color" data-value="#d5d9de"></div>
+                  </div>
+                  <div class="field-row">
+                    <label>3rd Base</label>
+                    <div class="cpick" data-id="band3Color" data-value="#c1c4c8"></div>
+                  </div>
+                  <div class="field-row">
+                    <label>Amino Acids (outer)</label>
+                    <div class="cpick align-right" data-id="band4Color" data-value="#ffffff"></div>
+                  </div>
+                </div>
+                <p class="info-note" style="margin:0;">&ldquo;By first base&rdquo; color coding replaces the three base bands; any color coding other than &ldquo;None&rdquo; replaces the amino acid band.</p>
               </div>
             </div>
           </div>
@@ -448,6 +521,22 @@ input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; flex-shrink: 
                 </div>
                 <p class="info-note" id="inputHint">Spaces, dashes, numbers, and 5&prime;/3&prime; labels are ignored.</p>
                 <div class="warn-note" id="inputWarn"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="opt-group">
+            <div class="opt-group-header">
+              <div class="opt-group-header-left"><i class="ti ti-key"></i><span class="opt-group-title">Answer Key</span></div>
+            </div>
+            <div class="opt-group-body">
+              <div class="toggle-row">
+                <input type="checkbox" id="answerKey" checked onchange="renderProblems()">
+                <label for="answerKey" style="font-weight:600; color:#1e429f;">Answer key (fill in blank rows)</label>
+              </div>
+              <div class="toggle-row" style="margin-bottom:0;">
+                <input type="checkbox" id="answerColor" checked onchange="renderProblems()">
+                <label for="answerColor">Show answers in blue</label>
               </div>
             </div>
           </div>
@@ -521,15 +610,6 @@ input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; flex-shrink: 
                 <select id="row_trna" onchange="renderProblems()"><option value="show">Given</option><option value="blank">Blank</option><option value="hide" selected>Hidden</option></select></div>
               <div class="row-setting"><span>Amino Acids</span>
                 <select id="row_aa" onchange="renderProblems()"><option value="show">Given</option><option value="blank" selected>Blank</option><option value="hide">Hidden</option></select></div>
-              <div class="divider"></div>
-              <div class="toggle-row">
-                <input type="checkbox" id="answerKey" checked onchange="renderProblems()">
-                <label for="answerKey" style="font-weight:600; color:#1e429f;">Answer key (fill in blank rows)</label>
-              </div>
-              <div class="toggle-row">
-                <input type="checkbox" id="answerColor" checked onchange="renderProblems()">
-                <label for="answerColor">Show answers in blue</label>
-              </div>
             </div>
           </div>
 
@@ -746,10 +826,120 @@ AA_PALETTE['*'] = { bg: '#e2e8f0', bd: '#475569' };
 const SVG_FONT = 'Arial, Helvetica, sans-serif';
 const MONO_FONT = '"Courier New", Courier, monospace';
 const measureCtx = document.createElement('canvas').getContext('2d');
+let REF_FONT = SVG_FONT;   // body font for the chart/wheel; set from the Font selector on each render
+
+// Fonts commonly installed on Mac, Windows & ChromeOS. Stacks use single quotes only (they go inside SVG attributes).
+const FONT_CHOICES = [
+  ['Arial', 'Arial, Helvetica, sans-serif'],
+  ['Helvetica', "Helvetica, Arial, sans-serif"],
+  ['Verdana', 'Verdana, Geneva, sans-serif'],
+  ['Tahoma', 'Tahoma, Verdana, sans-serif'],
+  ['Trebuchet MS', "'Trebuchet MS', Helvetica, sans-serif"],
+  ['Calibri', "Calibri, Carlito, 'Segoe UI', sans-serif"],
+  ['Century Gothic', "'Century Gothic', 'Avenir Next', Futura, sans-serif"],
+  ['Avenir / Segoe', "'Avenir Next', Avenir, 'Segoe UI', sans-serif"],
+  ['Gill Sans', "'Gill Sans', 'Gill Sans MT', Calibri, sans-serif"],
+  ['Georgia', "Georgia, 'Times New Roman', serif"],
+  ['Times New Roman', "'Times New Roman', Times, serif"],
+  ['Palatino', "Palatino, 'Palatino Linotype', 'Book Antiqua', serif"],
+  ['Garamond', "Garamond, 'EB Garamond', Baskerville, serif"],
+  ['Baskerville', "Baskerville, 'Baskerville Old Face', Georgia, serif"],
+  ['Rockwell', "Rockwell, 'Rockwell Nova', 'Courier New', serif"],
+  ['Courier New', "'Courier New', Courier, monospace"],
+  ['Comic Sans MS', "'Comic Sans MS', 'Comic Sans', 'Chalkboard SE', cursive"],
+  ['Impact', "Impact, 'Arial Black', sans-serif"]
+];
+function fontStack(name) {
+  const f = FONT_CHOICES.find(x => x[0] === name);
+  return f ? f[1] : SVG_FONT;
+}
+function initFontSelects() {
+  document.querySelectorAll('select.font-select').forEach(sel => {
+    sel.innerHTML = FONT_CHOICES.map(([n, s]) =>
+      `<option value="${esc(n)}" style="font-family:${esc(s)}"${n === sel.dataset.default ? ' selected' : ''}>${esc(n)}</option>`).join('');
+  });
+}
 
 function textW(text, size, bold, family) {
-  measureCtx.font = `${bold ? 'bold ' : ''}${size}px ${family || SVG_FONT}`;
+  measureCtx.font = `${bold ? 'bold ' : ''}${size}px ${family || REF_FONT}`;
   return measureCtx.measureText(text).width;
+}
+
+/* ---------- Color picker: preset dropdown + hex ---------- */
+const COLOR_PRESETS = [
+  ['Greys', [
+    ['White', '#ffffff'], ['Grey 5%', '#f2f2f2'], ['Grey 10%', '#e6e6e6'], ['Grey 15%', '#d9d9d9'],
+    ['Grey 25%', '#bfbfbf'], ['Grey 35%', '#a6a6a6'], ['Grey 50%', '#808080'], ['Grey 65%', '#595959'],
+    ['Grey 75%', '#404040'], ['Grey 85%', '#262626'], ['Black', '#000000'],
+    ['Light Slate', '#e8ecf1'], ['Slate 2', '#d5d9de'], ['Slate 3', '#c1c4c8'], ['Slate', '#64748b'], ['Dark Navy', '#1e2a3a']
+  ]],
+  ['Colors', [
+    ['Red', '#c0392b'], ['Orange', '#e67e22'], ['Gold', '#e1a400'], ['Green', '#27ae60'],
+    ['Teal', '#16a085'], ['Blue', '#2c6fbb'], ['Navy', '#1f3a68'], ['Purple', '#8e44ad'],
+    ['Pink', '#d63384'], ['Brown', '#8b5a2b'], ['Maroon', '#7b1e2b'], ['Forest', '#1e6b3a']
+  ]],
+  ['Light / Pastels', [
+    ['Light Red', '#fadbd8'], ['Light Orange', '#fdebd0'], ['Light Yellow', '#fcf3cf'], ['Light Green', '#d5f5e3'],
+    ['Light Teal', '#d1f2eb'], ['Light Blue', '#d6eaf8'], ['Lavender', '#e8daef'], ['Light Pink', '#fadbe9'],
+    ['Tan', '#f0e2d0'], ['Mint', '#e3f6ec'], ['Sky', '#e3f1fb'], ['Cream', '#fdf8e7']
+  ]]
+];
+const PRESET_NAME = {};
+COLOR_PRESETS.forEach(([, list]) => list.forEach(([n, h]) => { PRESET_NAME[h] = n; }));
+
+function normHex(v) {
+  v = String(v || '').trim().replace(/^#/, '');
+  if (/^[0-9a-f]{3}$/i.test(v)) v = v.split('').map(c => c + c).join('');
+  return /^[0-9a-f]{6}$/i.test(v) ? '#' + v.toLowerCase() : null;
+}
+
+function initColorPickers() {
+  document.querySelectorAll('.cpick').forEach(box => {
+    const id = box.dataset.id;
+    const groups = COLOR_PRESETS.map(([g, list]) =>
+      `<div class="cpick-group">${esc(g)}</div><div class="cpick-grid">` +
+      list.map(([n, h]) => `<button type="button" class="cpick-opt" data-hex="${h}" title="${esc(n)} (${h.toUpperCase()})" style="background:${h}"></button>`).join('') +
+      `</div>`).join('');
+    box.innerHTML =
+      `<input type="hidden" id="${id}">` +
+      `<button type="button" class="cpick-btn"><span class="cpick-sw"></span><span class="cpick-name"></span><i class="ti ti-chevron-down"></i></button>` +
+      `<div class="cpick-menu">${groups}` +
+      `<div class="cpick-group">Custom (hex)</div>` +
+      `<div class="cpick-custom"><input type="color"><input type="text" maxlength="7" placeholder="#RRGGBB" spellcheck="false"></div></div>`;
+    const hidden = box.querySelector('input[type=hidden]');
+    const btn = box.querySelector('.cpick-btn');
+    const wheel = box.querySelector('input[type=color]');
+    const hexTxt = box.querySelector('.cpick-custom input[type=text]');
+    const set = (hex, fromText) => {
+      hex = normHex(hex);
+      if (!hex) return;
+      hidden.value = hex;
+      box.querySelector('.cpick-sw').style.background = hex;
+      box.querySelector('.cpick-name').textContent = PRESET_NAME[hex] ? `${PRESET_NAME[hex]}` : `Custom ${hex.toUpperCase()}`;
+      wheel.value = hex;
+      if (!fromText) hexTxt.value = hex.toUpperCase();
+      box.querySelectorAll('.cpick-opt').forEach(o => o.classList.toggle('sel', o.dataset.hex === hex));
+    };
+    box.setColor = hex => set(hex);
+    set(box.dataset.value);
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const wasOpen = box.classList.contains('open');
+      document.querySelectorAll('.cpick.open').forEach(b => b.classList.remove('open'));
+      if (!wasOpen) box.classList.add('open');
+    });
+    box.querySelector('.cpick-menu').addEventListener('click', e => e.stopPropagation());
+    box.querySelectorAll('.cpick-opt').forEach(o => o.addEventListener('click', () => {
+      set(o.dataset.hex); box.classList.remove('open'); renderRef();
+    }));
+    wheel.addEventListener('input', () => { set(wheel.value); renderRef(); });
+    hexTxt.addEventListener('input', () => {
+      if (normHex(hexTxt.value)) { set(hexTxt.value, true); renderRef(); }
+    });
+    hexTxt.addEventListener('keydown', e => { if (e.key === 'Enter') box.classList.remove('open'); });
+  });
+  document.addEventListener('click', () => document.querySelectorAll('.cpick.open').forEach(b => b.classList.remove('open')));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.cpick.open').forEach(b => b.classList.remove('open')); });
 }
 function esc(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -844,6 +1034,7 @@ function setMode(m) {
   document.querySelectorAll('.only-chart').forEach(el => el.classList.toggle('hidden', m !== 'chart'));
   document.querySelectorAll('.only-wheel').forEach(el => el.classList.toggle('hidden', m !== 'wheel'));
   if (isRef) {
+    $('bodyTextLabel').textContent = m === 'wheel' ? 'Wheel Text' : 'Chart Text';
     $('refTitle').value = modeFields[m].title;
     $('showKey').checked = modeFields[m].key;
     renderRef();
@@ -877,7 +1068,11 @@ function refOpts() {
     color: $('colorMode').value,
     hiSS: $('highlightSS').checked,
     border: $('borderColor').value,
-    shade: $('shadeColor').value
+    shade: $('shadeColor').value,
+    bands: [$('band1Color').value, $('band2Color').value, $('band3Color').value, $('band4Color').value],
+    titleFont: fontStack($('titleFont').value),
+    titleSize: parseFloat($('titleSize').value) || 0,
+    bodyFont: fontStack($('bodyFont').value)
   };
 }
 
@@ -900,7 +1095,7 @@ function cellColors(aa, codon, o) {
 
 function T(x, y, t, p = {}) {
   const tr = p.rot ? ` transform="rotate(${p.rot.toFixed(2)} ${x.toFixed(2)} ${y.toFixed(2)})"` : '';
-  return `<text x="${x.toFixed(2)}" y="${y.toFixed(2)}" dy="0.35em" font-family="${p.family || SVG_FONT}" ` +
+  return `<text x="${x.toFixed(2)}" y="${y.toFixed(2)}" dy="0.35em" font-family="${p.family || REF_FONT}" ` +
     `font-size="${(p.size || 10).toFixed(2)}"${p.bold ? ' font-weight="bold"' : ''}${p.italic ? ' font-style="italic"' : ''} ` +
     `text-anchor="${p.anchor || 'middle'}" fill="${p.fill || '#1e2a3a'}"${tr}>${p.raw ? t : esc(t)}</text>`;
 }
@@ -966,6 +1161,7 @@ function buildRefSVG(o, pxW, pxH) {
   const [wi, hi] = pageInches(o);
   const W = wi * 72, H = hi * 72;
   const S = [];
+  REF_FONT = o.bodyFont || SVG_FONT;
   S.push(R(0, 0, W, H, '#ffffff'));
   const M = 36, sc = o.scale / 100;
   const aw = (W - 2 * M) * sc, ah = (H - 2 * M) * sc;
@@ -973,8 +1169,8 @@ function buildRefSVG(o, pxW, pxH) {
   let top = y0, bottom = y0 + ah;
 
   if (o.titleOn && o.title.trim()) {
-    const ts = clamp(ah * 0.04, 12, 22);
-    S.push(T(W / 2, top + ts * 0.5, o.title.trim(), { size: ts, bold: true, family: "Georgia, 'Times New Roman', serif" }));
+    const ts = o.titleSize ? clamp(o.titleSize, 6, 72) : clamp(ah * 0.04, 12, 22);
+    S.push(T(W / 2, top + ts * 0.5, o.title.trim(), { size: ts, bold: true, family: o.titleFont }));
     top += ts * 1.6;
   }
   if (o.startNote && o.label !== 'blank') {
@@ -1141,7 +1337,7 @@ function drawWheel(S, x, y, w, h, o, landscape) {
   const r0 = Rr * 0.27, r1 = Rr * 0.45, r2 = Rr * 0.585, r3 = Rr;
   const thin = o.border;
   const useBase = o.color === 'base1';
-  const shade1 = o.shade, shade2 = mix(o.shade, '#000000', 0.08), shade3 = mix(o.shade, '#000000', 0.17);
+  const [shade1, shade2, shade3, shadeAA] = o.bands;
   const D = 5.625;
 
   // Outer amino-acid ring
@@ -1183,7 +1379,9 @@ function drawWheel(S, x, y, w, h, o, landscape) {
   }
   groups.forEach(g => {
     const col = cellColors(g.aa, g.codon, o);
-    S.push(`<path d="${sector(cx, cy, r2, r3, g.a0, g.a1)}" fill="${col.bg}" stroke="${thin}" stroke-width="0.8"/>`);
+    const isSS = o.hiSS && (g.codon === 'AUG' || g.aa === '*');
+    const fill = (o.color === 'none' && !isSS) ? shadeAA : col.bg;
+    S.push(`<path d="${sector(cx, cy, r2, r3, g.a0, g.a1)}" fill="${fill}" stroke="${thin}" stroke-width="0.8"/>`);
     const lines = g.lines;
     if (!lines.length) return;
     const gfs = o.fs ? outerFs : Math.max(4, Math.min(outerFs, g.fit));
@@ -2134,6 +2332,8 @@ window.addEventListener('keydown', e => {
 });
 
 window.onload = () => {
+  initFontSelects();
+  initColorPickers();
   $('numCodons').dataset.prev = '10';
   generateRandom();
   setMode('problems');
