@@ -3,1242 +3,2531 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A Humble Bellwork</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231e2a3a'/%3E%3Crect x='7' y='6' width='18' height='20' rx='2' fill='%23fff'/%3E%3Cline x1='10' y1='12' x2='22' y2='12' stroke='%231e2a3a' stroke-width='1.5'/%3E%3Cline x1='10' y1='16' x2='22' y2='16' stroke='%231e2a3a' stroke-width='1.5'/%3E%3Cline x1='10' y1='20' x2='17' y2='20' stroke='%231e2a3a' stroke-width='1.5'/%3E%3Ccircle cx='22' cy='22' r='5' fill='%233266ad' stroke='%23fff' stroke-width='1.5'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" id="gfonts">
+<title>A Humble Transcription / Translation Tool</title>
+<link rel="icon" id="favicon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231e2a3a'/%3E%3Cline x1='18.78' y1='5.80' x2='13.22' y2='5.80' stroke='%23009E73' stroke-width='1.15' stroke-linecap='round'/%3E%3Cline x1='22.51' y1='7.84' x2='9.49' y2='7.84' stroke='%230072B2' stroke-width='1.15' stroke-linecap='round'/%3E%3Cline x1='21.74' y1='9.88' x2='10.26' y2='9.88' stroke='%23E69F00' stroke-width='1.15' stroke-linecap='round'/%3E%3Cline x1='11.55' y1='13.96' x2='20.45' y2='13.96' stroke='%23D55E00' stroke-width='1.15' stroke-linecap='round'/%3E%3Cline x1='9.20' y1='16.00' x2='22.80' y2='16.00' stroke='%23009E73' stroke-width='1.15' stroke-linecap='round'/%3E%3Cline x1='11.55' y1='18.04' x2='20.45' y2='18.04' stroke='%230072B2' stroke-width='1.15' stroke-linecap='round'/%3E%3Cline x1='21.74' y1='22.12' x2='10.26' y2='22.12' stroke='%23E69F00' stroke-width='1.15' stroke-linecap='round'/%3E%3Cline x1='22.51' y1='24.16' x2='9.49' y2='24.16' stroke='%23D55E00' stroke-width='1.15' stroke-linecap='round'/%3E%3Cline x1='18.78' y1='26.20' x2='13.22' y2='26.20' stroke='%23009E73' stroke-width='1.15' stroke-linecap='round'/%3E%3Cpath d='M16.00,4.80 L15.20,5.08 L14.41,5.36 L13.65,5.64 L12.91,5.92 L12.22,6.20 L11.58,6.48 L11.01,6.76 L10.50,7.04 L10.07,7.32 L9.72,7.60 L9.46,7.88 L9.28,8.16 L9.21,8.44 L9.22,8.72 L9.33,9.00 L9.53,9.28 L9.82,9.56 L10.20,9.84 L10.66,10.12 L11.19,10.40 L11.79,10.68 L12.45,10.96 L13.15,11.24 L13.90,11.52 L14.67,11.80 L15.47,12.08 L16.27,12.36 L17.06,12.64 L17.85,12.92 L18.60,13.20 L19.32,13.48 L20.00,13.76 L20.62,14.04 L21.17,14.32 L21.65,14.60 L22.06,14.88 L22.38,15.16 L22.61,15.44 L22.75,15.72 L22.80,16.00 L22.75,16.28 L22.61,16.56 L22.38,16.84 L22.06,17.12 L21.65,17.40 L21.17,17.68 L20.62,17.96 L20.00,18.24 L19.32,18.52 L18.60,18.80 L17.85,19.08 L17.06,19.36 L16.27,19.64 L15.47,19.92 L14.67,20.20 L13.90,20.48 L13.15,20.76 L12.45,21.04 L11.79,21.32 L11.19,21.60 L10.66,21.88 L10.20,22.16 L9.82,22.44 L9.53,22.72 L9.33,23.00 L9.22,23.28 L9.21,23.56 L9.28,23.84 L9.46,24.12 L9.72,24.40 L10.07,24.68 L10.50,24.96 L11.01,25.24 L11.58,25.52 L12.22,25.80 L12.91,26.08 L13.65,26.36 L14.41,26.64 L15.20,26.92 L16.00,27.20' fill='none' stroke='%2394a3b8' stroke-width='1.5' stroke-linecap='round'/%3E%3Cpath d='M16.00,4.80 L16.80,5.08 L17.59,5.36 L18.35,5.64 L19.09,5.92 L19.78,6.20 L20.42,6.48 L20.99,6.76 L21.50,7.04 L21.93,7.32 L22.28,7.60 L22.54,7.88 L22.72,8.16 L22.79,8.44 L22.78,8.72 L22.67,9.00 L22.47,9.28 L22.18,9.56 L21.80,9.84 L21.34,10.12 L20.81,10.40 L20.21,10.68 L19.55,10.96 L18.85,11.24 L18.10,11.52 L17.33,11.80 L16.53,12.08 L15.73,12.36 L14.94,12.64 L14.15,12.92 L13.40,13.20 L12.68,13.48 L12.00,13.76 L11.38,14.04 L10.83,14.32 L10.35,14.60 L9.94,14.88 L9.62,15.16 L9.39,15.44 L9.25,15.72 L9.20,16.00 L9.25,16.28 L9.39,16.56 L9.62,16.84 L9.94,17.12 L10.35,17.40 L10.83,17.68 L11.38,17.96 L12.00,18.24 L12.68,18.52 L13.40,18.80 L14.15,19.08 L14.94,19.36 L15.73,19.64 L16.53,19.92 L17.33,20.20 L18.10,20.48 L18.85,20.76 L19.55,21.04 L20.21,21.32 L20.81,21.60 L21.34,21.88 L21.80,22.16 L22.18,22.44 L22.47,22.72 L22.67,23.00 L22.78,23.28 L22.79,23.56 L22.72,23.84 L22.54,24.12 L22.28,24.40 L21.93,24.68 L21.50,24.96 L20.99,25.24 L20.42,25.52 L19.78,25.80 L19.09,26.08 L18.35,26.36 L17.59,26.64 L16.80,26.92 L16.00,27.20' fill='none' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.31.0/webfont/tabler-icons.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-/* ════════════════════════════════════════════════
-   DESIGN TOKENS
-   ════════════════════════════════════════════════ */
+/* --- A HUMBLE UNIFIED STYLESHEET START --- */
 :root {
   --header-bg: #1e2a3a;
   --header-border: #12202e;
   --header-title: #ffffff;
   --header-sub: rgba(255, 255, 255, 0.65);
   --header-ver: rgba(255, 255, 255, 0.45);
-
   --app-window-bg: #f0f2f5;
   --app-panel-bg: #ffffff;
-  --stage-bg: #e9edf2;
-
+  --stage-bg: #f9fafc;
   --card-border: #cbd5e1;
   --card-header-bg: #f8fafc;
   --card-header-border: #e2e8f0;
   --card-header-title: #475569;
   --card-header-icon: #64748b;
-
   --input-border: #cbd5e1;
   --input-border-hover: #94a3b8;
   --input-border-focus: #3266ad;
   --input-focus-ring: rgba(50, 102, 173, 0.15);
   --input-text: #1e2a3a;
   --input-label: #475569;
-
-  --btn-primary-bg: #3266ad;
+  --btn-primary: #3266ad;
   --btn-primary-hover: #185fa5;
   --btn-secondary-border: #cbd5e1;
-  --btn-green-bg: #1a7a3a;
+  --btn-green: #1a7a3a;
   --btn-green-hover: #145e2c;
-  --btn-danger-bg: #b00020;
-
+  --btn-danger: #b00020;
+  --btn-danger-hover: #8e001a;
   --sidebar-min-width: 340px;
-  --sidebar-max-width: 390px;
+  --sidebar-max-width: 380px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
-  font-size: 11pt; background: var(--app-window-bg); color: var(--input-text);
-  height: 100vh; overflow: hidden; display: flex; flex-direction: column;
+  font-size: 11pt;
+  background: var(--app-window-bg);
+  color: var(--input-text);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
-#app { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; background: var(--app-panel-bg); }
 
+#app {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--app-panel-bg);
+}
+
+/* Header */
 #app-header {
-  background: var(--header-bg); padding: 10px 16px; display: flex; align-items: center;
-  justify-content: space-between; flex-shrink: 0; border-bottom: 1px solid var(--header-border); gap: 10px;
+  background: var(--header-bg);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--header-border);
 }
 .header-left { display: flex; align-items: center; gap: 12px; }
-.header-icon { height: 34px; width: 34px; display: block; border: 1.5px solid #fff; border-radius: 8px; padding: 1px; }
-.header-titles { display: flex; flex-direction: column; gap: 2px; }
-#app-title { font-family: Georgia, 'Times New Roman', serif; font-size: 16px; font-weight: bold; color: var(--header-title); line-height: 1.2; }
-#app-subtitle { font-size: 10px; color: var(--header-sub); font-style: italic; white-space: nowrap; line-height: 1.2; }
-.toolbar-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
-.toolbar-ver { font-size: 8pt; color: var(--header-ver); font-family: Arial, sans-serif; white-space: nowrap; margin-left: 6px; }
-.hdr-btn {
-  background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.25);
-  padding: 4px 9px; font-size: 8.5pt; font-family: Arial, sans-serif; font-weight: 600;
-  border-radius: 5px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; transition: all .12s;
+.header-icon {
+  height: 34px; width: 34px; display: block;
+  border: 1.5px solid #ffffff; border-radius: 8px; padding: 1px; box-sizing: border-box;
 }
-.hdr-btn:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.4); }
-.hdr-btn.primary { background: var(--btn-primary-bg); border-color: var(--btn-primary-bg); }
-.hdr-btn.primary:hover { background: var(--btn-primary-hover); }
-.hdr-btn i { font-size: 13px; }
+.header-titles { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; }
+#app-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 16px; font-weight: bold; color: var(--header-title);
+  letter-spacing: 0.01em; line-height: 1.2; white-space: nowrap;
+}
+#app-subtitle { font-size: 10px; color: var(--header-sub); font-style: italic; white-space: nowrap; line-height: 1.2; }
+.toolbar-ver {
+  font-size: 8pt; color: var(--header-ver); font-family: Arial, sans-serif;
+  white-space: nowrap; margin-left: 16px; letter-spacing: 0.02em;
+}
 
+/* Split Content */
 .content { display: flex; flex: 1; overflow: hidden; min-height: 0; }
 .split-layout {
-  display: grid; grid-template-columns: minmax(var(--sidebar-min-width), var(--sidebar-max-width)) 1fr;
-  gap: 18px; height: 100%; width: 100%; overflow: hidden; padding: 16px;
+  display: grid;
+  grid-template-columns: minmax(var(--sidebar-min-width), var(--sidebar-max-width)) 1fr;
+  gap: 18px; height: 100%; width: 100%; overflow: hidden; align-items: stretch; padding: 16px;
 }
 .split-left { height: 100%; overflow-y: auto; padding-right: 6px; }
-.side-tools { position: sticky; top: 0; z-index: 3; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding-bottom: 10px; background: var(--app-panel-bg); }
 .split-right {
-  height: 100%; overflow: auto; background: var(--stage-bg); border: 1px solid var(--card-border);
-  border-radius: 8px; padding: 18px; display: flex; flex-direction: column; align-items: center;
+  height: 100%; overflow: auto; background: var(--stage-bg);
+  border: 1px solid var(--card-border); border-radius: 8px; padding: 18px;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 14px;
+  min-width: 0;
 }
 
-.opt-group { border: 1px solid var(--card-border); border-radius: 8px; margin-bottom: 14px; overflow: hidden; background: #fff; }
-.opt-group-header { background: var(--card-header-bg); padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--card-header-border); }
+/* Cards & Option Groups */
+.opt-group { border: 1px solid var(--card-border); border-radius: 8px; margin-bottom: 14px; overflow: hidden; background: #ffffff; }
+.opt-group-header {
+  background: var(--card-header-bg); padding: 8px 12px; display: flex; align-items: center;
+  justify-content: space-between; border-bottom: 1px solid var(--card-header-border);
+}
 .opt-group-header-left { display: flex; align-items: center; gap: 6px; }
 .opt-group-header i { font-size: 14px; color: var(--card-header-icon); }
 .opt-group-title { font-size: 8.5pt; font-weight: 700; color: var(--card-header-title); text-transform: uppercase; letter-spacing: .05em; }
 .opt-group-body { padding: 12px; }
-.opt-group-header { cursor: pointer; user-select: none; }
-.opt-group-header:hover { background: #f1f5f9; }
-.opt-group-header .chev { font-size: 15px; color: var(--card-header-icon); transition: transform .15s; }
-.opt-group.collapsed .opt-group-header { border-bottom-color: transparent; }
-.opt-group.collapsed .opt-group-body { display: none; }
-.opt-group.collapsed .chev { transform: rotate(-90deg); }
 
-input[type=text], input[type=number], input[type=date], select, textarea {
-  border: 1.5px solid var(--input-border); border-radius: 6px; padding: 6px 9px;
-  font-size: 10pt; font-family: Arial, sans-serif; background: #fff; color: var(--input-text);
-  outline: none; transition: border-color .15s, box-shadow .15s; min-width: 0; width: 100%;
+/* Type selector (mode tiles) */
+.type-selector-bar { display: grid; gap: 8px; }
+.grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+.type-btn {
+  padding: 8px 6px; background: #ffffff; border: 1.5px solid var(--card-border); border-radius: 6px;
+  font-size: 9.5pt; font-family: Arial, sans-serif; font-weight: 600; color: #334155; cursor: pointer;
+  text-align: center; transition: all .12s ease-in-out; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 4px;
 }
-textarea { resize: vertical; line-height: 1.35; font-size: 9pt; }
-input:hover, select:hover, textarea:hover { border-color: var(--input-border-hover); }
-input:focus, select:focus, textarea:focus { border-color: var(--input-border-focus); box-shadow: 0 0 0 3px var(--input-focus-ring); }
-input[type=range] { width: 100%; accent-color: var(--btn-primary-bg); }
+.type-btn i { font-size: 18px; }
+.type-btn.row { flex-direction: row; gap: 6px; }
+.type-btn.row i { font-size: 15px; }
+.type-btn:hover { border-color: var(--btn-primary); background: #f8fafc; }
+.type-btn.active { border-color: var(--btn-primary); background: #eef3fb; color: var(--btn-primary); box-shadow: 0 0 0 1.5px var(--btn-primary); }
+
+/* Inputs & Form Elements */
+input[type=text], input[type=number], select, textarea {
+  border: 1.5px solid var(--input-border); border-radius: 6px; padding: 6px 9px; font-size: 10pt;
+  font-family: Arial, sans-serif; background: #ffffff; color: var(--input-text); outline: none;
+  transition: border-color .15s, box-shadow .15s; min-width: 0; width: 100%; box-sizing: border-box;
+}
+textarea { font-family: 'Courier New', Courier, monospace; resize: vertical; min-height: 70px; letter-spacing: 0.05em; }
+input[type=color] {
+  width: 100%; height: 32px; border: 1.5px solid var(--input-border); border-radius: 6px;
+  padding: 2px 3px; background: #fff; cursor: pointer;
+}
+input[type=text]:hover:not(:disabled), input[type=number]:hover:not(:disabled), select:hover:not(:disabled), textarea:hover:not(:disabled) {
+  border-color: var(--input-border-hover);
+}
+input[type=text]:focus:not(:disabled), input[type=number]:focus:not(:disabled), select:focus:not(:disabled), textarea:focus:not(:disabled) {
+  border-color: var(--input-border-focus); box-shadow: 0 0 0 3px var(--input-focus-ring);
+}
+input:disabled, select:disabled { background: #f8fafc; color: #94a3b8; cursor: not-allowed; }
+
 .field-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
-.field-row:last-child { margin-bottom: 0; }
-.field-row > label, .lbl { font-size: 9.5pt; color: var(--input-label); font-weight: 600; }
-.hint { font-size: 8.5pt; color: #64748b; line-height: 1.35; }
+.field-row label { font-size: 9.5pt; color: var(--input-label); font-weight: 600; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
-.grid-4 .field-row { margin-bottom: 0; }
-.grid-4 input[type=number] { text-align: center; padding-left: 4px; padding-right: 4px; }
-.toggle-row { display: flex; align-items: center; gap: 7px; margin-bottom: 8px; }
-.toggle-row label { font-size: 10pt; cursor: pointer; user-select: none; }
-input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; flex-shrink: 0; accent-color: var(--btn-primary-bg); }
+.toggle-row { display: flex; align-items: center; gap: 7px; margin-bottom: 6px; }
+.toggle-row label { font-size: 10pt; color: var(--input-text); cursor: pointer; user-select: none; }
+input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; flex-shrink: 0; accent-color: var(--btn-primary); }
 
-/* Segmented control */
-.seg { display: flex; border: 1.5px solid var(--card-border); border-radius: 6px; overflow: hidden; }
-.seg button {
-  flex: 1; border: none; background: #fff; padding: 6px 4px; font-size: 8.5pt; font-family: Arial, sans-serif;
-  font-weight: 600; color: #334155; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;
-  border-right: 1px solid var(--card-border); transition: background .12s;
+.sub-label { font-size: 8.5pt; color: var(--input-label); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin: 4px 0 6px; display: block; }
+.info-note { font-size: 9pt; color: #64748b; margin-bottom: 8px; font-style: italic; line-height: 1.35; }
+.warn-note {
+  background: #fff7e6; border: 1px solid #f5c26b; color: #8a5300; border-radius: 6px;
+  padding: 6px 9px; font-size: 8.5pt; margin: 6px 0 8px; line-height: 1.35;
 }
-.seg button:last-child { border-right: none; }
-.seg button:hover { background: #f1f5f9; }
-.seg button.selected { background: #eef3fb; color: #1e429f; box-shadow: inset 0 -2px 0 var(--btn-primary-bg); }
-.seg button i { font-size: 15px; }
-.seg button:disabled { color: #b6c0cc; cursor: not-allowed; background: #f8fafc; }
+.warn-note:empty { display: none; }
+.divider { border-top: 1px solid var(--card-header-border); margin: 10px 0; }
 
+.row-setting { display: grid; grid-template-columns: 1fr 120px; gap: 8px; align-items: center; margin-bottom: 6px; }
+.row-setting span { font-size: 9.5pt; color: var(--input-text); font-weight: 600; }
+.row-setting select { padding: 4px 7px; font-size: 9.5pt; }
+
+.inline-check { display: flex; align-items: center; gap: 6px; }
+.inline-check input[type=number] { flex: 1; }
+
+/* Buttons */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 5px; border-radius: 6px;
-  padding: 6px 10px; font-size: 9pt; font-family: Arial, sans-serif; font-weight: 600; cursor: pointer;
-  transition: all .12s; border: none; white-space: nowrap;
+  padding: 6px 12px; font-size: 9.5pt; font-family: Arial, sans-serif; font-weight: 600; cursor: pointer;
+  transition: all .12s ease-in-out; border: none; white-space: nowrap;
 }
-.btn-secondary { background: #fff; color: #334155; border: 1.5px solid var(--btn-secondary-border); }
-.btn-secondary:hover { background: #f1f5f9; border-color: #94a3b8; }
-.btn-danger-lite { background: #fff; color: var(--btn-danger-bg); border: 1.5px solid #f0c0c8; }
-.btn-danger-lite:hover { background: #fdf2f2; border-color: var(--btn-danger-bg); }
-.btn i { font-size: 14px; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-primary { background: var(--btn-primary); color: #ffffff; }
+.btn-primary:hover:not(:disabled) { background: var(--btn-primary-hover); }
+.btn-secondary { background: #ffffff; color: #334155; border: 1.5px solid var(--btn-secondary-border); }
+.btn-secondary:hover:not(:disabled) { background: #f1f5f9; border-color: #94a3b8; }
+.btn-green { background: var(--btn-green); color: #ffffff; }
+.btn-green:hover:not(:disabled) { background: var(--btn-green-hover); }
+.btn-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: center; justify-content: center; }
+.btn-block { width: 100%; }
 
-/* Week nav */
-.week-nav { display: grid; grid-template-columns: auto 1fr auto; gap: 6px; align-items: center; }
-.week-top { display: grid; grid-template-columns: minmax(0, 1fr) 70px; gap: 8px; align-items: end; }
-.week-top .field-row { margin-bottom: 0; }
-.week-num input[type=number] { text-align: center; }
-.wk-lbl { display: flex; align-items: center; gap: 5px; cursor: pointer; white-space: nowrap; }
-.range-pill { font-size: 9pt; color: #1e429f; background: #e8f0fe; border: 1px solid #c2dbfe; border-radius: 6px; padding: 5px 8px; margin-top: 6px; text-align: center; }
-
-/* Day table */
-.day-table { width: 100%; border-collapse: collapse; font-size: 9.5pt; }
-.day-table th { font-size: 8pt; text-transform: uppercase; letter-spacing: .04em; color: #64748b; text-align: center; padding: 0 4px 6px; font-weight: 700; }
-.day-table th:first-child { text-align: left; }
-.day-table td { padding: 5px 4px; border-top: 1px solid #eef1f5; text-align: center; }
-.day-table td:first-child { text-align: left; font-weight: 600; }
-.day-table td .d { color: #64748b; font-weight: 400; margin-left: 4px; }
-.day-table tr.off td:first-child { color: #94a3b8; text-decoration: line-through; }
-
-/* Logo */
-.logo-row { display: flex; align-items: center; gap: 10px; }
-.logo-thumb {
-  width: 60px; height: 60px; border: 1.5px dashed var(--card-border); border-radius: 6px; display: flex;
-  align-items: center; justify-content: center; background: #f8fafc; overflow: hidden; flex-shrink: 0;
+/* Stage */
+.page-frame {
+  background: #ffffff; border: 1px solid var(--card-border); border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08); overflow: hidden; flex-shrink: 0;
 }
-.logo-thumb img { max-width: 100%; max-height: 100%; }
-.logo-thumb i { font-size: 22px; color: #94a3b8; }
-.logo-btns { display: flex; flex-direction: column; gap: 6px; }
-
-/* Preview */
-.preview-bar { display: flex; align-items: center; gap: 10px; font-size: 9pt; color: #475569; margin-bottom: 12px; flex-wrap: wrap; justify-content: center; }
-.preview-bar .badge { background: #fff; border: 1px solid var(--card-border); border-radius: 999px; padding: 3px 10px; font-weight: 600; }
-#pages { display: flex; flex-direction: column; gap: 22px; align-items: center; }
-.page-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.page-label { font-size: 8.5pt; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
-
-.toast {
-  position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%) translateY(20px); opacity: 0;
-  background: #1e2a3a; color: #fff; padding: 10px 16px; border-radius: 8px; font-size: 10pt;
-  box-shadow: 0 6px 20px rgba(0,0,0,.2); transition: all .25s; pointer-events: none; z-index: 50; max-width: 90vw; text-align: center;
+.page-frame svg { display: block; }
+.page-stack { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; align-items: flex-start; }
+.page-item { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.page-label { font-size: 8pt; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: .05em; font-family: Arial, sans-serif; }
+.stage-caption { font-size: 8.5pt; color: #64748b; font-family: Arial, sans-serif; }
+.problem-frame {
+  background: #ffffff; border: 1px solid var(--card-border); border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05); padding: 18px; max-width: 100%; overflow: auto;
 }
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-/* Modal */
-.modal-back { position: fixed; inset: 0; background: rgba(15,23,42,.45); display: none; align-items: center; justify-content: center; z-index: 60; padding: 16px; }
-.modal-back.show { display: flex; }
-.modal { background: #fff; border-radius: 10px; max-width: 420px; width: 100%; box-shadow: 0 12px 40px rgba(0,0,0,.25); overflow: hidden; }
-.modal-h { background: var(--card-header-bg); border-bottom: 1px solid var(--card-header-border); padding: 10px 14px; font-weight: 700; font-size: 10.5pt; display: flex; gap: 6px; align-items: center; }
-.modal-b { padding: 14px; font-size: 10pt; line-height: 1.45; color: #334155; }
-.modal-b ol { padding-left: 20px; margin-top: 6px; }
-.modal-f { padding: 10px 14px; display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid var(--card-header-border); }
-.btn-primary { background: var(--btn-primary-bg); color: #fff; }
-.btn-primary:hover { background: var(--btn-primary-hover); }
-
-@keyframes spin { to { transform: rotate(360deg); } }
-.spin { display: inline-block; animation: spin 0.9s linear infinite; }
-
-@media (max-width: 820px) {
-  body { height: auto; overflow: auto; }
-  #app, .content { overflow: visible; }
-  .split-layout { grid-template-columns: minmax(0, 1fr); height: auto; overflow: visible; }
-  .split-left, .split-right { height: auto; overflow: visible; }
-  #app-header { flex-direction: column; align-items: flex-start; }
+.empty-selection-placeholder {
+  border: 2px dashed var(--card-border); border-radius: 8px; padding: 32px 18px; text-align: center;
+  color: #64748b; display: flex; flex-direction: column; align-items: center; gap: 8px; background: #ffffff;
 }
+.empty-selection-placeholder i { font-size: 32px; color: #94a3b8; }
 
-/* ════════════════════════════════════════════════
-   PRINTABLE SHEET
-   ════════════════════════════════════════════════ */
-.page {
-  --ink: #000;
-  --hd-bg: #000; --hd-fg: #fff;
-  --rule: #9aa3ae;
-  --sp: 0.34in;
-  --stamp: 0.85in;
-  --fs: 1;
-  --nc-a: #e3e6ea; --nc-b: #f1f3f5;
-  width: 8.5in; height: 11in; background: #fff; color: var(--ink);
-  padding: 0.25in; display: flex; flex-direction: column; gap: 0.12in; overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0,0,0,.15); position: relative;
-  -webkit-print-color-adjust: exact; print-color-adjust: exact;
-  font-size: calc(11pt * var(--fs));
+.export-tray { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 4px; }
+.feedback-row { min-height: 22px; margin-top: 6px; display: flex; align-items: center; justify-content: center; }
+.copy-feedback { font-size: 9.5pt; color: var(--btn-green); font-weight: 600; display: none; align-items: center; gap: 5px; }
+.copy-feedback.error { color: var(--btn-danger); }
+
+.hidden { display: none !important; }
+
+/* Color picker dropdown (presets + hex) */
+.cpick { position: relative; }
+.cpick-btn {
+  width: 100%; display: flex; align-items: center; gap: 7px; padding: 5px 8px;
+  border: 1.5px solid var(--input-border); border-radius: 6px; background: #fff; cursor: pointer;
+  font-size: 9.5pt; font-family: Arial, sans-serif; color: var(--input-text); text-align: left;
 }
-.page.hd-outline { --hd-bg: #fff; --hd-fg: #000; }
-
-/* Sheet header */
-.sh { display: flex; align-items: stretch; gap: 0.12in; flex-shrink: 0; }
-.sh-title {
-  font-size: 0.95em !important; background: var(--hd-bg); color: var(--hd-fg); border: 2px solid #000; font-weight: 700;
-  font-size: 1.12em; line-height: 1.15; padding: 0.06in 0.12in; display: flex; align-items: center;
-  justify-content: center; text-align: center; width: 1.55in; flex-shrink: 0;
+.cpick-btn:hover { border-color: var(--input-border-hover); }
+.cpick.open .cpick-btn { border-color: var(--input-border-focus); box-shadow: 0 0 0 3px var(--input-focus-ring); }
+.cpick-btn .cpick-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cpick-btn i { font-size: 13px; color: #64748b; }
+.cpick-sw { width: 16px; height: 16px; border-radius: 3px; border: 1px solid rgba(0,0,0,.25); flex-shrink: 0; }
+.cpick-menu {
+  position: absolute; z-index: 50; top: calc(100% + 4px); left: 0; width: 248px; max-height: 360px; overflow-y: auto;
+  background: #fff; border: 1px solid var(--card-border); border-radius: 8px; box-shadow: 0 8px 24px rgba(15,23,42,.18);
+  padding: 8px; display: none;
 }
-.sh-name { flex: 1; display: flex; align-items: center; font-size: 1.1em; white-space: nowrap; }
-.sh-name .nm { display: flex; align-items: baseline; gap: 0.08in; width: 100%; }
-.sh-name .blank { display: inline-block; border-bottom: 1.5px solid #000; flex: 1; height: 1em; }
-.sh-name .blank.per { flex: 0 0 0.5in; }
-.sh-week { border: 2px solid #000; display: flex; flex-direction: column; flex-shrink: 0; min-width: 0; }
-.sh-week .wo-top { background: var(--hd-bg); color: var(--hd-fg); font-weight: 700; text-align: center; padding: 0.03in 0.08in; font-size: 0.95em; }
-.page.hd-outline .sh-week .wo-top { border-bottom: 1.5px solid #000; }
-.sh-week .wo-bot { display: flex; flex: 1; font-size: 0.85em; }
-.sh-week .wo-bot span { display: flex; align-items: center; justify-content: center; }
-.sh-week .wo-bot span { flex: 1; text-align: center; padding: 0.03in 0.06in; white-space: nowrap; }
-.sh-week .wo-bot span + span { border-left: 1.5px solid #000; flex: 0 0 auto; font-weight: 700; }
+.cpick.open .cpick-menu { display: block; }
+.cpick.align-right .cpick-menu { left: auto; right: 0; }
+.cpick-group { font-size: 7.5pt; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: .05em; margin: 4px 2px 5px; }
+.cpick-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px; margin-bottom: 8px; }
+.cpick-opt { aspect-ratio: 1; border-radius: 4px; border: 1px solid rgba(0,0,0,.2); cursor: pointer; padding: 0; }
+.cpick-opt:hover { transform: scale(1.12); box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+.cpick-opt.sel { outline: 2px solid var(--btn-primary); outline-offset: 1px; }
+.cpick-custom { display: flex; gap: 6px; align-items: center; border-top: 1px solid var(--card-header-border); padding-top: 8px; }
+.cpick-custom input[type=color] { width: 38px; height: 30px; flex-shrink: 0; padding: 1px 2px; }
+.cpick-custom input[type=text] { font-family: 'Courier New', monospace; text-transform: uppercase; padding: 5px 7px; }
+.band-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.opt-group:has(.cpick) { overflow: visible; }
+.opt-group:has(.cpick) .opt-group-header { border-radius: 8px 8px 0 0; }
 
-.sh.compact .sh-title { padding: 0.03in 0.08in; }
-.sh-name { min-width: 2.4in; }
-.sh.compact .sh-week { flex-direction: row; min-width: 0; }
-.sh.compact .sh-week .wo-top { display: flex; align-items: center; }
-.sh.compact .sh-week .wo-bot span { display: flex; align-items: center; }
-.page.hd-outline .sh.compact .sh-week .wo-top { border-bottom: none; border-right: 1.5px solid #000; }
-
-.reminder-top { text-align: center; font-style: italic; font-size: 0.9em; flex-shrink: 0; }
-
-/* Top stamp row */
-.stamp-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.1in; flex-shrink: 0; }
-.sc { border: 1.5px solid #000; display: flex; flex-direction: column; }
-.sc-label { background: var(--hd-bg); color: var(--hd-fg); font-weight: 700; font-style: italic; text-align: center; font-size: 0.85em; padding: 0.02in 0.04in; white-space: nowrap; overflow: hidden; }
-.page.hd-outline .sc-label { border-bottom: 1.5px solid #000; }
-.sc-box { height: var(--stamp); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-.sc.off .sc-box { background: repeating-linear-gradient(45deg, var(--nc-a) 0 6px, var(--nc-b) 6px 12px); }
-.sc.off .sc-label { background: #8b929b; color: #fff; }
-.page.hd-outline .sc.off .sc-label { background: #e3e6ea; color: #555; }
-.nc-mini { font-size: 0.75em; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: .04em; text-align: center; padding: 0 4px; }
-
-.reward-img { max-width: 86%; max-height: 86%; object-fit: contain; opacity: var(--logo-op, .6); }
-.reward-star { width: 60%; height: 60%; opacity: var(--logo-op, .6); }
-
-/* Day grid */
-.days { flex: 1; min-height: 0; display: grid; gap: 0.12in; grid-auto-flow: column; }
-.day { border: 2px solid #000; display: flex; min-height: 0; min-width: 0; position: relative; overflow: hidden; }
-.day.lbl-top { flex-direction: column; }
-.day-label {
-  background: var(--hd-bg); color: var(--hd-fg); font-weight: 700; font-style: italic; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center; gap: 0.08in; white-space: nowrap;
-}
-.day.lbl-top .day-label { padding: 0.03in 0.1in; font-size: 1.12em; border-bottom: 2px solid #000; }
-.day.lbl-side .day-label { writing-mode: vertical-rl; transform: rotate(180deg); padding: 0.1in 0.04in; font-size: 1.12em; border-left: 2px solid #000; }
-.day-label .dt { font-weight: 400; font-style: normal; font-size: 0.82em; opacity: .9; }
-.day-body { flex: 1; position: relative; min-height: 0; min-width: 0; }
-
-.rule-lines { background-image: linear-gradient(to bottom, transparent calc(var(--sp) - 1px), var(--rule) calc(var(--sp) - 1px), var(--rule) var(--sp)); background-size: 100% var(--sp); background-position: 0 0; }
-.rule-grid { background-image: linear-gradient(to bottom, var(--rule) 1px, transparent 1px), linear-gradient(to right, var(--rule) 1px, transparent 1px); background-size: var(--sp) var(--sp); background-position: -1px -1px; }
-.rule-dots { background-image: radial-gradient(circle, var(--rule) 1.1px, transparent 1.5px); background-size: var(--sp) var(--sp); background-position: calc(var(--sp) / -2) calc(var(--sp) / -2); }
-.rule-blank { background: none; }
-
-.stamp-in {
-  position: absolute; top: 0.07in; right: 0.07in; width: var(--stamp); height: var(--stamp);
-  border: 1.5px dashed #000; background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden; z-index: 2;
-}
-.reminder-in {
-  position: absolute; left: 0.08in; bottom: 0.05in; font-size: 0.72em; font-style: italic; color: #555;
-  background: #fff; padding: 0 0.05in; z-index: 2; max-width: 80%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-
-.day.off .day-label { background: #8b929b; color: #fff; }
-.page.hd-outline .day.off .day-label { background: #e3e6ea; color: #555; }
-.day.off .day-body { background: repeating-linear-gradient(45deg, var(--nc-a) 0 8px, var(--nc-b) 8px 16px) !important; }
-.stamp-in.at-bottom { top: auto; bottom: 0.07in; }
-.day.off .stamp-in { background: #dfe2e6; border-color: #9aa1aa; }
-.nc-text {
-  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 1;
-}
-.nc-text span { background: #fff; border: 1.5px solid #9aa1aa; color: #4b5260; font-weight: 700; font-size: 1.15em; padding: 0.05in 0.18in; border-radius: 4px; }
-
-/* Rubric */
-.rubric { border: 2px solid #000; display: flex; min-height: 0; overflow: hidden; flex-shrink: 0; }
-.rubric-label {
-  background: var(--hd-bg); color: var(--hd-fg); font-weight: 700; font-style: italic;
-  position: relative; flex: 0 0 auto; width: 3.5em; font-size: 0.9em; border-right: 2px solid #000;
-}
-.rubric-label span {
-  position: absolute; inset: 0; writing-mode: vertical-rl; transform: rotate(180deg);
-  display: flex; align-items: center; justify-content: center; padding: 0.06in 0.05in;
-}
-.rubric-label span b { display: block; max-inline-size: 100%; text-align: center; line-height: 1.15; overflow-wrap: break-word; font-weight: 700;
-}
-.rubric-list { list-style: none; padding: 0.08in 0.12in; display: flex; flex-direction: column; justify-content: center; gap: 0.94em; font-size: 0.8em; line-height: 1.25; }
-.rubric-list li { position: relative; padding-left: 0.2in; }
-.rubric-list li::before { content: ""; position: absolute; left: 0; top: 0.2em; width: 0.1in; height: 0.1in; border: 1.2px solid #000; }
-.rubric:not(.in-cell) { min-height: 1.6in; }
-.rubric:not(.in-cell) .rubric-label { font-size: 0.8em; }
-.rubric.in-cell .rubric-list { font-size: 0.78em; }
-.custom-body { flex: 1; min-width: 0; padding: 0.1in 0.16in; display: flex; flex-direction: column; justify-content: center; gap: 0.6em; font-size: 0.95em; line-height: 1.3; overflow: hidden; }
-
-@page { size: letter portrait; margin: 0; }
+/* Print */
+#print-area { display: none; }
 @media print {
-  html, body { height: auto !important; overflow: visible !important; background: #fff !important; }
-  #app, .content, .split-layout, .split-right { display: block !important; overflow: visible !important; height: auto !important; padding: 0 !important; border: 0 !important; background: none !important; }
-  #app-header, .split-left, .page-label, .preview-bar, .toast, .modal-back { display: none !important; }
-  #pages { zoom: 1 !important; display: block !important; }
-  .page-wrap { display: block !important; }
-  .page { box-shadow: none !important; height: 10.98in; break-after: page; page-break-after: always; }
-  .page-wrap:last-child .page { break-after: auto; page-break-after: auto; }
+  html, body { height: auto !important; overflow: visible !important; background: #fff !important; display: block !important; }
+  #app { display: none !important; }
+  #print-area { display: block !important; }
+  #print-area svg { display: block; break-after: page; page-break-after: always; }
+  #print-area svg:last-child { break-after: auto; page-break-after: auto; }
+  #print-area table { page-break-inside: avoid; }
 }
 </style>
+<style id="print-page-style"></style>
 </head>
 <body>
 <div id="app">
+
+  <!-- TOP HEADER -->
   <header id="app-header">
     <div class="header-left">
-      <img class="header-icon" alt="" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231e2a3a'/%3E%3Crect x='7' y='6' width='18' height='20' rx='2' fill='%23fff'/%3E%3Cline x1='10' y1='12' x2='22' y2='12' stroke='%231e2a3a' stroke-width='1.5'/%3E%3Cline x1='10' y1='16' x2='22' y2='16' stroke='%231e2a3a' stroke-width='1.5'/%3E%3Cline x1='10' y1='20' x2='17' y2='20' stroke='%231e2a3a' stroke-width='1.5'/%3E%3Ccircle cx='22' cy='22' r='5' fill='%233266ad' stroke='%23fff' stroke-width='1.5'/%3E%3C/svg%3E">
+      <img id="headerIcon" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231e2a3a'/%3E%3Cline x1='18.78' y1='5.80' x2='13.22' y2='5.80' stroke='%23009E73' stroke-width='1.15' stroke-linecap='round'/%3E%3Cline x1='22.51' y1='7.84' x2='9.49' y2='7.84' stroke='%230072B2' stroke-width='1.15' stroke-linecap='round'/%3E%3Cline x1='21.74' y1='9.88' x2='10.26' y2='9.88' stroke='%23E69F00' stroke-width='1.15' stroke-linecap='round'/%3E%3Cline x1='11.55' y1='13.96' x2='20.45' y2='13.96' stroke='%23D55E00' stroke-width='1.15' stroke-linecap='round'/%3E%3Cline x1='9.20' y1='16.00' x2='22.80' y2='16.00' stroke='%23009E73' stroke-width='1.15' stroke-linecap='round'/%3E%3Cline x1='11.55' y1='18.04' x2='20.45' y2='18.04' stroke='%230072B2' stroke-width='1.15' stroke-linecap='round'/%3E%3Cline x1='21.74' y1='22.12' x2='10.26' y2='22.12' stroke='%23E69F00' stroke-width='1.15' stroke-linecap='round'/%3E%3Cline x1='22.51' y1='24.16' x2='9.49' y2='24.16' stroke='%23D55E00' stroke-width='1.15' stroke-linecap='round'/%3E%3Cline x1='18.78' y1='26.20' x2='13.22' y2='26.20' stroke='%23009E73' stroke-width='1.15' stroke-linecap='round'/%3E%3Cpath d='M16.00,4.80 L15.20,5.08 L14.41,5.36 L13.65,5.64 L12.91,5.92 L12.22,6.20 L11.58,6.48 L11.01,6.76 L10.50,7.04 L10.07,7.32 L9.72,7.60 L9.46,7.88 L9.28,8.16 L9.21,8.44 L9.22,8.72 L9.33,9.00 L9.53,9.28 L9.82,9.56 L10.20,9.84 L10.66,10.12 L11.19,10.40 L11.79,10.68 L12.45,10.96 L13.15,11.24 L13.90,11.52 L14.67,11.80 L15.47,12.08 L16.27,12.36 L17.06,12.64 L17.85,12.92 L18.60,13.20 L19.32,13.48 L20.00,13.76 L20.62,14.04 L21.17,14.32 L21.65,14.60 L22.06,14.88 L22.38,15.16 L22.61,15.44 L22.75,15.72 L22.80,16.00 L22.75,16.28 L22.61,16.56 L22.38,16.84 L22.06,17.12 L21.65,17.40 L21.17,17.68 L20.62,17.96 L20.00,18.24 L19.32,18.52 L18.60,18.80 L17.85,19.08 L17.06,19.36 L16.27,19.64 L15.47,19.92 L14.67,20.20 L13.90,20.48 L13.15,20.76 L12.45,21.04 L11.79,21.32 L11.19,21.60 L10.66,21.88 L10.20,22.16 L9.82,22.44 L9.53,22.72 L9.33,23.00 L9.22,23.28 L9.21,23.56 L9.28,23.84 L9.46,24.12 L9.72,24.40 L10.07,24.68 L10.50,24.96 L11.01,25.24 L11.58,25.52 L12.22,25.80 L12.91,26.08 L13.65,26.36 L14.41,26.64 L15.20,26.92 L16.00,27.20' fill='none' stroke='%2394a3b8' stroke-width='1.5' stroke-linecap='round'/%3E%3Cpath d='M16.00,4.80 L16.80,5.08 L17.59,5.36 L18.35,5.64 L19.09,5.92 L19.78,6.20 L20.42,6.48 L20.99,6.76 L21.50,7.04 L21.93,7.32 L22.28,7.60 L22.54,7.88 L22.72,8.16 L22.79,8.44 L22.78,8.72 L22.67,9.00 L22.47,9.28 L22.18,9.56 L21.80,9.84 L21.34,10.12 L20.81,10.40 L20.21,10.68 L19.55,10.96 L18.85,11.24 L18.10,11.52 L17.33,11.80 L16.53,12.08 L15.73,12.36 L14.94,12.64 L14.15,12.92 L13.40,13.20 L12.68,13.48 L12.00,13.76 L11.38,14.04 L10.83,14.32 L10.35,14.60 L9.94,14.88 L9.62,15.16 L9.39,15.44 L9.25,15.72 L9.20,16.00 L9.25,16.28 L9.39,16.56 L9.62,16.84 L9.94,17.12 L10.35,17.40 L10.83,17.68 L11.38,17.96 L12.00,18.24 L12.68,18.52 L13.40,18.80 L14.15,19.08 L14.94,19.36 L15.73,19.64 L16.53,19.92 L17.33,20.20 L18.10,20.48 L18.85,20.76 L19.55,21.04 L20.21,21.32 L20.81,21.60 L21.34,21.88 L21.80,22.16 L22.18,22.44 L22.47,22.72 L22.67,23.00 L22.78,23.28 L22.79,23.56 L22.72,23.84 L22.54,24.12 L22.28,24.40 L21.93,24.68 L21.50,24.96 L20.99,25.24 L20.42,25.52 L19.78,25.80 L19.09,26.08 L18.35,26.36 L17.59,26.64 L16.80,26.92 L16.00,27.20' fill='none' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E" alt="App Icon" class="header-icon">
       <div class="header-titles">
-        <div id="app-title">A Humble Bellwork</div>
-        <div id="app-subtitle">Bellwork Recording Sheet Builder &mdash; Built by Steven Humble</div>
+        <div id="app-title">A Humble Transcription / Translation Tool</div>
+        <div id="app-subtitle">Codon Chart, Codon Wheel &amp; Protein Synthesis Problem Builder &mdash; Built by Steven Humble</div>
       </div>
     </div>
-    <div class="toolbar-right">
-      <button class="hdr-btn" onclick="resetSettings()" title="Restore default settings (keeps logo &amp; week number)"><i class="ti ti-restore"></i> Reset</button>
-      <button class="hdr-btn" onclick="savePdf()" title="Save as PDF"><i class="ti ti-file-type-pdf"></i> Save PDF</button>
-      <button class="hdr-btn primary" onclick="printSheet()" title="Print"><i class="ti ti-printer"></i> Print</button>
-      <div class="toolbar-ver">V 1.1.0 &mdash; 2026-11-19</div>
-    </div>
+    <div class="toolbar-ver">V 1.3.0 &mdash; 2026-11-20</div>
   </header>
 
   <main class="content">
     <div class="split-layout">
-      <aside class="split-left">
-        <div class="side-tools">
-          <button class="btn btn-secondary" onclick="setAllSections(false)" title="Open every settings section"><i class="ti ti-arrows-maximize"></i> Expand all</button>
-          <button class="btn btn-secondary" onclick="setAllSections(true)" title="Close every settings section"><i class="ti ti-arrows-minimize"></i> Collapse all</button>
+
+      <!-- LEFT PANEL -->
+      <aside class="split-left" id="controls-panel">
+
+        <!-- Mode -->
+        <div class="opt-group">
+          <div class="opt-group-header">
+            <div class="opt-group-header-left"><i class="ti ti-category"></i><span class="opt-group-title">Choose a Tool</span></div>
+          </div>
+          <div class="opt-group-body">
+            <div class="type-selector-bar grid-cols-2">
+              <button type="button" class="type-btn active" data-mode="problems" onclick="setMode('problems')"><i class="ti ti-dna-2"></i>Codon Problems</button>
+              <button type="button" class="type-btn" data-mode="chart" onclick="setMode('chart')"><i class="ti ti-table"></i>Codon Chart</button>
+              <button type="button" class="type-btn" data-mode="wheel" onclick="setMode('wheel')"><i class="ti ti-chart-donut"></i>Codon Wheel</button>
+              <button type="button" class="type-btn" data-mode="combo" onclick="setMode('combo')"><i class="ti ti-files"></i>Chart + Wheel Sheet</button>
+            </div>
+          </div>
         </div>
 
-        <!-- WEEK -->
-        <div class="opt-group">
-          <div class="opt-group-header"><div class="opt-group-header-left"><i class="ti ti-calendar-week"></i><span class="opt-group-title">Week</span></div></div>
-          <div class="opt-group-body">
-            <div class="week-top">
+        <!-- ═══════════ REFERENCE (CHART / WHEEL) SETTINGS ═══════════ -->
+        <div id="ref-settings">
+          <div class="opt-group only-combo">
+            <div class="opt-group-header">
+              <div class="opt-group-header-left"><i class="ti ti-layout-columns"></i><span class="opt-group-title">Sheet Layout</span></div>
+            </div>
+            <div class="opt-group-body">
               <div class="field-row">
-                <label for="monday">Monday of the week</label>
-                <div class="week-nav">
-                  <button class="btn btn-secondary" onclick="shiftWeek(-1)" title="Previous week (also lowers week #)"><i class="ti ti-chevron-left"></i></button>
-                  <input type="date" id="monday">
-                  <button class="btn btn-secondary" onclick="shiftWeek(1)" title="Next week (also raises week #)"><i class="ti ti-chevron-right"></i></button>
+                <label for="comboLayout">Layout</label>
+                <select id="comboLayout" onchange="onComboLayoutChange()">
+                  <option value="single">Both on one page (one side)</option>
+                  <option value="duplex">Double-sided &mdash; chart front, wheel back</option>
+                  <option value="half" selected>Half-sheets, double-sided (2 per page, cut in half)</option>
+                </select>
+              </div>
+              <div class="field-row combo-single">
+                <label for="comboSplit">Space for the Chart (%)</label>
+                <input type="number" id="comboSplit" value="55" min="35" max="75" step="5" oninput="renderRef()">
+              </div>
+              <div class="toggle-row combo-half">
+                <input type="checkbox" id="cutLine" checked onchange="renderRef()">
+                <label for="cutLine">Show dashed cut line</label>
+              </div>
+              <div class="toggle-row combo-duplex">
+                <input type="checkbox" id="rotateBack" onchange="renderRef()">
+                <label for="rotateBack">Turn the back side upside down</label>
+              </div>
+              <p class="info-note combo-duplex" id="duplexHint" style="margin:6px 0 0;"></p>
+
+              <div class="divider"></div>
+              <div class="grid-2">
+                <div class="field-row">
+                  <label for="chartTitle">Chart Title</label>
+                  <input type="text" id="chartTitle" value="mRNA Codon Chart" oninput="renderRef()">
+                </div>
+                <div class="field-row">
+                  <label for="wheelTitle">Wheel Title</label>
+                  <input type="text" id="wheelTitle" value="mRNA Codon Wheel" oninput="renderRef()">
                 </div>
               </div>
-              <div class="field-row week-num">
-                <label for="showWeek" class="wk-lbl"><input type="checkbox" id="showWeek"> Week #</label>
-                <input type="number" id="weekNum" min="0" max="99" aria-label="Week number">
-              </div>
-            </div>
-            <div class="range-pill" id="rangePill"></div>
-          </div>
-        </div>
-
-        <!-- DAYS -->
-        <div class="opt-group">
-          <div class="opt-group-header"><div class="opt-group-header-left"><i class="ti ti-calendar-off"></i><span class="opt-group-title">Days</span></div></div>
-          <div class="opt-group-body">
-            <table class="day-table">
-              <thead><tr><th>Day</th><th title="Grey out this day">No Class</th><th title="Show your logo in this day's stamp box">Reward</th></tr></thead>
-              <tbody id="dayRows"></tbody>
-            </table>
-            <div class="field-row" style="margin-top:10px">
-              <label for="noClassText">No class label</label>
-              <input type="text" id="noClassText">
-            </div>
-            <div class="hint" id="rewardHint"></div>
-          </div>
-        </div>
-
-        <!-- TEXT -->
-        <div class="opt-group">
-          <div class="opt-group-header"><div class="opt-group-header-left"><i class="ti ti-typography"></i><span class="opt-group-title">Text &amp; Font</span></div></div>
-          <div class="opt-group-body">
-            <div class="field-row"><label for="title">Sheet title</label><input type="text" id="title"></div>
-            <div class="toggle-row"><input type="checkbox" id="showPeriod"><label for="showPeriod">Include “Per.” blank</label></div>
-            <div class="grid-2">
-              <div class="field-row"><label for="font">Font</label><select id="font"></select></div>
-              <div class="field-row"><label for="fontScale">Text size</label>
-                <select id="fontScale"><option value="0.9">Small</option><option value="1">Normal</option><option value="1.12">Large</option></select>
-              </div>
-            </div>
-            <div class="field-row"><span class="lbl">Header style</span>
-              <div class="seg" data-key="headerStyle"><button data-v="solid"><i class="ti ti-square-filled"></i> Solid black</button><button data-v="outline"><i class="ti ti-square"></i> Outline (saves ink)</button></div>
             </div>
           </div>
-        </div>
 
-        <!-- LAYOUT -->
-        <div class="opt-group">
-          <div class="opt-group-header"><div class="opt-group-header-left"><i class="ti ti-layout-grid"></i><span class="opt-group-title">Layout</span></div></div>
-          <div class="opt-group-body">
-            <div class="grid-2">
-              <div class="field-row"><span class="lbl">Columns</span>
-                <div class="seg" data-key="cols"><button data-v="1"><i class="ti ti-layout-rows"></i> 1</button><button data-v="2"><i class="ti ti-layout-columns"></i> 2</button></div>
-              </div>
-              <div class="field-row"><span class="lbl">Pages</span>
-                <div class="seg" data-key="pages"><button data-v="1"><i class="ti ti-file"></i> 1</button><button data-v="2" id="pagesTwo"><i class="ti ti-files"></i> 2</button></div>
-              </div>
+          <div class="opt-group">
+            <div class="opt-group-header">
+              <div class="opt-group-header-left"><i class="ti ti-file"></i><span class="opt-group-title">Page Setup</span></div>
             </div>
-            <div class="field-row"><span class="lbl">Day label</span>
-              <div class="seg" data-key="labelStyle"><button data-v="side">Side</button><button data-v="top">Top banner</button></div>
-            </div>
-            <div class="grid-2">
-              <div class="field-row"><label for="ruling">Writing area</label>
-                <select id="ruling"><option value="lines">Lined</option><option value="grid">Grid</option><option value="dots">Dot grid</option><option value="blank">Blank</option></select>
-              </div>
-              <div class="field-row"><label for="spacing">Spacing</label>
-                <select id="spacing"><option value="0.4">Extra wide</option><option value="0.34">Wide</option><option value="0.28">College</option><option value="0.25">¼ inch</option><option value="0.2">Small</option></select>
-              </div>
-            </div>
-            <div class="field-row"><label for="ruleColor">Line darkness</label>
-              <select id="ruleColor"><option value="#c4cad2">Light</option><option value="#9aa3ae">Medium</option><option value="#5b6470">Dark</option><option value="#000000">Black (for B&amp;W printers)</option></select>
-            </div>
-            <div class="toggle-row"><input type="checkbox" id="showDates"><label for="showDates">Show dates on each day</label></div>
-            <div class="field-row" style="margin-top:6px"><span class="lbl">Page margins (inches)</span>
-              <div class="grid-4">
-                <div class="field-row"><label for="marginTop">Top</label><input type="number" id="marginTop" min="0.1" max="1" step="0.05"></div>
-                <div class="field-row"><label for="marginBottom">Bottom</label><input type="number" id="marginBottom" min="0.1" max="1" step="0.05"></div>
-                <div class="field-row"><label for="marginLeft">Left</label><input type="number" id="marginLeft" min="0.1" max="1" step="0.05"></div>
-                <div class="field-row"><label for="marginRight">Right</label><input type="number" id="marginRight" min="0.1" max="1" step="0.05"></div>
-              </div>
-              <div class="toggle-row" style="margin:6px 0 0"><input type="checkbox" id="marginLink"><label for="marginLink">Same on all sides</label></div>
-              <div class="hint">Each margin can be 0.1&Prime; to 1&Prime;.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- STAMPS -->
-        <div class="opt-group">
-          <div class="opt-group-header"><div class="opt-group-header-left"><i class="ti ti-rubber-stamp"></i><span class="opt-group-title">Stamp Boxes</span></div></div>
-          <div class="opt-group-body">
-            <div class="field-row">
-              <div class="seg" data-key="stampMode"><button data-v="top"><i class="ti ti-layout-navbar"></i> At top</button><button data-v="box"><i class="ti ti-box-align-top-right"></i> In boxes</button><button data-v="none"><i class="ti ti-ban"></i> None</button></div>
-            </div>
-            <div class="field-row" id="stampPosRow"><span class="lbl">Position in day box</span>
-              <div class="seg" data-key="stampPos"><button data-v="top"><i class="ti ti-arrow-bar-to-up"></i> Top corner</button><button data-v="bottom"><i class="ti ti-arrow-bar-to-down"></i> Bottom corner</button></div>
-            </div>
-            <div class="field-row" id="stampSizeRow">
-              <label for="stampSize">Stamp box size: <span id="stampSizeVal"></span></label>
-              <input type="range" id="stampSize" min="0.5" max="1.4" step="0.05">
-            </div>
-            <div class="field-row">
-              <span class="lbl">Reward logo</span>
-              <div class="logo-row">
-                <div class="logo-thumb" id="logoThumb"><i class="ti ti-photo"></i></div>
-                <div class="logo-btns">
-                  <button class="btn btn-secondary" onclick="document.getElementById('logoFile').click()"><i class="ti ti-upload"></i> Upload logo</button>
-                  <button class="btn btn-danger-lite" id="logoRemove" onclick="removeLogo()"><i class="ti ti-trash"></i> Remove</button>
+            <div class="opt-group-body">
+              <div class="grid-2">
+                <div class="field-row">
+                  <label for="paperSize">Paper Size</label>
+                  <select id="paperSize" onchange="renderRef()">
+                    <option value="letter" selected>Letter (8.5" &times; 11")</option>
+                    <option value="legal">Legal (8.5" &times; 14")</option>
+                    <option value="tabloid">Tabloid (11" &times; 17")</option>
+                    <option value="a4">A4 (210 &times; 297 mm)</option>
+                  </select>
+                </div>
+                <div class="field-row">
+                  <label for="orientation">Orientation</label>
+                  <select id="orientation" onchange="storeModeField('orient', this.value); renderRef()">
+                    <option value="landscape" selected>Landscape</option>
+                    <option value="portrait">Portrait</option>
+                  </select>
                 </div>
               </div>
-              <input type="file" id="logoFile" accept="image/*" style="display:none">
-              <div class="hint">Saved on this computer. Tick <b>Reward</b> on a day to put the logo in its stamp box. With no logo, a star is used.</div>
-            </div>
-            <div class="field-row">
-              <label for="logoOp">Logo strength: <span id="logoOpVal"></span></label>
-              <input type="range" id="logoOp" min="0.15" max="1" step="0.05">
-            </div>
-          </div>
-        </div>
+              <div class="field-row">
+                <label for="chartScale">Chart Size (%)</label>
+                <input type="number" id="chartScale" value="100" min="40" max="100" step="5" oninput="renderRef()">
+              </div>
 
-        <!-- ABSENCE -->
-        <div class="opt-group">
-          <div class="opt-group-header"><div class="opt-group-header-left"><i class="ti ti-user-off"></i><span class="opt-group-title">Absence Reminder</span></div></div>
-          <div class="opt-group-body">
-            <div class="field-row">
-              <div class="seg" data-key="reminderMode"><button data-v="top">Top of page</button><button data-v="box">In each day</button><button data-v="none">Hidden</button></div>
-            </div>
-            <div class="field-row"><label for="reminderText">Reminder text</label><input type="text" id="reminderText"></div>
-          </div>
-        </div>
+              <div class="divider"></div>
+              <span class="sub-label">Title</span>
+              <div class="field-row not-combo">
+                <label for="refTitle">Title Text</label>
+                <input type="text" id="refTitle" value="mRNA Codon Chart" oninput="storeModeField('title', this.value); renderRef()">
+              </div>
+              <div class="grid-2">
+                <div class="field-row">
+                  <label for="titleFont">Font</label>
+                  <select id="titleFont" class="font-select" data-default="Arial" onchange="renderRef()"></select>
+                </div>
+                <div class="field-row">
+                  <label for="titleSize">Size (pt)</label>
+                  <input type="number" id="titleSize" value="" min="6" max="72" step="1" placeholder="Auto" oninput="renderRef()">
+                </div>
+              </div>
+              <div class="toggle-row">
+                <input type="checkbox" id="showRefTitle" checked onchange="renderRef()">
+                <label for="showRefTitle">Show title</label>
+              </div>
 
-        <!-- EMPTY SPACE -->
-        <div class="opt-group">
-          <div class="opt-group-header"><div class="opt-group-header-left"><i class="ti ti-layout-bottombar"></i><span class="opt-group-title">Empty Space</span></div></div>
-          <div class="opt-group-body">
-            <div class="field-row"><label for="filler">Fill the open spot with</label>
-              <select id="filler"><option value="notes">Notes box</option><option value="custom">Text box (type your own)</option><option value="rubric">Rubric</option><option value="blank">Leave blank</option></select>
-            </div>
-            <div id="customRow" style="display:none">
-              <div class="field-row"><label for="customTitle">Text box label</label><input type="text" id="customTitle"></div>
-              <div class="field-row"><label for="customText">Text box text</label><textarea id="customText" rows="4"></textarea>
-                <div class="hint">Fills the open spot on the last page. If there is no open spot (1 column, 1 page), it goes across the bottom instead. Use **double stars** for bold or __double underscores__ for underline.</div>
+              <div class="divider"></div>
+              <span class="sub-label" id="bodyTextLabel">Chart Text</span>
+              <div class="grid-2" style="margin-bottom:-10px;">
+                <div class="field-row">
+                  <label for="bodyFont">Font</label>
+                  <select id="bodyFont" class="font-select" data-default="Arial" onchange="renderRef()"></select>
+                </div>
+                <div class="field-row">
+                  <label for="refFontSize">Size (pt)</label>
+                  <input type="number" id="refFontSize" value="" min="4" max="48" step="0.5" placeholder="Auto" oninput="renderRef()">
+                </div>
               </div>
             </div>
-            <div id="rubricRow" style="display:none">
-              <div class="field-row"><label for="rubricTitle">Rubric label</label><input type="text" id="rubricTitle"></div>
-              <div class="field-row"><label for="rubricText">Rubric items (one per line)</label><textarea id="rubricText" rows="7"></textarea>
-                <div class="hint">Each line gets a checkbox. Fills the open spot on the last page. If there is no open spot (1 column, 1 page), it goes across the bottom instead. Wrap text in **double stars** for bold or __double underscores__ for underline.</div>
+          </div>
+
+          <div class="opt-group">
+            <div class="opt-group-header">
+              <div class="opt-group-header-left"><i class="ti ti-typography"></i><span class="opt-group-title">Labels</span></div>
+            </div>
+            <div class="opt-group-body">
+              <div class="field-row">
+                <label for="aaLabel">Amino Acid Label</label>
+                <select id="aaLabel" onchange="renderRef()">
+                  <option value="full" selected>Full Name (Abbrev.) &mdash; Phenylalanine (Phe)</option>
+                  <option value="name">Full Name &mdash; Phenylalanine</option>
+                  <option value="abbr">3-Letter Abbrev. &mdash; Phe</option>
+                  <option value="abbrone">Abbrev. + 1-Letter &mdash; Phe (F)</option>
+                  <option value="one">1-Letter Code &mdash; F</option>
+                  <option value="blank">Blank (students fill in)</option>
+                </select>
+              </div>
+              <div class="field-row only-chart">
+                <label for="textAlign">Text Alignment</label>
+                <select id="textAlign" onchange="renderRef()">
+                  <option value="left" selected>Left</option>
+                  <option value="center">Centered</option>
+                </select>
+              </div>
+              <div class="field-row only-wheel">
+                <label for="ring3Style">Third-Base Letters (3rd Band)</label>
+                <select id="ring3Style" onchange="renderRef()">
+                  <option value="upright" selected>Always upright</option>
+                  <option value="curve">Turned to follow the circle</option>
+                </select>
+              </div>
+              <div class="toggle-row only-chart">
+                <input type="checkbox" id="showCodonText" checked onchange="renderRef()">
+                <label for="showCodonText">Show codon in each cell (UUU &ndash; &hellip;)</label>
+              </div>
+              <div class="toggle-row only-chart">
+                <input type="checkbox" id="boldCodon" onchange="renderRef()">
+                <label for="boldCodon">Bold the codon letters (<b>UUU</b> &ndash; &hellip;)</label>
+              </div>
+              <div class="toggle-row only-chart">
+                <input type="checkbox" id="showAxis" checked onchange="renderRef()">
+                <label for="showAxis">Show First / Second / Third Base labels</label>
+              </div>
+              <div class="field-row">
+                <label for="markStart">Mark AUG as the Start Codon</label>
+                <select id="markStart" onchange="storeModeField('markStart', this.value); renderRef()">
+                  <option value="none">Don't mark it</option>
+                  <option value="star">Asterisk only &mdash; Methionine (Met)*</option>
+                  <option value="note" selected>Asterisk + explanation at the bottom</option>
+                </select>
+              </div>
+              <div class="toggle-row">
+                <input type="checkbox" id="showKey" onchange="storeModeField('key', this.checked); renderRef()">
+                <label for="showKey">Show amino acid key</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="opt-group">
+            <div class="opt-group-header">
+              <div class="opt-group-header-left"><i class="ti ti-palette"></i><span class="opt-group-title">Colors</span></div>
+            </div>
+            <div class="opt-group-body">
+              <div class="field-row">
+                <label for="colorMode">Color Coding</label>
+                <select id="colorMode" onchange="renderRef()">
+                  <option value="none" selected>None (black &amp; white)</option>
+                  <option value="property">By amino acid property</option>
+                  <option value="aa">By amino acid (each a different color)</option>
+                  <option value="base1">By first base</option>
+                </select>
+              </div>
+              <div class="toggle-row">
+                <input type="checkbox" id="highlightSS" onchange="renderRef()">
+                <label for="highlightSS">Highlight start &amp; stop codons</label>
+              </div>
+              <div class="grid-2" style="margin-top:8px;">
+                <div class="field-row">
+                  <label>Line Color</label>
+                  <div class="cpick" data-id="borderColor" data-value="#1e2a3a"></div>
+                </div>
+                <div class="field-row only-chart">
+                  <label>Shading Color</label>
+                  <div class="cpick align-right" data-id="shadeColor" data-value="#e8ecf1"></div>
+                </div>
+              </div>
+              <div class="only-wheel">
+                <span class="sub-label" style="margin-top:6px;">Band Shading (center &rarr; outside)</span>
+                <div class="band-grid">
+                  <div class="field-row">
+                    <label>1st Base (center)</label>
+                    <div class="cpick" data-id="band1Color" data-value="#e8ecf1"></div>
+                  </div>
+                  <div class="field-row">
+                    <label>2nd Base</label>
+                    <div class="cpick align-right" data-id="band2Color" data-value="#d5d9de"></div>
+                  </div>
+                  <div class="field-row">
+                    <label>3rd Base</label>
+                    <div class="cpick" data-id="band3Color" data-value="#c1c4c8"></div>
+                  </div>
+                  <div class="field-row">
+                    <label>Amino Acids (outer)</label>
+                    <div class="cpick align-right" data-id="band4Color" data-value="#ffffff"></div>
+                  </div>
+                </div>
+                <p class="info-note" style="margin:0;">&ldquo;By first base&rdquo; color coding replaces the three base bands; any color coding other than &ldquo;None&rdquo; replaces the amino acid band.</p>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- BACKUP -->
-        <div class="opt-group">
-          <div class="opt-group-header"><div class="opt-group-header-left"><i class="ti ti-device-floppy"></i><span class="opt-group-title">Backup Settings</span></div></div>
-          <div class="opt-group-body">
-            <div class="hint" style="margin-bottom:10px">Your settings already save automatically in this browser. A backup file is an extra copy you keep yourself. Use it to get your settings back if your browser data gets cleared, or to move them to another computer or browser.</div>
-            <div class="grid-2">
-              <button class="btn btn-secondary" onclick="saveBackup()"><i class="ti ti-download"></i> Save to file</button>
-              <button class="btn btn-secondary" onclick="document.getElementById('backupFile').click()"><i class="ti ti-folder-open"></i> Load from file</button>
+        <!-- ═══════════ PROBLEM SETTINGS ═══════════ -->
+        <div id="prob-settings" class="hidden">
+          <div class="opt-group">
+            <div class="opt-group-header">
+              <div class="opt-group-header-left"><i class="ti ti-dna"></i><span class="opt-group-title">Strand Source</span></div>
             </div>
-            <input type="file" id="backupFile" accept=".json,application/json" style="display:none">
-            <div class="hint" style="margin-top:8px">The file includes your logo and week number. Loading a file replaces your current settings.</div>
+            <div class="opt-group-body">
+              <div class="type-selector-bar grid-cols-2" style="margin-bottom:12px;">
+                <button type="button" class="type-btn row active" data-src="random" onclick="setSource('random')"><i class="ti ti-arrows-shuffle"></i>Random</button>
+                <button type="button" class="type-btn row" data-src="input" onclick="setSource('input')"><i class="ti ti-keyboard"></i>Enter My Own</button>
+              </div>
+
+              <div id="src-random">
+                <div class="field-row">
+                  <label for="numCodons">Length (number of codons)</label>
+                  <input type="number" id="numCodons" value="10" min="2" max="60" step="1" onchange="onLengthChange()">
+                </div>
+                <div class="grid-2">
+                  <div class="field-row">
+                    <label for="startAt">Start Codon at #</label>
+                    <div class="inline-check">
+                      <input type="checkbox" id="incStart" checked onchange="onStartToggle()" title="Include a start codon (AUG)">
+                      <input type="number" id="startAt" value="1" min="1" max="60" step="1" onchange="generateRandom()">
+                    </div>
+                  </div>
+                  <div class="field-row">
+                    <label for="stopAt">Stop Codon at #</label>
+                    <div class="inline-check">
+                      <input type="checkbox" id="incStop" checked onchange="toggleDisabled('stopAt', !this.checked); generateRandom()" title="Include a stop codon">
+                      <input type="number" id="stopAt" value="10" min="1" max="60" step="1" onchange="generateRandom()">
+                    </div>
+                  </div>
+                </div>
+                <p class="info-note">Codons before the start codon and after the stop codon are not translated, so students must find the reading frame. No extra AUG appears before the start codon, and no stop codon appears before the one you choose.</p>
+                <button class="btn btn-primary btn-block" onclick="generateRandom()"><i class="ti ti-refresh"></i> Generate New Strand</button>
+              </div>
+
+              <div id="src-input" class="hidden">
+                <div class="field-row">
+                  <label for="inputType">I am entering a&hellip;</label>
+                  <select id="inputType" onchange="onInputTypeChange()">
+                    <option value="coding" selected>DNA coding strand (5&prime; &rarr; 3&prime;)</option>
+                    <option value="template">DNA template strand (3&prime; &rarr; 5&prime;)</option>
+                    <option value="template53">DNA template strand (5&prime; &rarr; 3&prime;)</option>
+                    <option value="mrna">mRNA (5&prime; &rarr; 3&prime;)</option>
+                    <option value="aa">Amino acid sequence</option>
+                  </select>
+                </div>
+                <div class="field-row">
+                  <label for="seqInput">Sequence</label>
+                  <textarea id="seqInput" placeholder="e.g., ATGGCTTACGGATAA" oninput="parseUserInput()"></textarea>
+                </div>
+                <p class="info-note" id="inputHint">Spaces, dashes, numbers, and 5&prime;/3&prime; labels are ignored.</p>
+                <div class="warn-note" id="inputWarn"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="opt-group">
+            <div class="opt-group-header">
+              <div class="opt-group-header-left"><i class="ti ti-key"></i><span class="opt-group-title">Answer Key</span></div>
+            </div>
+            <div class="opt-group-body">
+              <div class="toggle-row">
+                <input type="checkbox" id="answerKey" checked onchange="toggleDisabled('canvasTicks', !this.checked); renderProblems()">
+                <label for="answerKey" style="font-weight:600; color:#1e429f;">Answer key (fill in blank rows)</label>
+              </div>
+              <div class="toggle-row" style="margin-bottom:0;">
+                <input type="checkbox" id="answerColor" checked onchange="renderProblems()">
+                <label for="answerColor">Show answers in blue</label>
+              </div>
+              <div class="toggle-row" style="margin:6px 0 0;">
+                <input type="checkbox" id="canvasTicks">
+                <label for="canvasTicks" title="Wraps each answer cell in backticks (`AUG`) when you click Copy as HTML Table, so Canvas turns them into fill-in-the-blank answers.">Add <code>`backticks`</code> to answers when copying (Canvas fill-in-the-blank)</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="opt-group">
+            <div class="opt-group-header">
+              <div class="opt-group-header-left"><i class="ti ti-adjustments"></i><span class="opt-group-title">Translation &amp; Display</span></div>
+            </div>
+            <div class="opt-group-body">
+              <div class="field-row">
+                <label for="translateFrom">Translation Begins At</label>
+                <select id="translateFrom" onchange="onTranslateChange()">
+                  <option value="aug" selected>First AUG (start codon)</option>
+                  <option value="first">First base (no start codon needed)</option>
+                </select>
+              </div>
+              <div class="field-row">
+                <label for="aaFormat">Amino Acid Format</label>
+                <select id="aaFormat" onchange="renderProblems()">
+                  <option value="abbr" selected>3-Letter Abbrev. (Phe)</option>
+                  <option value="name">Full Name (Phenylalanine)</option>
+                  <option value="one">1-Letter Code (F)</option>
+                </select>
+              </div>
+              <div class="field-row">
+                <label for="probTitle">Title (optional)</label>
+                <input type="text" id="probTitle" value="" placeholder="e.g., Protein Synthesis Practice" oninput="renderProblems()">
+              </div>
+              <div class="grid-2">
+                <div class="field-row">
+                  <label for="perLine">Codons per Row</label>
+                  <input type="number" id="perLine" value="12" min="1" max="40" step="1" oninput="renderProblems()">
+                </div>
+                <div class="field-row">
+                  <label for="probFontSize">Font Size (px)</label>
+                  <input type="number" id="probFontSize" value="15" min="8" max="40" step="1" oninput="renderProblems()">
+                </div>
+              </div>
+              <div class="toggle-row">
+                <input type="checkbox" id="showNums" checked onchange="renderProblems()">
+                <label for="showNums">Show codon numbers</label>
+              </div>
+              <div class="toggle-row">
+                <input type="checkbox" id="showDirs" checked onchange="renderProblems()">
+                <label for="showDirs">Show 5&prime; / 3&prime; directions</label>
+              </div>
+              <div class="toggle-row">
+                <input type="checkbox" id="probHiSS" checked onchange="renderProblems()">
+                <label for="probHiSS">Highlight start &amp; stop codons (answer key)</label>
+              </div>
+              <div class="toggle-row">
+                <input type="checkbox" id="colorBases" onchange="renderProblems()">
+                <label for="colorBases">Color-code bases (A, T/U, G, C)</label>
+              </div>
+              <div class="toggle-row">
+                <input type="checkbox" id="fullWidth" onchange="renderProblems()">
+                <label for="fullWidth">Table fills 100% width when pasted</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="opt-group">
+            <div class="opt-group-header">
+              <div class="opt-group-header-left"><i class="ti ti-list-check"></i><span class="opt-group-title">Worksheet Rows</span></div>
+            </div>
+            <div class="opt-group-body">
+              <p class="info-note">Choose which rows students are given, which they fill in (blank), and which are hidden.</p>
+              <div class="row-setting"><span>DNA Coding Strand</span>
+                <select id="row_coding" onchange="renderProblems()"><option value="show" selected>Given</option><option value="blank">Blank</option><option value="hide">Hidden</option></select></div>
+              <div class="row-setting"><span>DNA Template Strand</span>
+                <select id="row_template" onchange="renderProblems()"><option value="show">Given</option><option value="blank" selected>Blank</option><option value="hide">Hidden</option></select></div>
+              <div class="row-setting"><span>mRNA</span>
+                <select id="row_mrna" onchange="renderProblems()"><option value="show">Given</option><option value="blank" selected>Blank</option><option value="hide">Hidden</option></select></div>
+              <div class="row-setting"><span>tRNA Anticodon</span>
+                <select id="row_trna" onchange="renderProblems()"><option value="show">Given</option><option value="blank">Blank</option><option value="hide" selected>Hidden</option></select></div>
+              <div class="row-setting"><span>Amino Acids</span>
+                <select id="row_aa" onchange="renderProblems()"><option value="show">Given</option><option value="blank" selected>Blank</option><option value="hide">Hidden</option></select></div>
+            </div>
+          </div>
+
+          <div class="opt-group">
+            <div class="opt-group-header">
+              <div class="opt-group-header-left"><i class="ti ti-git-branch"></i><span class="opt-group-title">Mutation</span></div>
+            </div>
+            <div class="opt-group-body">
+              <div class="toggle-row">
+                <input type="checkbox" id="mutOn" onchange="onMutToggle()">
+                <label for="mutOn" style="font-weight:600; color:#1e429f;">Mutate this strand</label>
+              </div>
+              <div id="mutOptions" class="hidden" style="margin-top:8px;">
+                <div class="grid-2">
+                  <div class="field-row">
+                    <label for="mutType">Mutation Type</label>
+                    <select id="mutType" onchange="onMutTypeChange()">
+                      <option value="sub" selected>Substitution</option>
+                      <option value="ins">Insertion</option>
+                      <option value="del">Deletion</option>
+                    </select>
+                  </div>
+                  <div class="field-row" id="mutEffectRow">
+                    <label for="mutEffect">Effect</label>
+                    <select id="mutEffect" onchange="newMutation()">
+                      <option value="any" selected>Any</option>
+                      <option value="silent">Silent</option>
+                      <option value="missense">Missense</option>
+                      <option value="nonsense">Nonsense</option>
+                    </select>
+                  </div>
+                  <div class="field-row hidden" id="mutLenRow">
+                    <label for="mutLen">Number of Bases</label>
+                    <select id="mutLen" onchange="newMutation()">
+                      <option value="1" selected>1 (frameshift)</option>
+                      <option value="2">2 (frameshift)</option>
+                      <option value="3">3 (in-frame)</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field-row" id="mutLocRow">
+                  <label for="mutLoc">Location</label>
+                  <select id="mutLoc" onchange="onMutTypeChange()">
+                    <option value="inside" selected>Inside the reading frame (start to stop codon)</option>
+                    <option value="outside">Outside the reading frame (before start or after stop)</option>
+                  </select>
+                </div>
+                <div class="grid-2">
+                  <div class="field-row">
+                    <label for="mutPosMode">Position</label>
+                    <select id="mutPosMode" onchange="toggleDisabled('mutPos', this.value !== 'specific'); onMutTypeChange()">
+                      <option value="random" selected>Random</option>
+                      <option value="specific">At base #</option>
+                    </select>
+                  </div>
+                  <div class="field-row">
+                    <label for="mutPos">Base # (coding strand)</label>
+                    <input type="number" id="mutPos" value="5" min="1" step="1" disabled onchange="newMutation()">
+                  </div>
+                </div>
+                <div class="field-row" id="mutBaseRow">
+                  <label for="mutBase" id="mutBaseLabel">New Base (coding strand)</label>
+                  <select id="mutBase" onchange="newMutation()">
+                    <option value="random" selected>Random</option>
+                    <option value="A">A</option>
+                    <option value="T">T</option>
+                    <option value="G">G</option>
+                    <option value="C">C</option>
+                  </select>
+                </div>
+                <div class="field-row">
+                  <label for="mutShow">Show</label>
+                  <select id="mutShow" onchange="renderProblems()">
+                    <option value="both" selected>Original and mutated strands</option>
+                    <option value="mutated">Mutated strand only</option>
+                  </select>
+                </div>
+                <div class="toggle-row">
+                  <input type="checkbox" id="mutHl" checked onchange="renderProblems()">
+                  <label for="mutHl">Highlight mutated bases &amp; changed amino acids</label>
+                </div>
+                <div class="toggle-row">
+                  <input type="checkbox" id="mutDesc" checked onchange="renderProblems()">
+                  <label for="mutDesc">Describe the mutation and its effect</label>
+                </div>
+                <div class="warn-note" id="mutWarn"></div>
+                <button class="btn btn-secondary btn-block" onclick="newMutation()"><i class="ti ti-dice-5"></i> New Random Mutation</button>
+              </div>
+            </div>
           </div>
         </div>
 
       </aside>
 
-      <section class="split-right">
-        <div class="preview-bar"><span class="badge" id="summaryBadge"></span><span>Letter size, portrait</span></div>
-        <div id="pages"></div>
+      <!-- RIGHT PANEL -->
+      <section class="split-right" id="stage-panel">
+
+        <!-- Reference stage -->
+        <div id="stage-ref" style="display:flex; flex-direction:column; align-items:center; gap:10px; width:100%;">
+          <div class="page-stack" id="refPreview"></div>
+          <div class="stage-caption" id="refCaption"></div>
+          <div class="export-tray">
+            <div class="btn-row">
+              <button class="btn btn-primary" onclick="downloadRefPDF()"><i class="ti ti-file-type-pdf"></i> Download PDF</button>
+              <button class="btn btn-secondary" onclick="printRef()"><i class="ti ti-printer"></i> Print</button>
+              <button class="btn btn-secondary" onclick="downloadRefPNG()"><i class="ti ti-download"></i> Download PNG</button>
+              <button class="btn btn-green" id="copyRefBtn" onclick="copyRefPNG()"><i class="ti ti-copy"></i> Copy to Clipboard</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Problems stage -->
+        <div id="stage-prob" class="hidden" style="display:flex; flex-direction:column; align-items:center; gap:10px; width:100%;">
+          <div class="warn-note" id="probWarn" style="max-width:640px;"></div>
+          <div class="problem-frame" id="probPreview"></div>
+          <div class="export-tray">
+            <div class="btn-row">
+              <button class="btn btn-primary" id="copyHtmlBtn" onclick="copyProblemHTML()"><i class="ti ti-table"></i> Copy as HTML Table</button>
+              <button class="btn btn-green" id="copyProbBtn" onclick="copyProblemPNG()"><i class="ti ti-copy"></i> Copy as Image</button>
+              <button class="btn btn-secondary" onclick="downloadProblemPNG()"><i class="ti ti-download"></i> Download PNG</button>
+              <button class="btn btn-secondary" onclick="printProblem()"><i class="ti ti-printer"></i> Print</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="feedback-row">
+          <span class="copy-feedback" id="copyFeedback"><i class="ti ti-check"></i> <span id="copyFeedbackText">Copied to clipboard!</span></span>
+        </div>
       </section>
+
     </div>
   </main>
 </div>
 
-<div class="toast" id="toast"></div>
-
-<div class="modal-back" id="busy">
-  <div class="modal" style="max-width:300px">
-    <div class="modal-b" style="display:flex;align-items:center;gap:10px"><i class="ti ti-loader-2 spin" style="font-size:20px;color:#3266ad"></i> <span id="busyMsg">Building PDF…</span></div>
-  </div>
-</div>
+<div id="print-area"></div>
 
 <script>
-/* ════════════════════════════════════════════════
-   CONSTANTS & STATE
-   ════════════════════════════════════════════════ */
-const LS_SETTINGS = 'humbleBellwork.settings.v1';
-const LS_LOGO = 'humbleBellwork.logo.v1';
-const LS_COLLAPSED = 'humbleBellwork.collapsed.v1';
+'use strict';
 
-const DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-const DAY_SHORT = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
-
-// Alphabetical. Fonts with a "g" value load from Google Fonts.
-const FONTS = [
-  { name: 'Andika', g: 'Andika:ital,wght@0,400;0,700;1,400;1,700', css: "'Andika', sans-serif" },
-  { name: 'Arial', css: "Arial, Helvetica, sans-serif" },
-  { name: 'Atkinson Hyperlegible', g: 'Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700', css: "'Atkinson Hyperlegible', sans-serif" },
-  { name: 'Baloo 2', g: 'Baloo+2:wght@400;700', css: "'Baloo 2', cursive" },
-  { name: 'Bubblegum Sans', g: 'Bubblegum+Sans', css: "'Bubblegum Sans', cursive" },
-  { name: 'Caveat', g: 'Caveat:wght@400;700', css: "'Caveat', cursive" },
-  { name: 'Chewy', g: 'Chewy', css: "'Chewy', cursive" },
-  { name: 'Comic Neue', g: 'Comic+Neue:ital,wght@0,400;0,700;1,400;1,700', css: "'Comic Neue', 'Comic Sans MS', sans-serif" },
-  { name: 'Delius', g: 'Delius', css: "'Delius', cursive" },
-  { name: 'Fredoka', g: 'Fredoka:wght@400;700', css: "'Fredoka', sans-serif" },
-  { name: 'Gaegu', g: 'Gaegu:wght@400;700', css: "'Gaegu', cursive" },
-  { name: 'Georgia', css: "Georgia, serif" },
-  { name: 'Gochi Hand', g: 'Gochi+Hand', css: "'Gochi Hand', cursive" },
-  { name: 'Indie Flower', g: 'Indie+Flower', css: "'Indie Flower', cursive" },
-  { name: 'Itim', g: 'Itim', css: "'Itim', cursive" },
-  { name: 'Kalam', g: 'Kalam:wght@400;700', css: "'Kalam', cursive" },
-  { name: 'Lato', g: 'Lato:ital,wght@0,400;0,700;1,400;1,700', css: "'Lato', sans-serif" },
-  { name: 'Lexend', g: 'Lexend:wght@400;700', css: "'Lexend', sans-serif" },
-  { name: 'Luckiest Guy', g: 'Luckiest+Guy', css: "'Luckiest Guy', cursive" },
-  { name: 'Mali', g: 'Mali:ital,wght@0,400;0,700;1,400;1,700', css: "'Mali', cursive" },
-  { name: 'Merriweather', g: 'Merriweather:ital,wght@0,400;0,700;1,400;1,700', css: "'Merriweather', Georgia, serif" },
-  { name: 'Montserrat', g: 'Montserrat:ital,wght@0,400;0,700;1,400;1,700', css: "'Montserrat', sans-serif" },
-  { name: 'Nunito', g: 'Nunito:ital,wght@0,400;0,700;1,400;1,700', css: "'Nunito', sans-serif" },
-  { name: 'Open Sans', g: 'Open+Sans:ital,wght@0,400;0,700;1,400;1,700', css: "'Open Sans', sans-serif" },
-  { name: 'Oswald', g: 'Oswald:wght@400;700', css: "'Oswald', 'Arial Narrow', sans-serif" },
-  { name: 'Patrick Hand', g: 'Patrick+Hand', css: "'Patrick Hand', cursive" },
-  { name: 'Playpen Sans', g: 'Playpen+Sans:wght@400;700', css: "'Playpen Sans', cursive" },
-  { name: 'Poppins', g: 'Poppins:ital,wght@0,400;0,700;1,400;1,700', css: "'Poppins', sans-serif" },
-  { name: 'Quicksand', g: 'Quicksand:wght@400;700', css: "'Quicksand', sans-serif" },
-  { name: 'Roboto Condensed', g: 'Roboto+Condensed:ital,wght@0,400;0,700;1,400;1,700', css: "'Roboto Condensed', 'Arial Narrow', Arial, sans-serif" },
-  { name: 'Schoolbell', g: 'Schoolbell', css: "'Schoolbell', cursive" },
-  { name: 'Shantell Sans', g: 'Shantell+Sans:ital,wght@0,400;0,700;1,400;1,700', css: "'Shantell Sans', cursive" },
-  { name: 'Short Stack', g: 'Short+Stack', css: "'Short Stack', cursive" },
-  { name: 'Sniglet', g: 'Sniglet:wght@400;800', css: "'Sniglet', cursive" },
-  { name: 'Times New Roman', css: "'Times New Roman', Times, serif" },
-  { name: 'Verdana', css: "Verdana, Geneva, sans-serif" },
-];
-
-// Defined before DEFAULTS so they exist when saved settings load at startup.
-const MARGIN_MIN = 0.1, MARGIN_MAX = 1;
-const MARGIN_IDS = ['marginTop', 'marginRight', 'marginBottom', 'marginLeft'];
-// Keeps a margin between 0.1" and 1", rounded to the nearest hundredth.
-function clampMargin(v, fallback) {
-  const n = parseFloat(v);
-  if (!isFinite(n)) return fallback;
-  return Math.round(Math.min(MARGIN_MAX, Math.max(MARGIN_MIN, n)) * 100) / 100;
-}
-
-const DEFAULTS = {
-  v: 3,
-  title: 'Daily Bellwork Recording Sheet',
-  showPeriod: true,
-  cols: 2,
-  pages: 1,
-  labelStyle: 'side',
-  ruling: 'lines',
-  spacing: '0.34',
-  ruleColor: '#000000',
-  filler: 'rubric', // notes | custom | rubric | blank
-  customTitle: 'Reminders',
-  customText: 'Bellwork starts when the bell rings.\nWrite in complete sentences.\nKeep this sheet in your folder all week.',
-  showDates: true,
-  stampMode: 'box',
-  stampPos: 'top',
-  stampSize: 0.85,
-  margins: [0.25, 0.25, 0.25, 0.25], // top, right, bottom, left (inches)
-  marginLink: true,
-  logoOp: 0.6,
-  rewardDays: [false, false, false, false, false],
-  noClassText: 'No Class',
-  font: 'Arial',
-  fontScale: '1',
-  headerStyle: 'solid',
-  reminderMode: 'top',
-  reminderText: 'Remember to write ‘Absent’ if you are absent!',
-  showWeek: false,
-  weekNum: 1,
-  rubricTitle: 'Scoring for Thoughtful Engagement',
-  rubricText: [
-    '**Consistent & Thoughtful** (100%) You did Bellwork __every day__, and your answers show __you were thinking about the question__. You explained, gave examples, and/or made connections to what you know.',
-    '**Mostly Engaged** (75%) You did Bellwork __most days__ and/or you did it every day but sometimes gave __short, surface answers__ with little detail or thought.',
-    '**Inconsistent** (50%) You only did Bellwork about half the days and/or your answers were often too short, off-topic, or didn’t show much thinking.',
-    '**No Engagement** (0%) You rarely did Bellwork, or your answers were missing, copied from someone else, or completely off-topic.'
-  ].join('\n'),
-  noClass: { week: '', days: [false, false, false, false, false] },
-};
-
-let S = loadSettings();
-let LOGO = lsGet(LS_LOGO) || '';
-let monday = defaultMonday();
-
-/* ════════════════════════════════════════════════
-   STORAGE
-   ════════════════════════════════════════════════ */
-function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
-function lsSet(k, v) { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } }
-function lsDel(k) { try { localStorage.removeItem(k); } catch (e) {} }
-
-// Builds a full settings object from saved data (this browser or a backup file).
-// Only known keys with the right type are kept, and older versions are upgraded.
-function migrate(saved) {
-  const base = JSON.parse(JSON.stringify(DEFAULTS));
-  if (!saved || typeof saved !== 'object') return base;
-  Object.keys(DEFAULTS).forEach(k => {
-    const v = saved[k], d = DEFAULTS[k];
-    if (v === undefined || v === null) return;
-    if (Array.isArray(d) ? (Array.isArray(v) && v.length === d.length) : typeof v === typeof d) base[k] = v;
-  });
-  if (!base.noClass || !Array.isArray(base.noClass.days) || base.noClass.days.length !== 5) base.noClass = JSON.parse(JSON.stringify(DEFAULTS.noClass));
-  if (!['notes', 'custom', 'rubric', 'blank'].includes(base.filler)) base.filler = base.filler === 'extend' ? 'notes' : DEFAULTS.filler;
-  if (base.cols === 2) base.pages = 1;
-  base.margins = base.margins.map((m, i) => clampMargin(m, DEFAULTS.margins[i]));
-  // Older versions ticked Friday's reward by default; clear that once.
-  if (!(saved.v >= 2)) base.rewardDays = [false, false, false, false, false];
-  // Before v3 the rubric had its own on/off checkbox and took the open spot first.
-  if (!(saved.v >= 3)) base.filler = saved.rubricOn === false ? (base.filler === 'rubric' ? 'notes' : base.filler) : 'rubric';
-  base.v = DEFAULTS.v;
-  return base;
-}
-function loadSettings() {
-  try {
-    const raw = lsGet(LS_SETTINGS);
-    return migrate(raw ? JSON.parse(raw) : null);
-  } catch (e) { return migrate(null); }
-}
-function saveSettings() { lsSet(LS_SETTINGS, JSON.stringify(S)); }
-
-/* ════════════════════════════════════════════════
-   DATES
-   ════════════════════════════════════════════════ */
-function defaultMonday() {
-  const t = new Date(); t.setHours(0, 0, 0, 0);
-  const dow = t.getDay(); // 0 Sun .. 6 Sat
-  const add = dow === 1 ? 0 : ((8 - dow) % 7 || 7);
-  t.setDate(t.getDate() + add);
-  return t;
-}
-function toISO(d) { return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
-function fromISO(s) { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); }
-function addDays(d, n) { const r = new Date(d); r.setDate(r.getDate() + n); return r; }
-function md(d) { return `${d.getMonth() + 1}/${d.getDate()}`; }
-function snapToMonday(d) {
-  const dow = d.getDay();
-  if (dow === 1) return d;
-  if (dow === 0) return addDays(d, 1);      // Sunday → next Monday
-  if (dow === 6) return addDays(d, 2);      // Saturday → next Monday
-  return addDays(d, 1 - dow);               // Tue–Fri → that week's Monday
-}
-function weekDates() { return DAY_NAMES.map((_, i) => addDays(monday, i)); }
-function noClassDays() {
-  return (S.noClass && S.noClass.week === toISO(monday)) ? S.noClass.days : [false, false, false, false, false];
-}
-
-/* ════════════════════════════════════════════════
-   UI BINDING
-   ════════════════════════════════════════════════ */
 const $ = id => document.getElementById(id);
 
-const SIMPLE_KEYS = ['title', 'noClassText', 'reminderText', 'rubricTitle', 'rubricText', 'customTitle', 'customText', 'ruling', 'spacing', 'ruleColor', 'filler', 'font', 'fontScale'];
-const CHECK_KEYS = ['showPeriod', 'showDates', 'showWeek'];
-
-// Put the current settings into the side panel's inputs.
-function fillFields() {
-  SIMPLE_KEYS.forEach(k => $(k).value = S[k]);
-  CHECK_KEYS.forEach(k => $(k).checked = !!S[k]);
-  $('stampSize').value = S.stampSize; $('logoOp').value = S.logoOp; $('weekNum').value = S.weekNum;
-  MARGIN_IDS.forEach((id, i) => $(id).value = S.margins[i]);
-  $('marginLink').checked = !!S.marginLink;
-}
-
-let COLLAPSED = {};
-function sectionKey(g) { return g.querySelector('.opt-group-title').textContent.trim(); }
-function setSection(g, on) {
-  g.classList.toggle('collapsed', on);
-  g.querySelector('.opt-group-header').setAttribute('aria-expanded', String(!on));
-  COLLAPSED[sectionKey(g)] = on;
-}
-function saveCollapsed() { lsSet(LS_COLLAPSED, JSON.stringify(COLLAPSED)); }
-function setAllSections(on) {
-  document.querySelectorAll('.opt-group').forEach(g => setSection(g, on));
-  saveCollapsed();
-}
-
-function initUI() {
-  $('font').innerHTML = FONTS.map(f => `<option value="${f.name}" style="font-family:${f.css.replace(/"/g, '')}">${f.name}</option>`).join('');
-
-  // Simple fields
-  fillFields();
-  SIMPLE_KEYS.forEach(k => {
-    const el = $(k);
-    el.addEventListener('input', () => { S[k] = el.value; commit(); });
-  });
-  CHECK_KEYS.forEach(k => {
-    const el = $(k);
-    el.addEventListener('change', () => { S[k] = el.checked; commit(); });
-  });
-  $('stampSize').addEventListener('input', e => { S.stampSize = +e.target.value; commit(); });
-  $('logoOp').addEventListener('input', e => { S.logoOp = +e.target.value; commit(); });
-  // Margins: apply while typing only when the number is in range; snap into range when the field is left.
-  const setMargin = (i, v) => {
-    if (S.marginLink) S.margins = [v, v, v, v]; else S.margins[i] = v;
-    MARGIN_IDS.forEach((id, j) => { if (j !== i || S.marginLink) $(id).value = S.margins[j]; });
-  };
-  MARGIN_IDS.forEach((id, i) => {
-    const el = $(id);
-    el.addEventListener('input', () => {
-      const n = parseFloat(el.value);
-      if (!isFinite(n) || n < MARGIN_MIN || n > MARGIN_MAX) return;
-      const v = Math.round(n * 100) / 100;
-      if (S.marginLink) { S.margins = [v, v, v, v]; MARGIN_IDS.forEach((o, j) => { if (j !== i) $(o).value = v; }); }
-      else S.margins[i] = v;
-      commit();
-    });
-    el.addEventListener('change', () => {
-      const v = clampMargin(el.value, S.margins[i]);
-      const n = parseFloat(el.value);
-      if (!isFinite(n) || n < MARGIN_MIN || n > MARGIN_MAX) toast(`Margins must be between ${MARGIN_MIN}" and ${MARGIN_MAX}"`);
-      el.value = v;
-      setMargin(i, v); commit();
-    });
-  });
-  $('marginLink').addEventListener('change', e => {
-    S.marginLink = e.target.checked;
-    if (S.marginLink) { const v = S.margins[0]; S.margins = [v, v, v, v]; MARGIN_IDS.forEach(id => $(id).value = v); }
-    commit();
-  });
-  $('weekNum').addEventListener('input', e => { const v = parseInt(e.target.value, 10); S.weekNum = isNaN(v) ? 0 : v; commit(); });
-
-  // Segmented controls
-  document.querySelectorAll('.seg').forEach(seg => {
-    const key = seg.dataset.key;
-    seg.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
-      const v = b.dataset.v; S[key] = /^\d+$/.test(v) ? +v : v;
-      if (S.cols === 2) S.pages = 1; // two columns are single-page only
-      commit();
-    }));
-  });
-
-  // Monday
-  $('monday').value = toISO(monday);
-  $('monday').addEventListener('change', e => {
-    if (!e.target.value) { $('monday').value = toISO(monday); return; }
-    const picked = fromISO(e.target.value);
-    const snapped = snapToMonday(picked);
-    if (snapped.getTime() !== picked.getTime()) toast(`Moved to Monday, ${md(snapped)}`);
-    monday = snapped; $('monday').value = toISO(monday); commit();
-  });
-
-  // Collapsible sections (remembered on this computer)
-  try { COLLAPSED = JSON.parse(lsGet(LS_COLLAPSED) || '{}'); } catch (e) {}
-  document.querySelectorAll('.opt-group').forEach(g => {
-    const head = g.querySelector('.opt-group-header');
-    head.insertAdjacentHTML('beforeend', '<i class="ti ti-chevron-down chev"></i>');
-    head.setAttribute('role', 'button'); head.tabIndex = 0;
-    setSection(g, !!COLLAPSED[sectionKey(g)]);
-    const toggle = () => { setSection(g, !g.classList.contains('collapsed')); saveCollapsed(); };
-    head.addEventListener('click', toggle);
-    head.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
-  });
-
-  // Logo
-  $('logoFile').addEventListener('change', handleLogo);
-  // Backup file
-  $('backupFile').addEventListener('change', loadBackup);
-
-  // Fit preview on resize
-  new ResizeObserver(fitPreview).observe(document.querySelector('.split-right'));
-}
-
-function syncUI() {
-  document.querySelectorAll('.seg').forEach(seg => {
-    const cur = String(S[seg.dataset.key]);
-    seg.querySelectorAll('button').forEach(b => b.classList.toggle('selected', b.dataset.v === cur));
-  });
-  $('stampSizeVal').textContent = `${(+S.stampSize).toFixed(2)} in`;
-  $('logoOpVal').textContent = `${Math.round(S.logoOp * 100)}%`;
-  $('stampSizeRow').style.display = S.stampMode === 'none' ? 'none' : '';
-  $('stampPosRow').style.display = S.stampMode === 'box' ? '' : 'none';
-  $('weekNum').disabled = !S.showWeek;
-  $('reminderText').disabled = S.reminderMode === 'none';
-
-  const dates = weekDates();
-  $('rangePill').textContent = `${DAY_NAMES[0]} ${md(dates[0])}  to  ${DAY_NAMES[4]} ${md(dates[4])}`;
-
-  // Day rows
-  const nc = noClassDays();
-  $('dayRows').innerHTML = DAY_NAMES.map((n, i) => `
-    <tr class="${nc[i] ? 'off' : ''}">
-      <td>${n}<span class="d">${md(dates[i])}</span></td>
-      <td><input type="checkbox" ${nc[i] ? 'checked' : ''} onchange="toggleNoClass(${i}, this.checked)" aria-label="${n} no class"></td>
-      <td><input type="checkbox" ${S.rewardDays[i] ? 'checked' : ''} ${S.stampMode === 'none' || nc[i] ? 'disabled' : ''} onchange="toggleReward(${i}, this.checked)" aria-label="${n} reward"></td>
-    </tr>`).join('');
-  $('rewardHint').textContent = S.stampMode === 'none' ? 'Reward days need stamp boxes turned on.' : 'No Class days are reset when you change weeks.';
-
-  // Logo thumb
-  $('logoThumb').innerHTML = LOGO ? `<img src="${LOGO}" alt="Logo">` : '<i class="ti ti-photo"></i>';
-  $('logoRemove').disabled = !LOGO;
-  $('logoRemove').style.opacity = LOGO ? 1 : .45;
-
-  $('customRow').style.display = S.filler === 'custom' ? '' : 'none';
-  $('rubricRow').style.display = S.filler === 'rubric' ? '' : 'none';
-  $('pagesTwo').disabled = S.cols === 2;
-  $('pagesTwo').title = S.cols === 2 ? 'Two columns always fit on one page' : '';
-  $('summaryBadge').textContent = `${S.pages} page${S.pages > 1 ? 's' : ''} · ${S.cols} column${S.cols > 1 ? 's' : ''}`;
-}
-
-function toggleNoClass(i, on) {
-  const days = noClassDays().slice(); days[i] = on;
-  S.noClass = { week: toISO(monday), days }; commit();
-}
-function toggleReward(i, on) { S.rewardDays = S.rewardDays.slice(); S.rewardDays[i] = on; commit(); }
-
-function shiftWeek(dir) {
-  monday = addDays(monday, 7 * dir); $('monday').value = toISO(monday);
-  S.weekNum = Math.max(0, (S.weekNum || 0) + dir); $('weekNum').value = S.weekNum;
-  commit();
-}
-
-function commit() { saveSettings(); syncUI(); render(); }
-
-function resetSettings() {
-  if (!confirm('Reset all settings to defaults? Your logo and week number are kept.')) return;
-  const keepWeek = S.weekNum;
-  S = JSON.parse(JSON.stringify(DEFAULTS)); S.weekNum = keepWeek;
-  fillFields();
-  commit(); toast('Settings reset');
-}
 
 /* ════════════════════════════════════════════════
-   BACKUP FILE (save / load settings)
+   GENETIC CODE DATA
    ════════════════════════════════════════════════ */
-const BACKUP_KIND = 'humble-bellwork-settings';
-const LOGO_RE = /^data:image\/(png|jpeg|gif|webp);base64,[A-Za-z0-9+/=]+$/;
-
-async function saveBackup() {
-  const data = { kind: BACKUP_KIND, savedAt: new Date().toISOString(), settings: S, logo: LOGO || '' };
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const name = `Bellwork Settings ${toISO(new Date())}.json`;
-  // Ask where to save (Chrome / Edge). Must happen right after the click.
-  if (window.showSaveFilePicker) {
-    try {
-      const handle = await window.showSaveFilePicker({
-        suggestedName: name,
-        types: [{ description: 'Bellwork settings', accept: { 'application/json': ['.json'] } }],
-      });
-      const w = await handle.createWritable();
-      await w.write(blob); await w.close();
-      toast(`Saved ${handle.name}`);
-      return;
-    } catch (e) {
-      if (e && e.name === 'AbortError') return; // user cancelled
-    }
-  }
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 4000);
-  toast('Settings file saved to your Downloads');
+const BASES = ['U', 'C', 'A', 'G'];
+const AA_STR = 'FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG';
+const CODON_TABLE = {};
+const CODONS = [];
+for (let i = 0; i < 64; i++) {
+  const c = BASES[i >> 4] + BASES[(i >> 2) & 3] + BASES[i & 3];
+  CODON_TABLE[c] = AA_STR[i];
+  CODONS.push(c);
 }
+const SENSE_CODONS = CODONS.filter(c => CODON_TABLE[c] !== '*');
+const STOP_CODONS = ['UAA', 'UAG', 'UGA'];
 
-async function loadBackup(e) {
-  const file = e.target.files && e.target.files[0]; e.target.value = '';
-  if (!file) return;
-  let data;
-  try { data = JSON.parse(await file.text()); } catch (err) { data = null; }
-  if (!data || data.kind !== BACKUP_KIND || !data.settings || typeof data.settings !== 'object') {
-    toast('That file is not a Bellwork settings backup');
-    return;
-  }
-  if (!confirm('Replace your current settings with the ones in this file?')) return;
-  S = migrate(data.settings);
-  if (typeof data.logo === 'string' && LOGO_RE.test(data.logo)) {
-    LOGO = data.logo;
-    if (!lsSet(LS_LOGO, LOGO)) toast('Logo is used now, but could not be saved for next time');
-  }
-  fillFields();
-  commit();
-  toast('Settings loaded');
-}
+const AA_INFO = {
+  A: { abbr: 'Ala', name: 'Alanine', cls: 'nonpolar' },
+  R: { abbr: 'Arg', name: 'Arginine', cls: 'basic' },
+  N: { abbr: 'Asn', name: 'Asparagine', cls: 'polar' },
+  D: { abbr: 'Asp', name: 'Aspartic Acid', cls: 'acidic' },
+  C: { abbr: 'Cys', name: 'Cysteine', cls: 'polar' },
+  E: { abbr: 'Glu', name: 'Glutamic Acid', cls: 'acidic' },
+  Q: { abbr: 'Gln', name: 'Glutamine', cls: 'polar' },
+  G: { abbr: 'Gly', name: 'Glycine', cls: 'nonpolar' },
+  H: { abbr: 'His', name: 'Histidine', cls: 'basic' },
+  I: { abbr: 'Ile', name: 'Isoleucine', cls: 'nonpolar' },
+  L: { abbr: 'Leu', name: 'Leucine', cls: 'nonpolar' },
+  K: { abbr: 'Lys', name: 'Lysine', cls: 'basic' },
+  M: { abbr: 'Met', name: 'Methionine', cls: 'nonpolar' },
+  F: { abbr: 'Phe', name: 'Phenylalanine', cls: 'nonpolar' },
+  P: { abbr: 'Pro', name: 'Proline', cls: 'nonpolar' },
+  S: { abbr: 'Ser', name: 'Serine', cls: 'polar' },
+  T: { abbr: 'Thr', name: 'Threonine', cls: 'polar' },
+  W: { abbr: 'Trp', name: 'Tryptophan', cls: 'nonpolar' },
+  Y: { abbr: 'Tyr', name: 'Tyrosine', cls: 'polar' },
+  V: { abbr: 'Val', name: 'Valine', cls: 'nonpolar' },
+  '*': { abbr: 'Stop', name: 'Stop', cls: 'stop' }
+};
+const ABBR_TO_ONE = { STOP: '*', TER: '*' };
+Object.keys(AA_INFO).forEach(k => { ABBR_TO_ONE[AA_INFO[k].abbr.toUpperCase()] = k; });
+const AA_ORDER = Object.keys(AA_INFO).filter(k => k !== '*')
+  .sort((a, b) => AA_INFO[a].name.localeCompare(AA_INFO[b].name));
+const CODONS_FOR = {};
+CODONS.forEach(c => { (CODONS_FOR[CODON_TABLE[c]] = CODONS_FOR[CODON_TABLE[c]] || []).push(c); });
+
+// Okabe-Ito based, color-safe palettes
+const CLASS_COLORS = {
+  nonpolar: { bg: '#fdf3e7', bd: '#E69F00', label: 'Nonpolar (hydrophobic)' },
+  polar:    { bg: '#e6f7f2', bd: '#009E73', label: 'Polar (uncharged)' },
+  acidic:   { bg: '#faeee9', bd: '#D55E00', label: 'Acidic (− charge)' },
+  basic:    { bg: '#e8f4fc', bd: '#0072B2', label: 'Basic (+ charge)' },
+  start:    { bg: '#f7ebf2', bd: '#CC79A7', label: 'Start codon (AUG)' },
+  stop:     { bg: '#fde8ea', bd: '#b00020', label: 'Stop codon' }
+};
+const BASE_COLORS = {
+  A: { bg: '#e6f7f2', fg: '#00775a' },
+  U: { bg: '#faeee9', fg: '#b34d00' },
+  T: { bg: '#faeee9', fg: '#b34d00' },
+  G: { bg: '#fdf3e7', fg: '#946500' },
+  C: { bg: '#e8f4fc', fg: '#005a8c' }
+};
+const AA_PALETTE = {};
+AA_ORDER.forEach((k, i) => {
+  const h = Math.round(i * 360 / 20);
+  AA_PALETTE[k] = { bg: `hsl(${h}, 70%, 88%)`, bd: `hsl(${h}, 55%, 38%)` };
+});
+AA_PALETTE['*'] = { bg: '#e2e8f0', bd: '#475569' };
 
 /* ════════════════════════════════════════════════
-   LOGO
+   SHARED HELPERS
    ════════════════════════════════════════════════ */
-function handleLogo(e) {
-  const file = e.target.files && e.target.files[0]; e.target.value = '';
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = () => {
-    const img = new Image();
-    img.onload = () => {
-      const max = 400, scale = Math.min(1, max / Math.max(img.width, img.height));
-      const c = document.createElement('canvas');
-      c.width = Math.max(1, Math.round(img.width * scale)); c.height = Math.max(1, Math.round(img.height * scale));
-      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-      LOGO = c.toDataURL('image/png');
-      if (!lsSet(LS_LOGO, LOGO)) toast('Logo is used now, but could not be saved for next time');
-      else toast('Logo saved');
-      commit();
+const SVG_FONT = 'Arial, Helvetica, sans-serif';
+const MONO_FONT = '"Courier New", Courier, monospace';
+const measureCtx = document.createElement('canvas').getContext('2d');
+let REF_FONT = SVG_FONT;   // body font for the chart/wheel; set from the Font selector on each render
+
+// Fonts commonly installed on Mac, Windows & ChromeOS. Stacks use single quotes only (they go inside SVG attributes).
+const FONT_CHOICES = [
+  ['Arial', 'Arial, Helvetica, sans-serif'],
+  ['Helvetica', "Helvetica, Arial, sans-serif"],
+  ['Verdana', 'Verdana, Geneva, sans-serif'],
+  ['Tahoma', 'Tahoma, Verdana, sans-serif'],
+  ['Trebuchet MS', "'Trebuchet MS', Helvetica, sans-serif"],
+  ['Calibri', "Calibri, Carlito, 'Segoe UI', sans-serif"],
+  ['Century Gothic', "'Century Gothic', 'Avenir Next', Futura, sans-serif"],
+  ['Avenir / Segoe', "'Avenir Next', Avenir, 'Segoe UI', sans-serif"],
+  ['Gill Sans', "'Gill Sans', 'Gill Sans MT', Calibri, sans-serif"],
+  ['Georgia', "Georgia, 'Times New Roman', serif"],
+  ['Times New Roman', "'Times New Roman', Times, serif"],
+  ['Palatino', "Palatino, 'Palatino Linotype', 'Book Antiqua', serif"],
+  ['Garamond', "Garamond, 'EB Garamond', Baskerville, serif"],
+  ['Baskerville', "Baskerville, 'Baskerville Old Face', Georgia, serif"],
+  ['Rockwell', "Rockwell, 'Rockwell Nova', 'Courier New', serif"],
+  ['Courier New', "'Courier New', Courier, monospace"],
+  ['Comic Sans MS', "'Comic Sans MS', 'Comic Sans', 'Chalkboard SE', cursive"],
+  ['Impact', "Impact, 'Arial Black', sans-serif"]
+];
+function fontStack(name) {
+  const f = FONT_CHOICES.find(x => x[0] === name);
+  return f ? f[1] : SVG_FONT;
+}
+function initFontSelects() {
+  document.querySelectorAll('select.font-select').forEach(sel => {
+    sel.innerHTML = FONT_CHOICES.map(([n, s]) =>
+      `<option value="${esc(n)}" style="font-family:${esc(s)}"${n === sel.dataset.default ? ' selected' : ''}>${esc(n)}</option>`).join('');
+  });
+}
+
+function textW(text, size, bold, family) {
+  measureCtx.font = `${bold ? 'bold ' : ''}${size}px ${family || REF_FONT}`;
+  return measureCtx.measureText(text).width;
+}
+
+/* ---------- Color picker: preset dropdown + hex ---------- */
+const COLOR_PRESETS = [
+  ['Greys', [
+    ['White', '#ffffff'], ['Grey 5%', '#f2f2f2'], ['Grey 10%', '#e6e6e6'], ['Grey 15%', '#d9d9d9'],
+    ['Grey 25%', '#bfbfbf'], ['Grey 35%', '#a6a6a6'], ['Grey 50%', '#808080'], ['Grey 65%', '#595959'],
+    ['Grey 75%', '#404040'], ['Grey 85%', '#262626'], ['Black', '#000000'],
+    ['Light Slate', '#e8ecf1'], ['Slate 2', '#d5d9de'], ['Slate 3', '#c1c4c8'], ['Slate', '#64748b'], ['Dark Navy', '#1e2a3a']
+  ]],
+  ['Colors', [
+    ['Red', '#c0392b'], ['Orange', '#e67e22'], ['Gold', '#e1a400'], ['Green', '#27ae60'],
+    ['Teal', '#16a085'], ['Blue', '#2c6fbb'], ['Navy', '#1f3a68'], ['Purple', '#8e44ad'],
+    ['Pink', '#d63384'], ['Brown', '#8b5a2b'], ['Maroon', '#7b1e2b'], ['Forest', '#1e6b3a']
+  ]],
+  ['Light / Pastels', [
+    ['Light Red', '#fadbd8'], ['Light Orange', '#fdebd0'], ['Light Yellow', '#fcf3cf'], ['Light Green', '#d5f5e3'],
+    ['Light Teal', '#d1f2eb'], ['Light Blue', '#d6eaf8'], ['Lavender', '#e8daef'], ['Light Pink', '#fadbe9'],
+    ['Tan', '#f0e2d0'], ['Mint', '#e3f6ec'], ['Sky', '#e3f1fb'], ['Cream', '#fdf8e7']
+  ]]
+];
+const PRESET_NAME = {};
+COLOR_PRESETS.forEach(([, list]) => list.forEach(([n, h]) => { PRESET_NAME[h] = n; }));
+
+function normHex(v) {
+  v = String(v || '').trim().replace(/^#/, '');
+  if (/^[0-9a-f]{3}$/i.test(v)) v = v.split('').map(c => c + c).join('');
+  return /^[0-9a-f]{6}$/i.test(v) ? '#' + v.toLowerCase() : null;
+}
+
+function initColorPickers() {
+  document.querySelectorAll('.cpick').forEach(box => {
+    const id = box.dataset.id;
+    const groups = COLOR_PRESETS.map(([g, list]) =>
+      `<div class="cpick-group">${esc(g)}</div><div class="cpick-grid">` +
+      list.map(([n, h]) => `<button type="button" class="cpick-opt" data-hex="${h}" title="${esc(n)} (${h.toUpperCase()})" style="background:${h}"></button>`).join('') +
+      `</div>`).join('');
+    box.innerHTML =
+      `<input type="hidden" id="${id}">` +
+      `<button type="button" class="cpick-btn"><span class="cpick-sw"></span><span class="cpick-name"></span><i class="ti ti-chevron-down"></i></button>` +
+      `<div class="cpick-menu">${groups}` +
+      `<div class="cpick-group">Custom (hex)</div>` +
+      `<div class="cpick-custom"><input type="color"><input type="text" maxlength="7" placeholder="#RRGGBB" spellcheck="false"></div></div>`;
+    const hidden = box.querySelector('input[type=hidden]');
+    const btn = box.querySelector('.cpick-btn');
+    const wheel = box.querySelector('input[type=color]');
+    const hexTxt = box.querySelector('.cpick-custom input[type=text]');
+    const set = (hex, fromText) => {
+      hex = normHex(hex);
+      if (!hex) return;
+      hidden.value = hex;
+      box.querySelector('.cpick-sw').style.background = hex;
+      box.querySelector('.cpick-name').textContent = PRESET_NAME[hex] ? `${PRESET_NAME[hex]}` : `Custom ${hex.toUpperCase()}`;
+      wheel.value = hex;
+      if (!fromText) hexTxt.value = hex.toUpperCase();
+      box.querySelectorAll('.cpick-opt').forEach(o => o.classList.toggle('sel', o.dataset.hex === hex));
     };
-    img.onerror = () => toast('That file could not be read as an image');
-    img.src = reader.result;
-  };
-  reader.readAsDataURL(file);
+    box.setColor = hex => set(hex);
+    set(box.dataset.value);
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const wasOpen = box.classList.contains('open');
+      document.querySelectorAll('.cpick.open').forEach(b => b.classList.remove('open'));
+      if (!wasOpen) box.classList.add('open');
+    });
+    box.querySelector('.cpick-menu').addEventListener('click', e => e.stopPropagation());
+    box.querySelectorAll('.cpick-opt').forEach(o => o.addEventListener('click', () => {
+      set(o.dataset.hex); box.classList.remove('open'); renderRef();
+    }));
+    wheel.addEventListener('input', () => { set(wheel.value); renderRef(); });
+    hexTxt.addEventListener('input', () => {
+      if (normHex(hexTxt.value)) { set(hexTxt.value, true); renderRef(); }
+    });
+    hexTxt.addEventListener('keydown', e => { if (e.key === 'Enter') box.classList.remove('open'); });
+  });
+  document.addEventListener('click', () => document.querySelectorAll('.cpick.open').forEach(b => b.classList.remove('open')));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.cpick.open').forEach(b => b.classList.remove('open')); });
 }
-function removeLogo() { LOGO = ''; lsDel(LS_LOGO); commit(); toast('Logo removed'); }
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+function intVal(id, def) { const v = parseInt($(id).value, 10); return isNaN(v) ? def : v; }
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function toggleDisabled(id, dis) { $(id).disabled = dis; }
+function hex2rgb(h) {
+  h = h.replace('#', '');
+  if (h.length === 3) h = h.split('').map(c => c + c).join('');
+  return [0, 2, 4].map(i => parseInt(h.substr(i, 2), 16));
+}
+function mix(a, b, t) {
+  const pa = hex2rgb(a), pb = hex2rgb(b);
+  return '#' + pa.map((v, i) => Math.round(v + (pb[i] - v) * t).toString(16).padStart(2, '0')).join('');
+}
+function getTimestamp() {
+  const now = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+}
+
+function aaText(aa, fmt) {
+  if (fmt === 'blank') return '';
+  if (aa === '*') return 'STOP';
+  const i = AA_INFO[aa];
+  switch (fmt) {
+    case 'full': return `${i.name} (${i.abbr})`;
+    case 'name': return i.name;
+    case 'abbr': return i.abbr;
+    case 'abbrone': return `${i.abbr} (${aa})`;
+    case 'one': return aa;
+    default: return '';
+  }
+}
+
+let feedbackTimer = null;
+function showFeedback(msg, isError) {
+  const fb = $('copyFeedback');
+  $('copyFeedbackText').textContent = msg;
+  fb.classList.toggle('error', !!isError);
+  fb.querySelector('i').className = isError ? 'ti ti-alert-circle' : 'ti ti-check';
+  fb.style.display = 'inline-flex';
+  clearTimeout(feedbackTimer);
+  feedbackTimer = setTimeout(() => { fb.style.display = 'none'; }, 2800);
+}
+
+function downloadDataURL(url, name) {
+  const a = document.createElement('a');
+  a.download = name;
+  a.href = url;
+  a.click();
+}
+
+async function copyCanvas(canvas) {
+  try {
+    if (!(navigator.clipboard && window.ClipboardItem)) throw new Error('Clipboard API unavailable');
+    const blobPromise = new Promise((resolve, reject) => {
+      canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/png');
+    });
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blobPromise })]);
+    showFeedback('Copied to clipboard!');
+  } catch (err) {
+    showFeedback('Your browser blocked clipboard access. Try again, or use Download PNG.', true);
+  }
+}
+
+function setPrintPage(css) { $('print-page-style').textContent = css; }
 
 /* ════════════════════════════════════════════════
-   SHEET RENDERING
+   MODE SWITCHING
    ════════════════════════════════════════════════ */
-function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
-function richText(s) { return esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/__(.+?)__/g, '<u>$1</u>'); }
+let mode = 'chart';
+const modeFields = {
+  chart: { title: 'mRNA Codon Chart', key: false, markStart: 'star', orient: 'landscape' },
+  wheel: { title: 'mRNA Codon Wheel', key: false, markStart: 'star', orient: 'landscape' },
+  combo: { title: '', key: false, markStart: 'star', orient: 'portrait' }
+};
 
-const STAR_SVG = '<svg class="reward-star" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z" fill="none" stroke="#000" stroke-width="1.6" stroke-linejoin="round"/></svg>';
-function rewardMark() { return LOGO ? `<img class="reward-img" src="${LOGO}" alt="">` : STAR_SVG; }
-
-function headerHTML(dates, compact) {
-  const range = `${md(dates[0])} to ${md(dates[4])}`;
-  const week = S.showWeek ? `<span>Week ${esc(S.weekNum)}</span>` : '';
-  return `<div class="sh ${compact ? 'compact' : ''}">
-    <div class="sh-title">${esc(S.title)}</div>
-    <div class="sh-name"><span class="nm">Name <span class="blank"></span>${S.showPeriod ? 'Per. <span class="blank per"></span>' : ''}</span></div>
-    <div class="sh-week"><div class="wo-top">Week Of</div><div class="wo-bot"><span>${range}</span>${week}</div></div>
-  </div>`;
+function onComboLayoutChange() {
+  const lay = $('comboLayout').value;
+  document.querySelectorAll('.combo-single').forEach(el => el.classList.toggle('hidden', lay !== 'single'));
+  document.querySelectorAll('.combo-half').forEach(el => el.classList.toggle('hidden', lay !== 'half'));
+  document.querySelectorAll('.combo-duplex').forEach(el => el.classList.toggle('hidden', lay === 'single'));
+  renderRef();
 }
 
-function stampRowHTML(dates, nc) {
-  return `<div class="stamp-row">${DAY_NAMES.map((n, i) => {
-    const off = nc[i];
-    const inner = off ? `<div class="nc-mini">${esc(S.noClassText)}</div>` : (S.rewardDays[i] ? rewardMark() : '');
-    return `<div class="sc ${off ? 'off' : ''}"><div class="sc-label">${n}${S.showDates ? ' ' + md(dates[i]) : ''}</div><div class="sc-box">${inner}</div></div>`;
-  }).join('')}</div>`;
+function storeModeField(field, val) {
+  if (modeFields[mode]) modeFields[mode][field] = val;
 }
 
-function dayHTML(i, dates, nc, span) {
-  const off = nc[i];
-  const stamp = S.stampMode === 'box'
-    ? `<div class="stamp-in ${S.stampPos === 'bottom' ? 'at-bottom' : ''}">${!off && S.rewardDays[i] ? rewardMark() : ''}</div>` : '';
-  const rem = (!off && S.reminderMode === 'box' && S.reminderText.trim()) ? `<div class="reminder-in">${esc(S.reminderText)}</div>` : '';
-  const nct = off ? `<div class="nc-text"><span>${esc(S.noClassText)}</span></div>` : '';
-  const date = S.showDates ? `<span class="dt">${md(dates[i])}</span>` : '';
-  return `<div class="day lbl-${S.labelStyle} ${off ? 'off' : ''}" ${span > 1 ? `style="grid-row: span ${span}"` : ''}>
-    <div class="day-label">${DAY_NAMES[i]}${date}</div>
-    <div class="day-body rule-${S.ruling}">${stamp}${rem}${nct}</div>
-  </div>`;
+function setMode(m) {
+  mode = m;
+  document.querySelectorAll('[data-mode]').forEach(b => b.classList.toggle('active', b.dataset.mode === m));
+  const isRef = m !== 'problems';
+  $('ref-settings').classList.toggle('hidden', !isRef);
+  $('prob-settings').classList.toggle('hidden', isRef);
+  $('stage-ref').classList.toggle('hidden', !isRef);
+  $('stage-prob').classList.toggle('hidden', isRef);
+  document.querySelectorAll('.only-chart').forEach(el => el.classList.toggle('hidden', m !== 'chart' && m !== 'combo'));
+  document.querySelectorAll('.only-wheel').forEach(el => el.classList.toggle('hidden', m !== 'wheel' && m !== 'combo'));
+  document.querySelectorAll('.only-combo').forEach(el => el.classList.toggle('hidden', m !== 'combo'));
+  document.querySelectorAll('.not-combo').forEach(el => el.classList.toggle('hidden', m === 'combo'));
+  if (m === 'combo') onComboLayoutChange();
+  if (isRef) {
+    $('bodyTextLabel').textContent = m === 'wheel' ? 'Wheel Text' : m === 'combo' ? 'Chart & Wheel Text' : 'Chart Text';
+    $('refTitle').value = modeFields[m].title;
+    $('showKey').checked = modeFields[m].key;
+    $('markStart').value = modeFields[m].markStart;
+    $('orientation').value = modeFields[m].orient;
+    renderRef();
+  } else {
+    renderProblems();
+  }
 }
 
-function customHTML(inCell) {
-  const lines = S.customText.split('\n').map(l => l.trim()).filter(Boolean);
-  return `<div class="rubric ${inCell ? 'in-cell' : ''} custom-box">
-    <div class="rubric-label"><span><b>${esc(S.customTitle)}</b></span></div>
-    <div class="custom-body">${lines.map(l => `<p>${richText(l)}</p>`).join('')}</div>
-  </div>`;
+/* ════════════════════════════════════════════════
+   REFERENCE: CODON CHART & WHEEL (SVG, points)
+   ════════════════════════════════════════════════ */
+const PAPER = { letter: [8.5, 11], legal: [8.5, 14], tabloid: [11, 17], a4: [8.27, 11.69] };
+
+function refOpts() {
+  return {
+    paper: $('paperSize').value,
+    orient: $('orientation').value,
+    scale: clamp(intVal('chartScale', 100), 40, 100),
+    title: $('refTitle').value,
+    titleOn: $('showRefTitle').checked,
+    label: $('aaLabel').value,
+    showCodon: $('showCodonText').checked,
+    boldCodon: $('boldCodon').checked,
+    ring3Upright: $('ring3Style').value === 'upright',
+    fs: parseFloat($('refFontSize').value) || 0,
+    align: $('textAlign').value,
+    markStart: $('markStart').value !== 'none',
+    startNote: $('markStart').value === 'note',
+    axis: $('showAxis').checked,
+    key: $('showKey').checked,
+    color: $('colorMode').value,
+    hiSS: $('highlightSS').checked,
+    border: $('borderColor').value,
+    shade: $('shadeColor').value,
+    bands: [$('band1Color').value, $('band2Color').value, $('band3Color').value, $('band4Color').value],
+    titleFont: fontStack($('titleFont').value),
+    titleSize: parseFloat($('titleSize').value) || 0,
+    bodyFont: fontStack($('bodyFont').value),
+    layout: $('comboLayout').value,
+    split: clamp(intVal('comboSplit', 55), 35, 75),
+    cutLine: $('cutLine').checked,
+    rotateBack: $('rotateBack').checked,
+    chartTitle: $('chartTitle').value,
+    wheelTitle: $('wheelTitle').value
+  };
 }
-function notesHTML() {
-  return `<div class="day lbl-${S.labelStyle}"><div class="day-label">Notes</div><div class="day-body rule-${S.ruling}"></div></div>`;
+
+function pageInches(o) {
+  const p = PAPER[o.paper] || PAPER.letter;
+  const a = Math.min(p[0], p[1]), b = Math.max(p[0], p[1]);
+  return o.orient === 'landscape' ? [b, a] : [a, b];
 }
 
-function rubricHTML(inCell, span) {
-  const items = S.rubricText.split('\n').map(l => l.trim()).filter(Boolean);
-  return `<div class="rubric ${inCell ? 'in-cell' : ''}" ${span > 1 ? `style="grid-row: span ${span}"` : ''}>
-    <div class="rubric-label"><span><b>${esc(S.rubricTitle)}</b></span></div>
-    <ul class="rubric-list">${items.map(l => `<li>${richText(l)}</li>`).join('')}</ul>
-  </div>`;
+function cellColors(aa, codon, o) {
+  if (o.hiSS && codon === 'AUG') return CLASS_COLORS.start;
+  if (o.hiSS && aa === '*') return CLASS_COLORS.stop;
+  switch (o.color) {
+    case 'property': return CLASS_COLORS[AA_INFO[aa].cls];
+    case 'aa': return AA_PALETTE[aa];
+    case 'base1': return { bg: BASE_COLORS[codon[0]].bg, bd: BASE_COLORS[codon[0]].fg };
+    default: return { bg: '#ffffff', bd: o.border };
+  }
 }
 
-function render() {
-  const dates = weekDates();
-  const nc = noClassDays();
-  const font = (FONTS.find(f => f.name === S.font) || FONTS[0]).css;
-  const groups = S.pages === 1 ? [[0, 1, 2, 3, 4]] : [[0, 1, 2], [3, 4]];
+function T(x, y, t, p = {}) {
+  const tr = p.rot ? ` transform="rotate(${p.rot.toFixed(2)} ${x.toFixed(2)} ${y.toFixed(2)})"` : '';
+  return `<text x="${x.toFixed(2)}" y="${y.toFixed(2)}" dy="0.35em" font-family="${p.family || REF_FONT}" ` +
+    `font-size="${(p.size || 10).toFixed(2)}"${p.bold ? ' font-weight="bold"' : ''}${p.italic ? ' font-style="italic"' : ''} ` +
+    `text-anchor="${p.anchor || 'middle'}" fill="${p.fill || '#1e2a3a'}"${tr}>${p.raw ? t : esc(t)}</text>`;
+}
+function R(x, y, w, h, fill, stroke, sw) {
+  return `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${w.toFixed(2)}" height="${h.toFixed(2)}" ` +
+    `fill="${fill || 'none'}"${stroke ? ` stroke="${stroke}" stroke-width="${sw || 1}"` : ''}/>`;
+}
 
-  const cols = S.cols;
-  // Every page uses the same number of rows so all day boxes come out the same size.
-  const rows = Math.max(...groups.map(g => Math.ceil(g.length / cols)));
+function legendList(o) {
+  const items = [];
+  if (o.color === 'property') {
+    ['nonpolar', 'polar', 'acidic', 'basic'].forEach(k => items.push(CLASS_COLORS[k]));
+    if (o.hiSS) items.push(CLASS_COLORS.start);
+    items.push(CLASS_COLORS.stop);
+  } else if (o.hiSS) {
+    items.push(CLASS_COLORS.start, CLASS_COLORS.stop);
+  }
+  return items;
+}
 
-  const html = groups.map((items, pi) => {
-    const isFirst = pi === 0, isLast = pi === groups.length - 1;
-    let empty = rows * cols - items.length;
+function drawLegend(S, cx, cy, items) {
+  const fs = 9, sw = 10, gap = 18;
+  const widths = items.map(it => sw + 5 + textW(it.label, fs));
+  const total = widths.reduce((a, b) => a + b, 0) + gap * (items.length - 1);
+  let x = cx - total / 2;
+  items.forEach((it, i) => {
+    S.push(R(x, cy - sw / 2, sw, sw, it.bg, it.bd, 1.2));
+    S.push(T(x + sw + 5, cy, it.label, { size: fs, anchor: 'start', fill: '#334155' }));
+    x += widths[i] + gap;
+  });
+}
 
-    const cells = items.map(d => dayHTML(d, dates, nc, 1));
-    // Rubric / text box: goes in one open slot on the last page (same size as a
-    // day box), or across the bottom of the last page if there is no open slot.
-    const boxHTML = S.filler === 'rubric' ? rubricHTML : S.filler === 'custom' ? customHTML : null;
-    let bottom = '';
-    if (boxHTML && isLast) {
-      if (empty > 0) { cells.push(boxHTML(true)); empty -= 1; }
-      else bottom = boxHTML(false);
+function drawKey(S, x, y, w, h, cols, o) {
+  const rows = Math.ceil(20 / cols);
+  const headH = 18;
+  const itemH = (h - headH) / rows;
+  const colW = w / cols;
+  const swatch = (o.color === 'property' || o.color === 'aa');
+  const texts = AA_ORDER.map(k => {
+    const i = AA_INFO[k];
+    return `${i.name} (${i.abbr}, ${k})${(k === 'M' && o.markStart) ? '*' : ''}`;
+  });
+  const longest = Math.max(...texts.map(t => textW(t, 10)));
+  const avail = colW - (swatch ? 15 : 0) - 8;
+  const fs = Math.max(5, Math.min(10, itemH * 0.72, 10 * avail / longest));
+  S.push(T(x + 2, y + 8, 'Amino Acid Name (Abbrev., 1-Letter)', { size: Math.min(10.5, fs + 1), bold: true, anchor: 'start', fill: '#1e2a3a' }));
+  AA_ORDER.forEach((k, idx) => {
+    const col = Math.floor(idx / rows), row = idx % rows;
+    const ix = x + col * colW + 2;
+    const iy = y + headH + row * itemH + itemH / 2;
+    let tx = ix;
+    if (swatch) {
+      const c = cellColors(k, CODONS_FOR[k][0], Object.assign({}, o, { hiSS: false }));
+      const s = Math.min(9, itemH * 0.7);
+      S.push(R(ix, iy - s / 2, s, s, c.bg, c.bd, 1));
+      tx = ix + s + 5;
     }
-    if (S.filler === 'notes') for (let k = 0; k < empty; k++) cells.push(notesHTML());
+    S.push(T(tx, iy, texts[idx], { size: fs, anchor: 'start', fill: '#1e2a3a' }));
+  });
+}
 
-    let body = headerHTML(dates, !isFirst);
-    if (isFirst && S.stampMode === 'top') body += stampRowHTML(dates, nc);
-    if (isFirst && S.reminderMode === 'top' && S.reminderText.trim()) body += `<div class="reminder-top">${esc(S.reminderText)}</div>`;
-    body += `<div class="days" data-rows="${rows}" style="grid-template-columns: repeat(${cols}, minmax(0, 1fr)); grid-template-rows: repeat(${rows}, minmax(0, 1fr));">${cells.join('')}</div>`;
-    body += bottom;
+// Start-codon note + color legend along the bottom of a region; returns the new bottom edge.
+function drawRefFooter(S, x0, aw, bottom, o) {
+  if (o.startNote && o.label !== 'blank') {
+    const fs = aw < 420 ? 7.5 : 9;
+    S.push(T(x0, bottom - 5, '* AUG codes for Methionine (Met) and also serves as the START codon.', { size: fs, anchor: 'start', fill: '#334155' }));
+    bottom -= fs + 7;
+  }
+  const leg = legendList(o);
+  if (leg.length) {
+    drawLegend(S, x0 + aw / 2, bottom - 7, leg);
+    bottom -= 22;
+  }
+  return bottom;
+}
 
-    const style = `font-family:${font}; --fs:${S.fontScale}; --sp:${S.spacing}in; --rule:${S.ruleColor}; --stamp:${S.stampSize}in; --logo-op:${S.logoOp}; padding:${S.margins.map(m => m + 'in').join(' ')};`;
-    return `<div class="page-wrap">${groups.length > 1 ? `<div class="page-label">Page ${pi + 1}</div>` : ''}<div class="page ${S.headerStyle === 'outline' ? 'hd-outline' : ''}" style="${style.replace(/"/g, "'")}">${body}</div></div>`;
-  }).join('');
+// Draws one chart or wheel (with its title, and optionally its footer) inside the box X,Y,W,H.
+function drawRefPanel(S, X, Y, W, H, o, kind, p) {
+  const M = p.M, sc = p.sc;
+  const aw = (W - 2 * M) * sc, ah = (H - 2 * M) * sc;
+  const x0 = X + (W - aw) / 2, y0 = Y + (H - ah) / 2;
+  let top = y0, bottom = y0 + ah;
+  const title = (p.title || '').trim();
+  if (o.titleOn && title) {
+    const ts = o.titleSize ? clamp(o.titleSize, 6, 72) : clamp(ah * 0.04, 12, 22);
+    S.push(T(x0 + aw / 2, top + ts * 0.5, title, { size: ts, bold: true, family: o.titleFont }));
+    top += ts * 1.6;
+  }
+  if (p.footer) bottom = drawRefFooter(S, x0, aw, bottom, o);
+  const landscape = aw > (bottom - top) * 1.05;
+  if (kind === 'wheel') drawWheel(S, x0, top, aw, bottom - top, o, landscape);
+  else drawChart(S, x0, top, aw, bottom - top, o, landscape);
+}
 
-  $('pages').innerHTML = html;
-  equalizeRows();
-  fitBoxText();
+// Every printed page for the current tool, as SVG strings (1 page, or front + back).
+function buildRefPages(o, pxW, pxH) {
+  const [wi, hi] = pageInches(o);
+  const W = wi * 72, H = hi * 72;
+  REF_FONT = o.bodyFont || SVG_FONT;
+  const sc = o.scale / 100;
+  const page = (draw, rotate) => {
+    const S = [];
+    draw(S);
+    const body = rotate ? `<g transform="rotate(180 ${W / 2} ${H / 2})">${S.join('')}</g>` : S.join('');
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${pxW || W}" height="${pxH || H}" viewBox="0 0 ${W} ${H}">${R(0, 0, W, H, '#ffffff')}${body}</svg>`;
+  };
+
+  if (mode !== 'combo') {
+    return [page(S => drawRefPanel(S, 0, 0, W, H, o, mode, { M: 36, sc, title: o.title, footer: true }))];
+  }
+
+  if (o.layout === 'single') {
+    return [page(S => {
+      const M = 36, aw = (W - 2 * M) * sc, ah = (H - 2 * M) * sc;
+      const x0 = (W - aw) / 2, y0 = (H - ah) / 2;
+      const bottom = drawRefFooter(S, x0, aw, y0 + ah, o);
+      const h = bottom - y0, gap = 22, f = o.split / 100;
+      const p = { M: 0, sc: 1, footer: false };
+      if (W > H) {
+        const cw = (aw - gap) * f;
+        drawRefPanel(S, x0, y0, cw, h, o, 'chart', Object.assign({ title: o.chartTitle }, p));
+        drawRefPanel(S, x0 + cw + gap, y0, aw - cw - gap, h, o, 'wheel', Object.assign({ title: o.wheelTitle }, p));
+      } else {
+        const ch = (h - gap) * f;
+        drawRefPanel(S, x0, y0, aw, ch, o, 'chart', Object.assign({ title: o.chartTitle }, p));
+        drawRefPanel(S, x0, y0 + ch + gap, aw, h - ch - gap, o, 'wheel', Object.assign({ title: o.wheelTitle }, p));
+      }
+    })];
+  }
+
+  if (o.layout === 'duplex') {
+    return [
+      page(S => drawRefPanel(S, 0, 0, W, H, o, 'chart', { M: 36, sc, title: o.chartTitle, footer: true })),
+      page(S => drawRefPanel(S, 0, 0, W, H, o, 'wheel', { M: 36, sc, title: o.wheelTitle, footer: true }), o.rotateBack)
+    ];
+  }
+
+  // Half-sheets: landscape paper -> left/right halves; portrait paper -> top/bottom halves.
+  const halves = W > H ? [[0, 0, W / 2, H], [W / 2, 0, W / 2, H]] : [[0, 0, W, H / 2], [0, H / 2, W, H / 2]];
+  const cut = S => {
+    if (!o.cutLine) return;
+    const [x1, y1, x2, y2] = W > H ? [W / 2, 0, W / 2, H] : [0, H / 2, W, H / 2];
+    S.push(`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#94a3b8" stroke-width="0.75" stroke-dasharray="6 4"/>`);
+  };
+  const side = (kind, title) => S => {
+    halves.forEach(([x, y, w, h]) => drawRefPanel(S, x, y, w, h, o, kind, { M: 24, sc, title, footer: true }));
+    cut(S);
+  };
+  return [page(side('chart', o.chartTitle)), page(side('wheel', o.wheelTitle), o.rotateBack)];
+}
+
+function buildRefSVG(o, pxW, pxH) { return buildRefPages(o, pxW, pxH)[0]; }
+
+function refPageLabels(o) {
+  if (mode !== 'combo' || o.layout === 'single') return [''];
+  return o.layout === 'half'
+    ? ['Front — 2 charts (cut on the dashed line)', 'Back — 2 wheels']
+    : ['Front — Codon Chart', 'Back — Codon Wheel'];
+}
+
+/* ---------- Codon Chart ---------- */
+function drawChart(S, x, y, w, h, o, landscape) {
+  let tableH = h;
+  if (o.key) {
+    const cols = landscape ? 5 : 4;
+    const rows = Math.ceil(20 / cols);
+    const kh = 20 + rows * 13;
+    drawKey(S, x, y + h - kh, w, kh, cols, o);
+    tableH = h - kh - 12;
+  }
+
+  const nHead = o.axis ? 2 : 1;
+  const nRows = 16 + nHead;
+  const rowH0 = tableH / nRows;
+  const sideW = o.axis ? Math.max(rowH0 * 1.15, 16) : 0;
+  const fbW = Math.max(rowH0 * 1.4, 22);
+  const tbW = fbW;
+  const colW = (w - 2 * sideW - fbW - tbW) / 4;
+  const pad = Math.max(3, colW * 0.035);
+  const SEP = ' - ';
+
+  const cells = CODONS.map(c => {
+    const aa = CODON_TABLE[c];
+    let lab = aaText(aa, o.label);
+    if (o.markStart && c === 'AUG' && lab) lab += '*';
+    return { c, aa, codonPart: o.showCodon ? c : '', lab };
+  });
+  const cellWidth = (cl, size) => {
+    let s = 0;
+    if (cl.codonPart) { s += textW(cl.codonPart, size, o.boldCodon); if (cl.lab) s += textW(SEP, size); }
+    if (cl.lab) s += textW(cl.lab, size, cl.aa === '*');
+    return s;
+  };
+  let fs = o.fs;
+  if (!fs) {
+    fs = rowH0 * 0.56;
+    cells.forEach(cl => {
+      const cw = cellWidth(cl, 10);
+      if (cw > 0) fs = Math.min(fs, 10 * (colW - 2 * pad) / cw);
+    });
+    fs = clamp(fs, 4, 26);
+  }
+  const rowH = Math.min(rowH0, Math.max(fs * 2.6, 14));
+  const totalH = rowH * nRows;
+  const ty = y + Math.max(0, (tableH - totalH) / 2);
+  const dataX = x + sideW + fbW;
+  const dataY = ty + nHead * rowH;
+  const thin = mix(o.border, '#ffffff', 0.45);
+  const shade = o.shade;
+  const headFs = Math.min(fs * 1.15, rowH * 0.6);
+
+  // Header rows
+  if (o.axis) {
+    S.push(R(dataX, ty, 4 * colW, rowH, shade, o.border, 1));
+    S.push(T(dataX + 2 * colW, ty + rowH / 2, 'Second Base', { size: headFs, bold: true }));
+  }
+  const lettersY = ty + (nHead - 1) * rowH;
+  BASES.forEach((b, j) => {
+    const fill = o.color === 'base1' ? BASE_COLORS[b].bg : shade;
+    S.push(R(dataX + j * colW, lettersY, colW, rowH, fill, o.border, 1));
+    S.push(T(dataX + j * colW + colW / 2, lettersY + rowH / 2, b, { size: headFs * 1.1, bold: true }));
+  });
+  S.push(R(dataX, lettersY, 4 * colW, rowH, 'none', o.border, 2));
+
+  // Side axis labels
+  if (o.axis) {
+    S.push(R(x, dataY, sideW, 16 * rowH, shade, o.border, 1));
+    S.push(T(x + sideW / 2, dataY + 8 * rowH, 'First Base', { size: headFs, bold: true, rot: -90 }));
+    const rx = dataX + 4 * colW + tbW;
+    S.push(R(rx, dataY, sideW, 16 * rowH, shade, o.border, 1));
+    S.push(T(rx + sideW / 2, dataY + 8 * rowH, 'Third Base', { size: headFs, bold: true, rot: -90 }));
+  }
+
+  // Body
+  BASES.forEach((b1, i) => {
+    const by = dataY + i * 4 * rowH;
+    const fbFill = o.color === 'base1' ? BASE_COLORS[b1].bg : shade;
+    S.push(R(x + sideW, by, fbW, 4 * rowH, fbFill, o.border, 1));
+    S.push(T(x + sideW + fbW / 2, by + 2 * rowH, b1, { size: Math.min(fs * 1.9, fbW * 0.6, rowH * 1.4), bold: true }));
+
+    BASES.forEach((b2, j) => {
+      BASES.forEach((b3, k) => {
+        const cl = cells[i * 16 + j * 4 + k];
+        const cx = dataX + j * colW, cy = by + k * rowH;
+        const col = cellColors(cl.aa, cl.c, o);
+        S.push(R(cx, cy, colW, rowH, col.bg, thin, 0.6));
+        if (cl.codonPart || cl.lab) {
+          const tx = o.align === 'center' ? cx + colW / 2 : cx + pad;
+          const anchor = o.align === 'center' ? 'middle' : 'start';
+          let inner = '';
+          if (cl.codonPart) inner += `<tspan${o.boldCodon ? ' font-weight="bold"' : ''}>${esc(cl.codonPart)}</tspan>${cl.lab ? `<tspan>${SEP}</tspan>` : ''}`;
+          if (cl.lab) inner += `<tspan${cl.aa === '*' ? ' font-weight="bold"' : ''}>${esc(cl.lab)}</tspan>`;
+          S.push(T(tx, cy + rowH / 2, inner, { size: fs, anchor, raw: true }));
+        }
+      });
+    });
+
+    BASES.forEach((b3, k) => {
+      const cy = by + k * rowH;
+      const fill = o.color === 'base1' ? BASE_COLORS[b3].bg : shade;
+      S.push(R(dataX + 4 * colW, cy, tbW, rowH, fill, thin, 0.6));
+      S.push(T(dataX + 4 * colW + tbW / 2, cy + rowH / 2, b3, { size: Math.min(fs * 1.1, rowH * 0.7), bold: true }));
+    });
+
+    // Vertical separators inside block
+    for (let j = 1; j <= 4; j++) {
+      const vx = dataX + j * colW;
+      S.push(`<line x1="${vx.toFixed(2)}" y1="${by.toFixed(2)}" x2="${vx.toFixed(2)}" y2="${(by + 4 * rowH).toFixed(2)}" stroke="${o.border}" stroke-width="1"/>`);
+    }
+    S.push(R(x + sideW, by, fbW + 4 * colW + tbW, 4 * rowH, 'none', o.border, 2));
+  });
+}
+
+/* ---------- Codon Wheel ---------- */
+function wpt(cx, cy, r, deg) {
+  const a = deg * Math.PI / 180;
+  return [cx + r * Math.sin(a), cy - r * Math.cos(a)];
+}
+function sector(cx, cy, rIn, rOut, a0, a1) {
+  const large = (a1 - a0) > 180 ? 1 : 0;
+  const f = n => n.toFixed(2);
+  const [x1, y1] = wpt(cx, cy, rOut, a0), [x2, y2] = wpt(cx, cy, rOut, a1);
+  if (rIn <= 0) return `M${f(cx)},${f(cy)}L${f(x1)},${f(y1)}A${f(rOut)},${f(rOut)} 0 ${large} 1 ${f(x2)},${f(y2)}Z`;
+  const [x3, y3] = wpt(cx, cy, rIn, a1), [x4, y4] = wpt(cx, cy, rIn, a0);
+  return `M${f(x1)},${f(y1)}A${f(rOut)},${f(rOut)} 0 ${large} 1 ${f(x2)},${f(y2)}L${f(x3)},${f(y3)}A${f(rIn)},${f(rIn)} 0 ${large} 0 ${f(x4)},${f(y4)}Z`;
+}
+
+function drawWheel(S, x, y, w, h, o, landscape) {
+  let wx = x, wy = y, ww = w, wh = h;
+  if (o.key) {
+    if (landscape) {
+      const kw = Math.min(250, w * 0.3);
+      const itemH = Math.min(16, (h - 20) / 20);
+      const kh = 20 + 20 * itemH;
+      drawKey(S, x + w - kw, y + (h - kh) / 2, kw, kh, 1, o);
+      ww = w - kw - 18;
+    } else {
+      const kh = 20 + 5 * 14;
+      drawKey(S, x, y + h - kh, w, kh, 4, o);
+      wh = h - kh - 14;
+    }
+  }
+  const Rr = Math.min(ww, wh) / 2 - 2;
+  const cx = wx + ww / 2, cy = wy + wh / 2;
+  const r0 = Rr * 0.27, r1 = Rr * 0.45, r2 = Rr * 0.585, r3 = Rr;
+  const thin = o.border;
+  const useBase = o.color === 'base1';
+  const [shade1, shade2, shade3, shadeAA] = o.bands;
+  const D = 5.625;
+
+  // Outer amino-acid ring
+  const groups = [];
+  for (let i1 = 0; i1 < 4; i1++) for (let i2 = 0; i2 < 4; i2++) {
+    let k = 0;
+    while (k < 4) {
+      const c0 = BASES[i1] + BASES[i2] + BASES[k];
+      const aa = CODON_TABLE[c0];
+      let k2 = k;
+      while (k2 + 1 < 4 && CODON_TABLE[BASES[i1] + BASES[i2] + BASES[k2 + 1]] === aa) k2++;
+      const base = (i1 * 16 + i2 * 4);
+      groups.push({ aa, codon: c0, a0: (base + k) * D, a1: (base + k2 + 1) * D, span: k2 - k + 1 });
+      k = k2 + 1;
+    }
+  }
+  const linesFor = g => {
+    let lab = aaText(g.aa, o.label);
+    if (!lab) return [];
+    const star = (o.markStart && g.aa === 'M') ? '*' : '';
+    if (o.label === 'full' && g.aa !== '*' && g.span >= 2) return [AA_INFO[g.aa].name, `(${AA_INFO[g.aa].abbr})${star}`];
+    return [lab + star];
+  };
+  let outerFs = o.fs || 15;
+  const ringLen = (r3 - r2) - 12;
+  // Each group's own best fit; the shared size ignores the two one-codon slots (Met, Trp),
+  // which shrink on their own so they don't make every label tiny.
+  groups.forEach(g => {
+    const lines = linesFor(g);
+    g.lines = lines;
+    if (!lines.length) { g.fit = 99; return; }
+    const maxW = Math.max(...lines.map(l => textW(l, 1, g.aa === '*')));
+    const arc = (r2 + (r3 - r2) * 0.25) * (g.span * D * Math.PI / 180) - 3;
+    g.fit = Math.min(ringLen / maxW, arc / (lines.length * 1.12));
+  });
+  if (!o.fs) {
+    groups.forEach(g => { if (g.span >= 2) outerFs = Math.min(outerFs, g.fit); });
+    outerFs = Math.max(outerFs, 4);
+  }
+  groups.forEach(g => {
+    const col = cellColors(g.aa, g.codon, o);
+    const isSS = o.hiSS && (g.codon === 'AUG' || g.aa === '*');
+    const fill = (o.color === 'none' && !isSS) ? shadeAA : col.bg;
+    S.push(`<path d="${sector(cx, cy, r2, r3, g.a0, g.a1)}" fill="${fill}" stroke="${thin}" stroke-width="0.8"/>`);
+    const lines = g.lines;
+    if (!lines.length) return;
+    const gfs = o.fs ? outerFs : Math.max(4, Math.min(outerFs, g.fit));
+    const am = (g.a0 + g.a1) / 2;
+    const rm = (r2 + r3) / 2;
+    const [px, py] = wpt(cx, cy, rm, am);
+    const rot = am < 180 ? am - 90 : am + 90;
+    lines.forEach((ln, li) => {
+      const off = (li - (lines.length - 1) / 2) * gfs * 1.1;
+      // offset perpendicular to the radius (in rotated frame = y axis)
+      const a = rot * Math.PI / 180;
+      const ox = px - off * Math.sin(a), oy = py + off * Math.cos(a);
+      S.push(T(ox, oy, ln, { size: gfs, rot, bold: g.aa === '*' }));
+    });
+  });
+
+  // Third base ring
+  const fs3 = Math.min((r2 - r1) * 0.62, ((r1 + r2) / 2) * (D * Math.PI / 180) * 0.9);
+  for (let n = 0; n < 64; n++) {
+    const b = BASES[n & 3];
+    const a0 = n * D, a1 = a0 + D, am = a0 + D / 2;
+    S.push(`<path d="${sector(cx, cy, r1, r2, a0, a1)}" fill="${useBase ? BASE_COLORS[b].bg : shade3}" stroke="${thin}" stroke-width="0.5"/>`);
+    const [px, py] = wpt(cx, cy, (r1 + r2) / 2, am);
+    const rot = o.ring3Upright ? 0 : ((am > 90 && am < 270) ? am + 180 : am);
+    S.push(T(px, py, b, { size: fs3, bold: true, rot, fill: useBase ? BASE_COLORS[b].fg : '#1e2a3a' }));
+  }
+
+  // Second base ring
+  const fs2 = Math.min((r1 - r0) * 0.55, ((r0 + r1) / 2) * (22.5 * Math.PI / 180) * 0.75);
+  for (let n = 0; n < 16; n++) {
+    const b = BASES[n & 3];
+    const a0 = n * 22.5, a1 = a0 + 22.5;
+    S.push(`<path d="${sector(cx, cy, r0, r1, a0, a1)}" fill="${useBase ? BASE_COLORS[b].bg : shade2}" stroke="${thin}" stroke-width="0.8"/>`);
+    const [px, py] = wpt(cx, cy, (r0 + r1) / 2, a0 + 11.25);
+    S.push(T(px, py, b, { size: fs2, bold: true, fill: useBase ? BASE_COLORS[b].fg : '#1e2a3a' }));
+  }
+
+  // Center: first base
+  for (let n = 0; n < 4; n++) {
+    const b = BASES[n];
+    const a0 = n * 90, a1 = a0 + 90;
+    S.push(`<path d="${sector(cx, cy, 0, r0, a0, a1)}" fill="${useBase ? BASE_COLORS[b].bg : shade1}" stroke="${thin}" stroke-width="1"/>`);
+    const [px, py] = wpt(cx, cy, r0 * 0.52, a0 + 45);
+    S.push(T(px, py, b, { size: r0 * 0.5, bold: true, fill: useBase ? BASE_COLORS[b].fg : '#1e2a3a' }));
+  }
+
+  // Quadrant dividers & outer ring
+  for (let n = 0; n < 4; n++) {
+    const [ex, ey] = wpt(cx, cy, r3, n * 90);
+    S.push(`<line x1="${cx.toFixed(2)}" y1="${cy.toFixed(2)}" x2="${ex.toFixed(2)}" y2="${ey.toFixed(2)}" stroke="${o.border}" stroke-width="1.8"/>`);
+  }
+  [r0, r1, r2].forEach(r => S.push(`<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="${r.toFixed(2)}" fill="none" stroke="${o.border}" stroke-width="1.1"/>`));
+  S.push(`<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="${r3.toFixed(2)}" fill="none" stroke="${o.border}" stroke-width="2"/>`);
+}
+
+function renderRef() {
+  if (mode === 'problems') return;
+  const o = refOpts();
+  const pages = buildRefPages(o), labels = refPageLabels(o);
+  $('refPreview').innerHTML = pages.map((svg, i) =>
+    `<div class="page-item">${labels[i] ? `<div class="page-label">${esc(labels[i])}</div>` : ''}<div class="page-frame">${svg}</div></div>`).join('');
+  const [w, h] = pageInches(o);
+  const paperName = { letter: 'Letter', legal: 'Legal', tabloid: 'Tabloid', a4: 'A4' }[o.paper];
+  let extra = mode === 'wheel' ? ' — read the wheel from the center outward (1st → 2nd → 3rd base).' : '';
+  if (mode === 'combo' && o.layout !== 'single') {
+    const halfW = w > h ? w / 2 : w, halfH = w > h ? h : h / 2;
+    extra = ' — print double-sided' + (o.layout === 'half' ? `, then cut each sheet in half (each half is ${halfW}" × ${halfH}").` : '.');
+    $('duplexHint').textContent = `In the print dialog, turn on two-sided printing and choose "flip on ${w > h ? 'short' : 'long'} edge." ` +
+      'If the back still comes out upside down, check the box above and print again.';
+  }
+  $('refCaption').textContent = `${paperName} — ${w}" × ${h}" ${o.orient}` + extra;
   fitPreview();
 }
 
-// If the rubric or text box is too tall for its spot, tighten the spacing
-// between items first, then shrink the text a little until it fits.
-function fitBoxText() {
-  $('pages').style.zoom = 1; // measure at true size; fitPreview() sets the zoom again
-  document.querySelectorAll('#pages .rubric-list, #pages .custom-body').forEach(el => {
-    const over = () => el.scrollHeight > el.clientHeight + 1;
-    const baseGap = el.classList.contains('rubric-list') ? 0.94 : 0.6;
-    for (let g = baseGap; over() && g > 0.15; g -= 0.08) el.style.gap = g.toFixed(2) + 'em';
-    const baseFs = parseFloat(getComputedStyle(el).fontSize);
-    for (let k = 0.95; over() && k >= 0.7; k -= 0.05) el.style.fontSize = (baseFs * k) + 'px';
-  });
-}
-
-// Pages have different amounts of header space, so measure each page's day area
-// and lock every page to the smallest row height. Any extra space stays as
-// margin at the bottom of the page.
-function equalizeRows() {
-  const grids = [...document.querySelectorAll('#pages .days')];
-  if (grids.length < 2) return;
-  const pages = $('pages');
-  const oldZoom = pages.style.zoom;
-  pages.style.zoom = 1;
-  const gap = parseFloat(getComputedStyle(grids[0]).rowGap) || 0;
-  const rows = +grids[0].dataset.rows;
-  const rowH = Math.min(...grids.map(g => (g.getBoundingClientRect().height - gap * (rows - 1)) / rows));
-  pages.style.zoom = oldZoom;
-  if (!(rowH > 0)) return;
-  const h = Math.floor(rowH * 100) / 100;
-  grids.forEach(g => {
-    g.style.gridTemplateRows = `repeat(${rows}, ${h}px)`;
-    g.style.alignContent = 'start';
-  });
-}
-
 function fitPreview() {
-  const stage = document.querySelector('.split-right');
-  const avail = stage.clientWidth - 40;
-  const z = Math.max(0.3, Math.min(1.1, avail / 816));
-  $('pages').style.zoom = z;
-}
-
-/* ════════════════════════════════════════════════
-   PRINT / PDF
-   ════════════════════════════════════════════════ */
-function fileTitle() {
-  const d = weekDates();
-  const wk = S.showWeek ? `Week ${S.weekNum} ` : '';
-  return `Bellwork ${wk}(${md(d[0]).replace('/', '-')} to ${md(d[4]).replace('/', '-')})`;
-}
-async function printSheet() {
-  try { await document.fonts.ready; } catch (e) {}
-  const old = document.title;
-  document.title = fileTitle();
-  window.print();
-  setTimeout(() => { document.title = old; }, 500);
-}
-// ── Save PDF: builds a real PDF file and opens a Save window ──
-const PDF_LIBS = [
-  'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
-  'https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js',
-];
-function loadScript(src) {
-  return new Promise((res, rej) => {
-    if (document.querySelector(`script[src="${src}"]`)) return res();
-    const el = document.createElement('script');
-    el.src = src; el.onload = res; el.onerror = () => rej(new Error('load'));
-    document.head.appendChild(el);
+  const svgs = $('refPreview').querySelectorAll('.page-frame svg');
+  if (!svgs.length) return;
+  const panel = $('stage-panel');
+  const n = svgs.length, gap = 18;
+  const availW = panel.clientWidth - 40;
+  const availH = panel.clientHeight - 150 - (n > 1 ? 20 : 0);
+  const [w, h] = pageInches(refOpts());
+  // Side by side if that gives bigger pages; otherwise stacked (scroll).
+  const side = Math.min((availW - gap * (n - 1)) / n / w, Math.max(availH, 260) / h);
+  const stack = Math.min(availW / w, Math.max(availH, 260) / h) * (n > 1 ? 0.6 : 1);
+  const sc = Math.max(10, Math.max(side, stack));
+  svgs.forEach(svg => {
+    svg.setAttribute('width', Math.round(w * sc));
+    svg.setAttribute('height', Math.round(h * sc));
   });
 }
-function setBusy(on, msg) {
-  if (msg) $('busyMsg').textContent = msg;
-  $('busy').classList.toggle('show', on);
+window.addEventListener('resize', () => { if (mode !== 'problems') fitPreview(); });
+
+function svgToCanvas(svgStr, w, h) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      const x = c.getContext('2d');
+      x.fillStyle = '#ffffff';
+      x.fillRect(0, 0, w, h);
+      x.drawImage(img, 0, 0, w, h);
+      resolve(c);
+    };
+    img.onerror = reject;
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgStr);
+  });
 }
-// Inline the chosen Google font (Latin letters only) so the PDF uses it in every browser.
-async function buildFontCSS() {
-  const f = FONTS.find(x => x.name === S.font);
-  if (!f || !f.g) return '';
-  const css = await fetch(`https://fonts.googleapis.com/css2?family=${f.g}&display=swap`).then(r => r.text());
-  const blocks = css.split('/* ').filter(b => b.startsWith('latin */')).map(b => b.slice(b.indexOf('@font-face')));
-  const out = await Promise.all(blocks.map(async b => {
-    const m = b.match(/url\((https:[^)]+)\)/);
-    if (!m) return '';
-    const buf = await fetch(m[1]).then(r => r.blob());
-    const data = await new Promise(res => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.readAsDataURL(buf); });
-    return b.replace(m[1], data);
-  }));
-  return out.join('\n');
+
+async function refCanvases(dpi) {
+  const o = refOpts();
+  const [w, h] = pageInches(o);
+  const pw = Math.round(w * dpi), ph = Math.round(h * dpi);
+  return Promise.all(buildRefPages(o, pw, ph).map(svg => svgToCanvas(svg, pw, ph)));
 }
-async function savePdf() {
-  const name = fileTitle() + '.pdf';
-  let handle = null;
-  // Ask where to save first (Chrome / Edge). Must happen right after the click.
-  if (window.showSaveFilePicker) {
-    try {
-      handle = await window.showSaveFilePicker({
-        suggestedName: name,
-        types: [{ description: 'PDF document', accept: { 'application/pdf': ['.pdf'] } }],
-      });
-    } catch (e) {
-      if (e && e.name === 'AbortError') return; // user cancelled
-      handle = null;
-    }
+async function refCanvas(dpi) { return (await refCanvases(dpi))[0]; }
+function refFileBase() {
+  const name = { wheel: 'CodonWheel_', combo: 'CodonReferenceSheet_' }[mode] || 'CodonChart_';
+  return name + getTimestamp();
+}
+
+async function downloadRefPDF() {
+  if (!(window.jspdf && window.jspdf.jsPDF)) {
+    showFeedback('PDF library could not load (offline?). Opening Print — choose "Save as PDF".', true);
+    printRef();
+    return;
   }
-  setBusy(true, 'Building PDF…');
-  const pagesEl = $('pages');
-  const oldZoom = pagesEl.style.zoom;
   try {
-    await Promise.all(PDF_LIBS.map(loadScript));
-    try { await document.fonts.ready; } catch (e) {}
-    pagesEl.style.zoom = 1;
-    const pageEls = [...pagesEl.querySelectorAll('.page')];
-    const pdf = new window.jspdf.jsPDF({ unit: 'in', format: 'letter', orientation: 'portrait', compress: true });
-    const fontCSS = await buildFontCSS().catch(() => '');
-    const opts = { pixelRatio: 3, backgroundColor: '#ffffff', width: 816, height: 1056, fontEmbedCSS: fontCSS, style: { boxShadow: 'none' } };
-    const isSafari = /^((?!chrome|android|crios|fxios).)*safari/i.test(navigator.userAgent);
-    for (let i = 0; i < pageEls.length; i++) {
-      setBusy(true, `Building PDF… page ${i + 1} of ${pageEls.length}`);
-      if (isSafari) await htmlToImage.toPng(pageEls[i], opts); // Safari needs a warm-up pass for images & fonts
-      const png = await htmlToImage.toPng(pageEls[i], opts);
-      if (i > 0) pdf.addPage('letter', 'portrait');
-      pdf.addImage(png, 'PNG', 0, 0, 8.5, 11, undefined, 'FAST');
-    }
-    pdf.setProperties({ title: fileTitle() });
-    const blob = pdf.output('blob');
-    pagesEl.style.zoom = oldZoom;
-    if (handle) {
-      const w = await handle.createWritable();
-      await w.write(blob); await w.close();
-      toast(`Saved ${handle.name}`);
-    } else {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 4000);
-      toast('PDF saved');
-    }
+    const o = refOpts();
+    const [w, h] = pageInches(o);
+    const cs = await refCanvases(300);
+    const orientation = w > h ? 'landscape' : 'portrait';
+    const pdf = new window.jspdf.jsPDF({ orientation, unit: 'in', format: [Math.min(w, h), Math.max(w, h)] });
+    cs.forEach((c, i) => {
+      if (i) pdf.addPage([Math.min(w, h), Math.max(w, h)], orientation);
+      pdf.addImage(c.toDataURL('image/png'), 'PNG', 0, 0, w, h, undefined, 'FAST');
+    });
+    pdf.save(refFileBase() + '.pdf');
+    showFeedback(cs.length > 1 ? `PDF downloaded (${cs.length} pages) — print it double-sided.` : 'PDF downloaded!');
   } catch (e) {
     console.error(e);
-    toast('Could not build the PDF. Check your internet connection, or use Print → Save as PDF.');
-  } finally {
-    pagesEl.style.zoom = oldZoom;
-    setBusy(false);
+    showFeedback('Could not build the PDF. Try Print → Save as PDF.', true);
   }
 }
 
-let toastTimer;
-function toast(msg) {
-  const t = $('toast'); t.textContent = msg; t.classList.add('show');
-  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+function printRef() {
+  const o = refOpts();
+  const [w, h] = pageInches(o);
+  setPrintPage(`@page { size: ${w}in ${h}in; margin: 0; }`);
+  $('print-area').innerHTML = buildRefPages(o).map(svg =>
+    svg.replace(/width="[^"]*" height="[^"]*"/, `width="${w}in" height="${(h - 0.02).toFixed(2)}in"`)).join('');
+  window.print();
+}
+
+async function downloadRefPNG() {
+  const cs = await refCanvases(200);
+  const base = refFileBase();
+  if (cs.length === 1) { downloadDataURL(cs[0].toDataURL('image/png'), base + '.png'); return; }
+  const names = ['_Front', '_Back'];
+  cs.forEach((c, i) => setTimeout(() => downloadDataURL(c.toDataURL('image/png'), base + (names[i] || '_' + (i + 1)) + '.png'), i * 400));
+}
+async function copyRefPNG() {
+  const cs = await refCanvases(150);
+  await copyCanvas(cs[0]);
+  if (cs.length > 1) showFeedback('Front side copied. Use Download PDF to get both sides.');
 }
 
 /* ════════════════════════════════════════════════
-   BOOT
+   PROBLEMS: SEQUENCE ENGINE
    ════════════════════════════════════════════════ */
-$('gfonts').href = 'https://fonts.googleapis.com/css2?' + FONTS.filter(f => f.g).map(f => 'family=' + f.g).join('&') + '&display=swap';
-initUI();
-syncUI();
-render();
-if (document.fonts) document.fonts.ready.then(render);
-window.addEventListener('beforeprint', equalizeRows);
+let probSource = 'random';
+let probCoding = '';      // canonical DNA coding strand, 5'→3'
+let probMutation = null;
+let problemModel = null;
+
+const DNA_COMP = { A: 'T', T: 'A', G: 'C', C: 'G' };
+const RNA_COMP = { A: 'U', U: 'A', G: 'C', C: 'G' };
+const toMrna = s => s.replace(/T/g, 'U');
+const toDna = s => s.replace(/U/g, 'T');
+const compDna = s => s.split('').map(b => DNA_COMP[b] || b).join('');
+const compRna = s => s.split('').map(b => RNA_COMP[b] || b).join('');
+
+function translate(mrna, from) {
+  const start = from === 'first' ? 0 : mrna.indexOf('AUG');
+  if (start < 0) return { start: -1, end: -1, aas: [], stopped: false };
+  const aas = [];
+  let i = start, stopped = false;
+  for (; i + 3 <= mrna.length; i += 3) {
+    const c = mrna.substr(i, 3);
+    const aa = CODON_TABLE[c];
+    aas.push({ idx: i, codon: c, aa });
+    if (aa === '*') { i += 3; stopped = true; break; }
+  }
+  return { start, end: i, aas, stopped };
+}
+const protStr = t => t.aas.map(a => a.aa).join('');
+
+function onLengthChange() {
+  const n = clamp(intVal('numCodons', 10), 2, 60);
+  const prevN = parseInt($('numCodons').dataset.prev || '10', 10);
+  $('numCodons').value = n;
+  if (intVal('stopAt', n) === prevN || intVal('stopAt', n) > n) $('stopAt').value = n;
+  if (intVal('startAt', 1) > n) $('startAt').value = 1;
+  $('numCodons').dataset.prev = n;
+  generateRandom();
+}
+
+function onStartToggle() {
+  const on = $('incStart').checked;
+  toggleDisabled('startAt', !on);
+  $('translateFrom').value = on ? 'aug' : 'first';
+  generateRandom();
+}
+
+function generateRandom() {
+  const n = clamp(intVal('numCodons', 10), 2, 60);
+  const incStart = $('incStart').checked, incStop = $('incStop').checked;
+  let startAt = clamp(intVal('startAt', 1), 1, n);
+  let stopAt = clamp(intVal('stopAt', n), 1, n);
+  if (incStart && incStop && stopAt <= startAt) {
+    if (startAt >= n) startAt = Math.max(1, n - 1);
+    stopAt = Math.max(stopAt, startAt + 1);
+  }
+  $('startAt').value = startAt;
+  $('stopAt').value = stopAt;
+
+  let mrna = '';
+  for (let k = 1; k <= n; k++) {
+    let codon;
+    if (incStart && k === startAt) codon = 'AUG';
+    else if (incStop && k === stopAt) codon = pick(STOP_CODONS);
+    else if (incStart && k < startAt) {
+      // Upstream: no AUG anywhere (in any frame) before the real start codon
+      let tries = 0;
+      do { codon = pick(CODONS); tries++; } while ((mrna + codon).indexOf('AUG') !== -1 && tries < 200);
+    } else if ((!incStart || k > startAt) && (!incStop || k < stopAt)) {
+      codon = pick(SENSE_CODONS);
+    } else {
+      codon = pick(CODONS);
+    }
+    mrna += codon;
+  }
+  probCoding = toDna(mrna);
+  if ($('mutOn').checked) newMutation(); else renderProblems();
+}
+
+function setSource(src) {
+  probSource = src;
+  document.querySelectorAll('[data-src]').forEach(b => b.classList.toggle('active', b.dataset.src === src));
+  $('src-random').classList.toggle('hidden', src !== 'random');
+  $('src-input').classList.toggle('hidden', src !== 'input');
+  if (src === 'input') {
+    if (!$('seqInput').value.trim() && probCoding) $('seqInput').value = formatForInput(probCoding, $('inputType').value);
+    setGivenRow($('inputType').value);
+    parseUserInput();
+  } else {
+    setGivenRow('coding');
+    $('translateFrom').value = $('incStart').checked ? 'aug' : 'first';
+    generateRandom();
+  }
+}
+
+function setGivenRow(type) {
+  const key = (type === 'template53') ? 'template' : type;
+  ['coding', 'template', 'mrna', 'aa'].forEach(r => {
+    $('row_' + r).value = (r === key) ? 'show' : 'blank';
+  });
+}
+
+function formatForInput(coding, type) {
+  switch (type) {
+    case 'template': return compDna(coding);
+    case 'template53': return compDna(coding).split('').reverse().join('');
+    case 'mrna': return toMrna(coding);
+    case 'aa': {
+      const t = translate(toMrna(coding), $('translateFrom').value);
+      return t.aas.map(a => AA_INFO[a.aa].abbr).join('-');
+    }
+    default: return coding;
+  }
+}
+
+function onInputTypeChange() {
+  const type = $('inputType').value;
+  if (probCoding) $('seqInput').value = formatForInput(probCoding, type);
+  setGivenRow(type);
+  const hints = {
+    coding: 'Enter bases A, T, G, C. Spaces, dashes, numbers, and 5′/3′ labels are ignored.',
+    template: 'Enter the template written 3′ → 5′ (lined up under the coding strand).',
+    template53: 'Enter the template written 5′ → 3′. It will be reversed to line up with the coding strand.',
+    mrna: 'Enter bases A, U, G, C (T is converted to U).',
+    aa: 'Enter 3-letter (Met-Phe-Gly-Stop) or 1-letter (MFG*) codes. A random codon is chosen for each amino acid.'
+  };
+  $('inputHint').textContent = hints[type];
+  parseUserInput(true);
+}
+
+function parseAA(raw) {
+  const s = raw.trim().toUpperCase();
+  if (!s) return [];
+  const tokens = s.split(/[\s,\-–—]+/).filter(Boolean);
+  if (tokens.every(t => ABBR_TO_ONE[t] !== undefined)) return tokens.map(t => ABBR_TO_ONE[t]);
+  const letters = s.replace(/[\s,\-–—]+/g, '').split('');
+  if (letters.every(ch => AA_INFO[ch])) return letters;
+  return null;
+}
+
+let lastAAInput = null;
+function parseUserInput(forceReroll) {
+  const type = $('inputType').value;
+  const raw = $('seqInput').value;
+  $('inputWarn').textContent = '';
+  if (type === 'aa') {
+    const aas = parseAA(raw);
+    if (aas === null) {
+      $('inputWarn').textContent = 'Some amino acids were not recognized. Use 3-letter codes separated by dashes or spaces (Met-Gly-Stop) or 1-letter codes (MG*).';
+      return;
+    }
+    const key = aas.join('');
+    // Keep the same codons while the amino acid sequence is unchanged
+    if (!forceReroll && key === lastAAInput && probCoding) { renderProblems(); return; }
+    lastAAInput = key;
+    probCoding = toDna(aas.map(a => pick(CODONS_FOR[a])).join(''));
+    if (aas.length && aas[0] !== 'M' && $('translateFrom').value === 'aug') {
+      $('inputWarn').textContent = 'Tip: your sequence does not begin with Met, so set "Translation Begins At" to "First base", or add Met at the start.';
+    }
+  } else {
+    let s = raw.toUpperCase().replace(/[53][′’']/g, '').replace(/[^A-Z]/g, '');
+    if (type === 'mrna') s = toDna(s);
+    else if (/U/.test(s)) {
+      $('inputWarn').textContent = 'DNA uses T, not U. U was converted to T.';
+      s = toDna(s);
+    }
+    const bad = s.replace(/[ATGC]/g, '');
+    if (bad) {
+      $('inputWarn').textContent = `Invalid character(s): ${Array.from(new Set(bad.split(''))).join(', ')}. Use only ${type === 'mrna' ? 'A, U, G, C' : 'A, T, G, C'}.`;
+      return;
+    }
+    if (type === 'template') s = compDna(s);
+    else if (type === 'template53') s = compDna(s.split('').reverse().join(''));
+    probCoding = s;
+  }
+  if ($('mutOn').checked) newMutation(); else renderProblems();
+}
+
+function onTranslateChange() {
+  if ($('mutOn').checked) newMutation(); else renderProblems();
+}
+
+/* ---------- Mutations ---------- */
+function onMutToggle() {
+  $('mutOptions').classList.toggle('hidden', !$('mutOn').checked);
+  newMutation();
+}
+function onMutTypeChange() {
+  const t = $('mutType').value;
+  const specific = $('mutPosMode').value === 'specific';
+  const outside = !specific && $('mutLoc').value === 'outside';
+  // A specific base number decides the location itself; outside mutations never change the protein
+  $('mutLocRow').classList.toggle('hidden', specific);
+  $('mutEffectRow').classList.toggle('hidden', t !== 'sub' || outside);
+  $('mutLenRow').classList.toggle('hidden', t === 'sub');
+  $('mutBaseRow').classList.toggle('hidden', t === 'del');
+  $('mutBaseLabel').textContent = t === 'ins' ? 'Inserted Base(s)' : 'New Base (coding strand)';
+  newMutation();
+}
+
+function applyMutation(seq, m) {
+  if (!m) return seq;
+  if (m.type === 'sub') return seq.slice(0, m.pos) + m.to + seq.slice(m.pos + 1);
+  if (m.type === 'ins') return seq.slice(0, m.pos) + m.bases + seq.slice(m.pos);
+  return seq.slice(0, m.pos) + seq.slice(m.pos + m.len);
+}
+
+function codonNumber(idx, start) {
+  const lead = start >= 0 ? start % 3 : 0;
+  return Math.floor((idx - lead) / 3) + 1;
+}
+
+function subEffect(seq, p, b, tO, from) {
+  if (tO.start < 0 || p < tO.start || p >= tO.end) return 'noncoding';
+  const k = Math.floor((p - tO.start) / 3);
+  const cs = tO.start + 3 * k;
+  const oc = toMrna(seq.substr(cs, 3));
+  const nc = oc.substring(0, p - cs) + (b === 'T' ? 'U' : b) + oc.substring(p - cs + 1);
+  if (oc.length < 3) return 'noncoding';
+  if (k === 0 && from === 'aug') return 'startlost';
+  const oa = CODON_TABLE[oc], na = CODON_TABLE[nc];
+  if (oa === na) return 'silent';
+  if (na === '*') return 'nonsense';
+  if (oa === '*') return 'stoplost';
+  return 'missense';
+}
+
+function newMutation() {
+  probMutation = null;
+  $('mutWarn').textContent = '';
+  if (!$('mutOn').checked || !probCoding) { renderProblems(); return; }
+  const o = probOpts();
+  const seq = probCoding, L = seq.length;
+  const tO = translate(toMrna(seq), o.from);
+  const hasRegion = tO.start >= 0 && tO.aas.length > 0;
+  let regLo = hasRegion ? tO.start + (o.from === 'aug' ? 3 : 0) : 0;
+  let regHi = hasRegion ? tO.end - (tO.stopped ? 3 : 0) : L;   // exclusive
+  if (regHi <= regLo) { regLo = 0; regHi = L; }
+  const otherBase = ex => pick('ACGT'.split('').filter(b => b !== ex));
+  $('mutPos').max = L;
+
+  if (o.mutPosMode !== 'specific' && o.mutLoc === 'outside') {
+    const m = outsideMutation(seq, tO, o);
+    if (m.error) { $('mutWarn').textContent = m.error; renderProblems(); return; }
+    probMutation = m;
+    $('mutPos').value = probMutation.pos + 1;
+    renderProblems();
+    return;
+  }
+
+  if (o.mutType === 'sub') {
+    let p, to;
+    if (o.mutPosMode === 'specific') {
+      p = clamp(o.mutPos - 1, 0, L - 1);
+      if (o.mutPos > L) $('mutWarn').textContent = `The strand only has ${L} bases, so base ${L} was used.`;
+      to = o.mutBase === 'random' ? otherBase(seq[p]) : o.mutBase;
+      if (to === seq[p]) $('mutWarn').textContent = `Base ${p + 1} is already ${to}, so this substitution changes nothing. Choose a different base.`;
+    } else {
+      const cands = [];
+      for (let q = regLo; q < regHi; q++) {
+        'ACGT'.split('').forEach(b => {
+          if (b === seq[q]) return;
+          if (o.mutBase !== 'random' && b !== o.mutBase) return;
+          const eff = subEffect(seq, q, b, tO, o.from);
+          if (o.mutEffect === 'any' || eff === o.mutEffect) cands.push({ q, b });
+        });
+      }
+      if (!cands.length) {
+        $('mutWarn').textContent = `No ${o.mutEffect === 'any' ? '' : o.mutEffect + ' '}substitution is possible in the coding region${o.mutBase !== 'random' ? ' using base ' + o.mutBase : ''}. Try a different base, effect, or strand.`;
+        renderProblems();
+        return;
+      }
+      const c = pick(cands);
+      p = c.q; to = c.b;
+    }
+    probMutation = { type: 'sub', pos: p, from: seq[p], to };
+  } else {
+    const n = o.mutLen;
+    let p;
+    if (o.mutType === 'del' && L - n < 1) {
+      $('mutWarn').textContent = 'The strand is too short to delete that many bases.';
+      renderProblems();
+      return;
+    }
+    if (o.mutPosMode === 'specific') {
+      p = clamp(o.mutPos - 1, 0, o.mutType === 'ins' ? L : L - n);
+    } else {
+      let lo = regLo, hi = o.mutType === 'ins' ? regHi : regHi - n;
+      if (hi < lo) { lo = 0; hi = o.mutType === 'ins' ? L : L - n; }
+      p = lo + Math.floor(Math.random() * (hi - lo + 1));
+    }
+    if (o.mutType === 'ins') {
+      let bases = '';
+      for (let i = 0; i < n; i++) bases += o.mutBase === 'random' ? pick(['A', 'C', 'G', 'T']) : o.mutBase;
+      probMutation = { type: 'ins', pos: p, bases };
+    } else {
+      probMutation = { type: 'del', pos: p, len: n, removed: seq.substr(p, n) };
+    }
+  }
+  if (o.mutPosMode !== 'specific') $('mutPos').value = probMutation.pos + 1;
+  renderProblems();
+}
+
+// A random mutation placed before the start codon or after the stop codon that leaves the protein unchanged
+function outsideMutation(seq, tO, o) {
+  const L = seq.length;
+  if (tO.start < 0 || !tO.aas.length) {
+    return { error: 'There is no reading frame in this strand (no start codon), so every base is already outside it. Choose "Inside the reading frame" or add a start codon.' };
+  }
+  const before = tO.start, after = tO.end;   // outside bases: [0, before) and [after, L)
+  const protO = protStr(tO);
+  const n = o.mutType === 'sub' ? 1 : o.mutLen;
+  const randBases = () => { let s = ''; for (let i = 0; i < n; i++) s += o.mutBase === 'random' ? pick(['A', 'C', 'G', 'T']) : o.mutBase; return s; };
+  const cands = [];
+  if (o.mutType === 'sub') {
+    for (let q = 0; q < L; q++) {
+      if (q >= before && q < after) continue;
+      'ACGT'.split('').forEach(b => {
+        if (b !== seq[q] && (o.mutBase === 'random' || b === o.mutBase)) cands.push({ type: 'sub', pos: q, from: seq[q], to: b });
+      });
+    }
+  } else if (o.mutType === 'ins') {
+    for (let q = 0; q <= L; q++) if (q <= before || q >= after) cands.push({ type: 'ins', pos: q, bases: randBases() });
+  } else {
+    for (let q = 0; q + n <= L; q++) if (q + n <= before || q >= after) cands.push({ type: 'del', pos: q, len: n, removed: seq.substr(q, n) });
+  }
+  // Skip changes that would create a new start codon or otherwise alter the protein
+  const ok = cands.filter(m => protStr(translate(toMrna(applyMutation(seq, m)), o.from)) === protO);
+  if (!ok.length) {
+    const noRoom = (o.mutType === 'del' ? Math.max(before, L - after) < n : before === 0 && after >= L);
+    return {
+      error: noRoom
+        ? 'This strand has no room outside the reading frame: it starts with the start codon and ends with the stop codon. Make the strand longer, or move the start codon later or the stop codon earlier.'
+        : 'No mutation outside the reading frame is possible here without changing the protein. Try a different base or type, or make the strand longer.'
+    };
+  }
+  return pick(ok);
+}
+
+function classifyMutation(orig, m, tO, tM, o) {
+  const ab = a => a === '*' ? 'STOP' : AA_INFO[a].abbr;
+  if (tO.start < 0) return { label: 'No protein', detail: 'the original strand has no start codon' };
+  const pO = protStr(tO), pM = protStr(tM);
+  let inRegion;
+  if (m.type === 'sub') inRegion = m.pos >= tO.start && m.pos < tO.end;
+  else if (m.type === 'ins') inRegion = m.pos > tO.start && m.pos < tO.end;   // inserting right before AUG or after the stop is outside
+  else inRegion = m.pos < tO.end && m.pos + m.len > tO.start;
+  const where = m.pos < tO.start ? 'before the start codon' : 'after the stop codon';
+  const outsideNoEffect = { label: 'No effect on the protein (outside the reading frame)', detail: `the change is ${where}, so it is not translated` };
+  if (m.type === 'sub') {
+    if (!inRegion) {
+      return pO === pM
+        ? outsideNoEffect
+        : { label: 'Changes where translation starts', detail: 'the change creates a new start codon (AUG) upstream' };
+    }
+    const k = Math.floor((m.pos - tO.start) / 3);
+    const cs = tO.start + 3 * k;
+    const oc = toMrna(orig.substr(cs, 3));
+    const nc = toMrna(applyMutation(orig, m).substr(cs, 3));
+    const oa = CODON_TABLE[oc], na = CODON_TABLE[nc];
+    const d = `codon ${codonNumber(cs, tO.start)}: ${oc} → ${nc} (${ab(oa)} → ${ab(na)})`;
+    if (k === 0 && o.from === 'aug') return { label: 'Start codon lost', detail: d + '; translation can no longer begin at this codon' };
+    if (oa === na) return { label: 'Silent', detail: d + '; the amino acid does not change' };
+    if (na === '*') return { label: 'Nonsense', detail: d + '; the protein is cut short' };
+    if (oa === '*') return { label: 'Stop codon lost (nonstop)', detail: d + '; translation continues past the original stop' };
+    return { label: 'Missense', detail: d + '; one amino acid is changed' };
+  }
+  const n = m.type === 'ins' ? m.bases.length : m.len;
+  if (!inRegion) {
+    return pO === pM
+      ? outsideNoEffect
+      : { label: 'Changes the protein', detail: 'the change alters where translation starts' };
+  }
+  if (n % 3 !== 0) return { label: 'Frameshift', detail: 'every codon after the mutation is read in a new reading frame' };
+  return { label: `In-frame ${m.type === 'ins' ? 'insertion' : 'deletion'}`, detail: `one codon is ${m.type === 'ins' ? 'added' : 'removed'}; the reading frame is kept` };
+}
+
+function describeMutation(orig, m, tO, tM, o) {
+  const pos = m.pos + 1;
+  let what;
+  if (m.type === 'sub') what = `Substitution at base ${pos} of the coding strand: ${m.from} → ${m.to}.`;
+  else if (m.type === 'ins') what = `Insertion of ${m.bases.length} base${m.bases.length > 1 ? 's' : ''} (${m.bases}) at base ${pos} of the coding strand.`;
+  else what = `Deletion of ${m.len} base${m.len > 1 ? 's' : ''} (${m.removed}) at base${m.len > 1 ? 's ' + pos + '–' + (pos + m.len - 1) : ' ' + pos} of the coding strand.`;
+  const eff = classifyMutation(orig, m, tO, tM, o);
+  return { what, effect: eff.label, detail: eff.detail };
+}
+
+/* ════════════════════════════════════════════════
+   PROBLEMS: TABLE MODEL
+   ════════════════════════════════════════════════ */
+function probOpts() {
+  return {
+    from: $('translateFrom').value,
+    aaFmt: $('aaFormat').value,
+    rows: {
+      coding: $('row_coding').value, template: $('row_template').value, mrna: $('row_mrna').value,
+      trna: $('row_trna').value, aa: $('row_aa').value
+    },
+    answerKey: $('answerKey').checked,
+    answerColor: $('answerColor').checked,
+    nums: $('showNums').checked,
+    dirs: $('showDirs').checked,
+    perLine: clamp(intVal('perLine', 12), 1, 40),
+    colorBases: $('colorBases').checked,
+    canvasTicks: $('canvasTicks').checked,
+    fullWidth: $('fullWidth').checked,
+    hiSS: $('probHiSS').checked,
+    fs: clamp(intVal('probFontSize', 15), 8, 40),
+    title: $('probTitle').value.trim(),
+    mutOn: $('mutOn').checked,
+    mutType: $('mutType').value,
+    mutLen: parseInt($('mutLen').value, 10),
+    mutEffect: $('mutEffect').value,
+    mutLoc: $('mutLoc').value,
+    mutPosMode: $('mutPosMode').value,
+    mutPos: intVal('mutPos', 1),
+    mutBase: $('mutBase').value,
+    mutShow: $('mutShow').value,
+    mutDesc: $('mutDesc').checked,
+    mutHl: $('mutHl').checked
+  };
+}
+
+const ROW_DEFS = [
+  { key: 'coding', label: 'DNA Coding Strand', dir: '5′ → 3′' },
+  { key: 'template', label: 'DNA Template Strand', dir: '3′ → 5′' },
+  { key: 'mrna', label: 'mRNA', dir: '5′ → 3′' },
+  { key: 'trna', label: 'tRNA Anticodon', dir: '3′ → 5′' },
+  { key: 'aa', label: 'Amino Acid', dir: '' }
+];
+const ANSWER_COLOR = '#1d4ed8';
+const HL_BG = '#ffe08a';
+const TEXT_DARK = '#1e2a3a';
+
+function buildSection(seq, trans, o, hlSet, aaChanged, caption) {
+  const L = seq.length;
+  const start = trans.start >= 0 ? trans.start : 0;
+  const lead = start % 3;
+  const chunks = [];
+  let p = 0, num = 1;
+  if (lead && L) { chunks.push({ from: 0, to: Math.min(lead, L), num: null }); p = lead; }
+  while (p < L) {
+    const to = Math.min(p + 3, L);
+    chunks.push({ from: p, to, num: (to - p === 3) ? num++ : null });
+    p = to;
+  }
+  const byIdx = {};
+  trans.aas.forEach((a, j) => { byIdx[a.idx] = { aa: a.aa, j }; });
+
+  const strands = {
+    coding: seq,
+    template: compDna(seq),
+    mrna: toMrna(seq),
+    trna: compRna(toMrna(seq))
+  };
+
+  // Start/stop and changed-amino-acid shading would give answers away, so it only appears on the answer key
+  const colBg = chunk => {
+    if (!o.hiSS || !o.answerKey) return null;
+    const info = (chunk.to - chunk.from === 3) ? byIdx[chunk.from] : null;
+    if (!info) return null;
+    if (info.j === 0 && info.aa === 'M' && o.from === 'aug') return CLASS_COLORS.start.bg;
+    if (info.aa === '*') return CLASS_COLORS.stop.bg;
+    return null;
+  };
+
+  const blocks = [];
+  for (let b = 0; b < chunks.length; b += o.perLine) {
+    const group = chunks.slice(b, b + o.perLine);
+    const rows = [];
+    if (o.nums) {
+      rows.push({
+        head: true,
+        cells: [{ spans: [{ t: 'Codon #', f: 'small', color: '#64748b' }], label: true }]
+          .concat(group.map(ch => ({ spans: ch.num ? [{ t: String(ch.num), f: 'small', color: '#64748b' }] : [], head: true })))
+      });
+    }
+    ROW_DEFS.forEach(def => {
+      const status = o.rows[def.key];
+      if (status === 'hide') return;
+      const isAnswer = status === 'blank';
+      const filled = !isAnswer || o.answerKey;
+      const ansColor = (isAnswer && o.answerColor) ? ANSWER_COLOR : TEXT_DARK;
+      const labelSpans = [{ t: def.label, f: 'bold', color: TEXT_DARK }];
+      if (o.dirs && def.dir) labelSpans.push({ t: '  (' + def.dir + ')', f: 'small', color: '#64748b' });
+      const cells = [{ spans: labelSpans, label: true }];
+      group.forEach(ch => {
+        const info = (ch.to - ch.from === 3) ? byIdx[ch.from] : null;
+        let spans = [];
+        let bg = colBg(ch);
+        if (def.key === 'aa') {
+          if (info) {
+            const changed = aaChanged && aaChanged.has(info.j) && o.mutHl && o.answerKey;
+            spans = [{ t: aaText(info.aa, o.aaFmt), f: 'bold', color: changed ? '#b00020' : ansColor }];
+            if (changed) bg = HL_BG;
+          } else {
+            spans = [{ t: '–', f: 'sans', color: '#94a3b8' }];
+          }
+        } else if (def.key === 'trna') {
+          if (info && info.aa !== '*') spans = baseSpans(strands.trna, ch, hlSet, o, ansColor);
+          else spans = [{ t: '–', f: 'sans', color: '#94a3b8' }];
+        } else {
+          spans = baseSpans(strands[def.key], ch, hlSet, o, ansColor);
+        }
+        const isDash = spans.length === 1 && spans[0].t === '–';
+        cells.push({ spans: filled ? spans : [], ghost: spans, bg, answer: isAnswer && filled && !isDash });
+      });
+      rows.push({ cells });
+    });
+    blocks.push({ caption: b === 0 ? caption : '', rows, ncols: group.length });
+  }
+  return blocks;
+}
+
+function baseSpans(strand, ch, hlSet, o, color) {
+  const spans = [];
+  for (let i = ch.from; i < ch.to; i++) {
+    const base = strand[i];
+    const hl = hlSet && o.mutHl && hlSet.has(i);
+    let c = color;
+    if (o.colorBases && BASE_COLORS[base]) c = BASE_COLORS[base].fg;
+    if (hl) c = '#b00020';
+    spans.push({ t: base, f: 'mono', color: c, bg: hl ? HL_BG : null });
+  }
+  return spans;
+}
+
+function renderProblems() {
+  if (mode !== 'problems') return;
+  const o = probOpts();
+  $('probWarn').textContent = '';
+  if (!probCoding) {
+    problemModel = null;
+    $('probPreview').innerHTML = '<div class="empty-selection-placeholder"><i class="ti ti-dna-2"></i><div><strong style="color:#334155;font-size:10.5pt;display:block;margin-bottom:2px;">No strand yet</strong><p style="font-size:10pt;">Generate a random strand or enter your own sequence.</p></div></div>';
+    return;
+  }
+  const orig = probCoding;
+  const tO = translate(toMrna(orig), o.from);
+  const tables = [];
+  const notes = [];
+  if (o.mutOn && probMutation) {
+    const m = probMutation;
+    const mut = applyMutation(orig, m);
+    const tM = translate(toMrna(mut), o.from);
+    const hlO = new Set(), hlM = new Set();
+    if (m.type === 'sub') { hlO.add(m.pos); hlM.add(m.pos); }
+    else if (m.type === 'ins') { for (let i = 0; i < m.bases.length; i++) hlM.add(m.pos + i); }
+    else { for (let i = 0; i < m.len; i++) hlO.add(m.pos + i); }
+    const changed = new Set();
+    tM.aas.forEach((a, j) => { if (!tO.aas[j] || tO.aas[j].aa !== a.aa) changed.add(j); });
+    if (o.mutShow === 'both') tables.push(...buildSection(orig, tO, o, hlO, null, 'Original Strand'));
+    tables.push(...buildSection(mut, tM, o, hlM, changed, 'Mutated Strand'));
+    if (o.mutDesc) {
+      const d = describeMutation(orig, m, tO, tM, o);
+      notes.push({ bold: 'Mutation: ', text: d.what });
+      if (o.answerKey) notes.push({ bold: 'Effect: ', text: d.effect + (d.detail ? ' — ' + d.detail + '.' : '.') });
+      else notes.push({ bold: 'Effect: ', text: 'Silent, missense, nonsense, frameshift, or no effect? ____________________' });
+    }
+  } else {
+    tables.push(...buildSection(orig, tO, o, null, null, ''));
+  }
+  if (tO.start < 0 && o.from === 'aug') {
+    $('probWarn').textContent = 'No AUG start codon was found, so no amino acids are produced. Add AUG, or set "Translation Begins At" to "First base".';
+  } else if (o.from === 'aug' && tO.aas.length && !tO.stopped) {
+    $('probWarn').textContent = 'Note: no stop codon was reached in the reading frame, so the protein runs to the end of the strand.';
+  }
+  problemModel = { title: o.title, tables, notes };
+  $('probPreview').innerHTML = modelToHTML(problemModel, o);
+}
+
+/* ---------- Layout & renderers (HTML + Canvas share metrics) ---------- */
+function spanFont(sp, fs) {
+  switch (sp.f) {
+    case 'mono': return { size: fs, bold: true, fam: MONO_FONT };
+    case 'bold': return { size: fs, bold: true, fam: SVG_FONT };
+    case 'small': return { size: Math.round(fs * 0.8), bold: false, fam: SVG_FONT };
+    default: return { size: fs, bold: false, fam: SVG_FONT };
+  }
+}
+function spansWidth(spans, fs) {
+  return spans.reduce((s, sp) => { const f = spanFont(sp, fs); return s + textW(sp.t, f.size, f.bold, f.fam); }, 0);
+}
+
+function layoutModel(m, o) {
+  const fs = o.fs;
+  const padX = Math.round(fs * 0.6);
+  let labelW = 0, colW = 0;
+  m.tables.forEach(t => t.rows.forEach(r => r.cells.forEach((c, ci) => {
+    const w = spansWidth(c.ghost || c.spans, fs) + padX * 2;
+    if (ci === 0) labelW = Math.max(labelW, w); else colW = Math.max(colW, w);
+  })));
+  labelW = Math.ceil(labelW);
+  colW = Math.ceil(Math.max(colW, fs * 3.2));
+  return { fs, padX, labelW, colW, rowH: Math.round(fs * 2.1), headH: Math.round(fs * 1.6) };
+}
+
+function modelToHTML(m, o, forCopy) {
+  const ticks = !!(forCopy && o.canvasTicks && o.answerKey);
+  const Lt = layoutModel(m, o);
+  const fs = Lt.fs;
+  const labelMin = Math.ceil(Lt.labelW * 1.15);
+  let h = `<div style="font-family:Arial,Helvetica,sans-serif;color:${TEXT_DARK};">`;
+  if (m.title) h += `<div style="font-family:Georgia,'Times New Roman',serif;font-weight:bold;font-size:${Math.round(fs * 1.3)}px;margin:0 0 10px;">${esc(m.title)}</div>`;
+  m.tables.forEach(t => {
+    if (t.caption) h += `<div style="font-weight:bold;font-size:${fs}px;margin:12px 0 6px;">${esc(t.caption)}</div>`;
+    const tw = Lt.labelW + Lt.colW * t.ncols;
+    if (o.fullWidth) {
+      // Auto layout: label column fits its text, codon columns share the remaining width
+      h += `<table width="100%" style="border-collapse:collapse;width:100%;margin:0 0 12px 0;font-family:Arial,Helvetica,sans-serif;font-size:${fs}px;">`;
+      h += `<colgroup><col width="${labelMin}" style="width:${labelMin}px;min-width:${labelMin}px"></colgroup>`;
+    } else {
+      h += `<table style="border-collapse:collapse;table-layout:fixed;width:${tw}px;margin:0 0 12px 0;font-family:Arial,Helvetica,sans-serif;font-size:${fs}px;">`;
+      h += `<colgroup><col style="width:${Lt.labelW}px">` + `<col style="width:${Lt.colW}px">`.repeat(t.ncols) + '</colgroup>';
+    }
+    t.rows.forEach(r => {
+      h += '<tr>';
+      r.cells.forEach((c, ci) => {
+        const bg = c.bg || (ci === 0 || r.head ? '#f1f5f9' : '#ffffff');
+        const style = [
+          'border:1px solid #64748b',
+          `padding:0 ${Lt.padX}px`,
+          `height:${r.head ? Lt.headH : Lt.rowH}px`,
+          `text-align:${ci === 0 ? 'left' : 'center'}`,
+          'vertical-align:middle',
+          `background:${bg}`,
+          'white-space:nowrap'
+        ].concat(ci === 0 ? [`width:${labelMin}px`, `min-width:${labelMin}px`, 'word-break:keep-all', 'overflow-wrap:normal'] : []).join(';');
+        let inner = c.spans.length ? c.spans.map(sp => {
+          const f = spanFont(sp, fs);
+          const st = [`color:${sp.color || TEXT_DARK}`, `font-size:${f.size}px`, `font-weight:${f.bold ? 'bold' : 'normal'}`];
+          if (sp.f === 'mono') st.push(`font-family:'Courier New',Courier,monospace`);
+          if (sp.bg) st.push(`background:${sp.bg}`);
+          return `<span style="${st.join(';')}">${esc(sp.t).replace(/ /g, '&nbsp;')}</span>`;
+        }).join('') : '&nbsp;';
+        if (ticks && c.answer) {
+          // One plain run of text per blank so Canvas reads `ANSWER` as a single fill-in-the-blank
+          const sp0 = c.spans[0], f0 = spanFont(sp0, fs);
+          const ff = sp0.f === 'mono' ? `;font-family:'Courier New',Courier,monospace` : '';
+          inner = `<span style="color:${sp0.color === TEXT_DARK ? TEXT_DARK : (o.answerColor ? ANSWER_COLOR : TEXT_DARK)};font-size:${f0.size}px;font-weight:${f0.bold ? 'bold' : 'normal'}${ff}">\`${esc(c.spans.map(x => x.t).join(''))}\`</span>`;
+        }
+        // align/valign attributes survive LMS editors (like Canvas) that strip inline styles
+        const attrs = ci === 0 ? ` width="${labelMin}" nowrap align="left" valign="middle"` : ' align="center" valign="middle"';
+        h += `<td${attrs} style="${style}">${inner}</td>`;
+      });
+      h += '</tr>';
+    });
+    h += '</table>';
+  });
+  m.notes.forEach(n => {
+    h += `<p style="font-size:${Math.round(fs * 0.95)}px;margin:4px 0;line-height:1.4;"><b>${esc(n.bold)}</b>${esc(n.text)}</p>`;
+  });
+  h += '</div>';
+  return h;
+}
+
+function modelToPlain(m, o) {
+  const ticks = !!(o && o.canvasTicks && o.answerKey);
+  const lines = [];
+  if (m.title) lines.push(m.title, '');
+  m.tables.forEach(t => {
+    if (t.caption) lines.push(t.caption);
+    t.rows.forEach(r => lines.push(r.cells.map(c => {
+      const txt = c.spans.map(s => s.t).join('').trim();
+      return (ticks && c.answer && txt) ? '`' + txt + '`' : txt;
+    }).join('\t')));
+    lines.push('');
+  });
+  m.notes.forEach(n => lines.push(n.bold + n.text));
+  return lines.join('\n');
+}
+
+function wrapText(ctx, text, maxW) {
+  const words = text.split(' ');
+  const lines = [];
+  let cur = '';
+  words.forEach(w => {
+    const test = cur ? cur + ' ' + w : w;
+    if (ctx.measureText(test).width > maxW && cur) { lines.push(cur); cur = w; }
+    else cur = test;
+  });
+  if (cur) lines.push(cur);
+  return lines;
+}
+
+function problemCanvas(scale) {
+  const m = problemModel, o = probOpts();
+  if (!m) return null;
+  const Lt = layoutModel(m, o);
+  const fs = Lt.fs, margin = 20;
+  const maxCols = Math.max(...m.tables.map(t => t.ncols));
+  const contentW = Lt.labelW + Lt.colW * maxCols;
+  const W = Math.max(contentW, 360) + margin * 2;
+  const noteFs = Math.round(fs * 0.95);
+
+  // Measure height
+  const mctx = measureCtx;
+  let H = margin;
+  if (m.title) H += Math.round(fs * 1.3) * 1.6;
+  m.tables.forEach(t => {
+    if (t.caption) H += fs * 1.9;
+    t.rows.forEach(r => { H += r.head ? Lt.headH : Lt.rowH; });
+    H += 12;
+  });
+  const noteLines = [];
+  m.notes.forEach(n => {
+    mctx.font = `${noteFs}px ${SVG_FONT}`;
+    const lines = wrapText(mctx, n.bold + n.text, W - margin * 2);
+    lines.forEach((ln, i) => noteLines.push({ text: ln, boldPrefix: i === 0 ? n.bold : '' }));
+  });
+  H += noteLines.length * noteFs * 1.45 + margin;
+
+  const c = document.createElement('canvas');
+  c.width = Math.ceil(W * scale);
+  c.height = Math.ceil(H * scale);
+  const ctx = c.getContext('2d');
+  ctx.scale(scale, scale);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, W, H);
+  ctx.textBaseline = 'middle';
+
+  let y = margin;
+  if (m.title) {
+    const ts = Math.round(fs * 1.3);
+    ctx.font = `bold ${ts}px Georgia, "Times New Roman", serif`;
+    ctx.fillStyle = TEXT_DARK;
+    ctx.textAlign = 'left';
+    ctx.fillText(m.title, margin, y + ts * 0.6);
+    y += ts * 1.6;
+  }
+  m.tables.forEach(t => {
+    if (t.caption) {
+      ctx.font = `bold ${fs}px ${SVG_FONT}`;
+      ctx.fillStyle = TEXT_DARK;
+      ctx.textAlign = 'left';
+      ctx.fillText(t.caption, margin, y + fs * 0.8);
+      y += fs * 1.9;
+    }
+    t.rows.forEach(r => {
+      const rh = r.head ? Lt.headH : Lt.rowH;
+      let x = margin;
+      r.cells.forEach((cell, ci) => {
+        const cw = ci === 0 ? Lt.labelW : Lt.colW;
+        ctx.fillStyle = cell.bg || (ci === 0 || r.head ? '#f1f5f9' : '#ffffff');
+        ctx.fillRect(x, y, cw, rh);
+        ctx.strokeStyle = '#64748b';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x + 0.5, y + 0.5, cw, rh);
+        const total = spansWidth(cell.spans, fs);
+        let tx = ci === 0 ? x + Lt.padX : x + (cw - total) / 2;
+        const cy = y + rh / 2 + 0.5;
+        cell.spans.forEach(sp => {
+          const f = spanFont(sp, fs);
+          ctx.font = `${f.bold ? 'bold ' : ''}${f.size}px ${f.fam}`;
+          const sw = ctx.measureText(sp.t).width;
+          if (sp.bg) {
+            ctx.fillStyle = sp.bg;
+            ctx.fillRect(tx, cy - f.size * 0.65, sw, f.size * 1.3);
+          }
+          ctx.fillStyle = sp.color || TEXT_DARK;
+          ctx.textAlign = 'left';
+          ctx.fillText(sp.t, tx, cy);
+          tx += sw;
+        });
+        x += cw;
+      });
+      y += rh;
+    });
+    y += 12;
+  });
+  noteLines.forEach(nl => {
+    const ly = y + noteFs * 0.7;
+    let x = margin;
+    ctx.fillStyle = TEXT_DARK;
+    ctx.textAlign = 'left';
+    if (nl.boldPrefix) {
+      ctx.font = `bold ${noteFs}px ${SVG_FONT}`;
+      ctx.fillText(nl.boldPrefix, x, ly);
+      x += ctx.measureText(nl.boldPrefix).width;
+      ctx.font = `${noteFs}px ${SVG_FONT}`;
+      ctx.fillText(nl.text.substring(nl.boldPrefix.length), x, ly);
+    } else {
+      ctx.font = `${noteFs}px ${SVG_FONT}`;
+      ctx.fillText(nl.text, x, ly);
+    }
+    y += noteFs * 1.45;
+  });
+  return c;
+}
+
+function copyProblemHTML() {
+  if (!problemModel) return;
+  const o = probOpts();
+  const html = modelToHTML(problemModel, o, true);
+  const plain = modelToPlain(problemModel, o);
+  const done = () => showFeedback('HTML table copied! Paste into Docs, Word, Slides, or your LMS.');
+  const fail = () => showFeedback('Your browser blocked clipboard access. Try again, or use Download PNG.', true);
+  try {
+    navigator.clipboard.write([new ClipboardItem({
+      'text/html': new Blob([html], { type: 'text/html' }),
+      'text/plain': new Blob([plain], { type: 'text/plain' })
+    })]).then(done).catch(() => navigator.clipboard.writeText(html).then(done).catch(fail));
+  } catch (e) {
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(html).then(done).catch(fail);
+    else fail();
+  }
+}
+function copyProblemPNG() {
+  const c = problemCanvas(2);
+  if (c) copyCanvas(c);
+}
+function downloadProblemPNG() {
+  const c = problemCanvas(2);
+  if (c) downloadDataURL(c.toDataURL('image/png'), `CodonProblem_${getTimestamp()}.png`);
+}
+function printProblem() {
+  if (!problemModel) return;
+  setPrintPage('@page { size: letter landscape; margin: 0.5in; }');
+  $('print-area').innerHTML = modelToHTML(problemModel, probOpts());
+  window.print();
+}
+
+/* ════════════════════════════════════════════════
+   INIT
+   ════════════════════════════════════════════════ */
+window.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P')) {
+    e.preventDefault();
+    if (mode === 'problems') printProblem(); else printRef();
+  }
+});
+
+window.onload = () => {
+  initFontSelects();
+  initColorPickers();
+  $('numCodons').dataset.prev = '10';
+  generateRandom();
+  setMode('problems');
+};
 </script>
 </body>
 </html>
