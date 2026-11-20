@@ -194,6 +194,9 @@ input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; flex-shrink: 
   box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08); overflow: hidden; flex-shrink: 0;
 }
 .page-frame svg { display: block; }
+.page-stack { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; align-items: flex-start; }
+.page-item { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.page-label { font-size: 8pt; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: .05em; font-family: Arial, sans-serif; }
 .stage-caption { font-size: 8.5pt; color: #64748b; font-family: Arial, sans-serif; }
 .problem-frame {
   background: #ffffff; border: 1px solid var(--card-border); border-radius: 8px;
@@ -249,7 +252,8 @@ input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; flex-shrink: 
   html, body { height: auto !important; overflow: visible !important; background: #fff !important; display: block !important; }
   #app { display: none !important; }
   #print-area { display: block !important; }
-  #print-area svg { display: block; }
+  #print-area svg { display: block; break-after: page; page-break-after: always; }
+  #print-area svg:last-child { break-after: auto; page-break-after: auto; }
   #print-area table { page-break-inside: avoid; }
 }
 </style>
@@ -267,7 +271,7 @@ input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; flex-shrink: 
         <div id="app-subtitle">Codon Chart, Codon Wheel &amp; Protein Synthesis Problem Builder &mdash; Built by Steven Humble</div>
       </div>
     </div>
-    <div class="toolbar-ver">V 1.2.0 &mdash; 2026-11-20</div>
+    <div class="toolbar-ver">V 1.3.0 &mdash; 2026-11-20</div>
   </header>
 
   <main class="content">
@@ -282,16 +286,58 @@ input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; flex-shrink: 
             <div class="opt-group-header-left"><i class="ti ti-category"></i><span class="opt-group-title">Choose a Tool</span></div>
           </div>
           <div class="opt-group-body">
-            <div class="type-selector-bar grid-cols-3">
+            <div class="type-selector-bar grid-cols-2">
               <button type="button" class="type-btn active" data-mode="problems" onclick="setMode('problems')"><i class="ti ti-dna-2"></i>Codon Problems</button>
               <button type="button" class="type-btn" data-mode="chart" onclick="setMode('chart')"><i class="ti ti-table"></i>Codon Chart</button>
               <button type="button" class="type-btn" data-mode="wheel" onclick="setMode('wheel')"><i class="ti ti-chart-donut"></i>Codon Wheel</button>
+              <button type="button" class="type-btn" data-mode="combo" onclick="setMode('combo')"><i class="ti ti-files"></i>Chart + Wheel Sheet</button>
             </div>
           </div>
         </div>
 
         <!-- ═══════════ REFERENCE (CHART / WHEEL) SETTINGS ═══════════ -->
         <div id="ref-settings">
+          <div class="opt-group only-combo">
+            <div class="opt-group-header">
+              <div class="opt-group-header-left"><i class="ti ti-layout-columns"></i><span class="opt-group-title">Sheet Layout</span></div>
+            </div>
+            <div class="opt-group-body">
+              <div class="field-row">
+                <label for="comboLayout">Layout</label>
+                <select id="comboLayout" onchange="onComboLayoutChange()">
+                  <option value="single">Both on one page (one side)</option>
+                  <option value="duplex">Double-sided &mdash; chart front, wheel back</option>
+                  <option value="half" selected>Half-sheets, double-sided (2 per page, cut in half)</option>
+                </select>
+              </div>
+              <div class="field-row combo-single">
+                <label for="comboSplit">Space for the Chart (%)</label>
+                <input type="number" id="comboSplit" value="55" min="35" max="75" step="5" oninput="renderRef()">
+              </div>
+              <div class="toggle-row combo-half">
+                <input type="checkbox" id="cutLine" checked onchange="renderRef()">
+                <label for="cutLine">Show dashed cut line</label>
+              </div>
+              <div class="toggle-row combo-duplex">
+                <input type="checkbox" id="rotateBack" onchange="renderRef()">
+                <label for="rotateBack">Turn the back side upside down</label>
+              </div>
+              <p class="info-note combo-duplex" id="duplexHint" style="margin:6px 0 0;"></p>
+
+              <div class="divider"></div>
+              <div class="grid-2">
+                <div class="field-row">
+                  <label for="chartTitle">Chart Title</label>
+                  <input type="text" id="chartTitle" value="mRNA Codon Chart" oninput="renderRef()">
+                </div>
+                <div class="field-row">
+                  <label for="wheelTitle">Wheel Title</label>
+                  <input type="text" id="wheelTitle" value="mRNA Codon Wheel" oninput="renderRef()">
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="opt-group">
             <div class="opt-group-header">
               <div class="opt-group-header-left"><i class="ti ti-file"></i><span class="opt-group-title">Page Setup</span></div>
@@ -309,7 +355,7 @@ input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; flex-shrink: 
                 </div>
                 <div class="field-row">
                   <label for="orientation">Orientation</label>
-                  <select id="orientation" onchange="renderRef()">
+                  <select id="orientation" onchange="storeModeField('orient', this.value); renderRef()">
                     <option value="landscape" selected>Landscape</option>
                     <option value="portrait">Portrait</option>
                   </select>
@@ -322,7 +368,7 @@ input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; flex-shrink: 
 
               <div class="divider"></div>
               <span class="sub-label">Title</span>
-              <div class="field-row">
+              <div class="field-row not-combo">
                 <label for="refTitle">Title Text</label>
                 <input type="text" id="refTitle" value="mRNA Codon Chart" oninput="storeModeField('title', this.value); renderRef()">
               </div>
@@ -717,7 +763,7 @@ input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; flex-shrink: 
 
         <!-- Reference stage -->
         <div id="stage-ref" style="display:flex; flex-direction:column; align-items:center; gap:10px; width:100%;">
-          <div class="page-frame" id="refPreview"></div>
+          <div class="page-stack" id="refPreview"></div>
           <div class="stage-caption" id="refCaption"></div>
           <div class="export-tray">
             <div class="btn-row">
@@ -1023,9 +1069,18 @@ function setPrintPage(css) { $('print-page-style').textContent = css; }
    ════════════════════════════════════════════════ */
 let mode = 'chart';
 const modeFields = {
-  chart: { title: 'mRNA Codon Chart', key: false, markStart: 'star' },
-  wheel: { title: 'mRNA Codon Wheel', key: false, markStart: 'star' }
+  chart: { title: 'mRNA Codon Chart', key: false, markStart: 'star', orient: 'landscape' },
+  wheel: { title: 'mRNA Codon Wheel', key: false, markStart: 'star', orient: 'landscape' },
+  combo: { title: '', key: false, markStart: 'star', orient: 'portrait' }
 };
+
+function onComboLayoutChange() {
+  const lay = $('comboLayout').value;
+  document.querySelectorAll('.combo-single').forEach(el => el.classList.toggle('hidden', lay !== 'single'));
+  document.querySelectorAll('.combo-half').forEach(el => el.classList.toggle('hidden', lay !== 'half'));
+  document.querySelectorAll('.combo-duplex').forEach(el => el.classList.toggle('hidden', lay === 'single'));
+  renderRef();
+}
 
 function storeModeField(field, val) {
   if (modeFields[mode]) modeFields[mode][field] = val;
@@ -1039,13 +1094,17 @@ function setMode(m) {
   $('prob-settings').classList.toggle('hidden', isRef);
   $('stage-ref').classList.toggle('hidden', !isRef);
   $('stage-prob').classList.toggle('hidden', isRef);
-  document.querySelectorAll('.only-chart').forEach(el => el.classList.toggle('hidden', m !== 'chart'));
-  document.querySelectorAll('.only-wheel').forEach(el => el.classList.toggle('hidden', m !== 'wheel'));
+  document.querySelectorAll('.only-chart').forEach(el => el.classList.toggle('hidden', m !== 'chart' && m !== 'combo'));
+  document.querySelectorAll('.only-wheel').forEach(el => el.classList.toggle('hidden', m !== 'wheel' && m !== 'combo'));
+  document.querySelectorAll('.only-combo').forEach(el => el.classList.toggle('hidden', m !== 'combo'));
+  document.querySelectorAll('.not-combo').forEach(el => el.classList.toggle('hidden', m === 'combo'));
+  if (m === 'combo') onComboLayoutChange();
   if (isRef) {
-    $('bodyTextLabel').textContent = m === 'wheel' ? 'Wheel Text' : 'Chart Text';
+    $('bodyTextLabel').textContent = m === 'wheel' ? 'Wheel Text' : m === 'combo' ? 'Chart & Wheel Text' : 'Chart Text';
     $('refTitle').value = modeFields[m].title;
     $('showKey').checked = modeFields[m].key;
     $('markStart').value = modeFields[m].markStart;
+    $('orientation').value = modeFields[m].orient;
     renderRef();
   } else {
     renderProblems();
@@ -1081,7 +1140,13 @@ function refOpts() {
     bands: [$('band1Color').value, $('band2Color').value, $('band3Color').value, $('band4Color').value],
     titleFont: fontStack($('titleFont').value),
     titleSize: parseFloat($('titleSize').value) || 0,
-    bodyFont: fontStack($('bodyFont').value)
+    bodyFont: fontStack($('bodyFont').value),
+    layout: $('comboLayout').value,
+    split: clamp(intVal('comboSplit', 55), 35, 75),
+    cutLine: $('cutLine').checked,
+    rotateBack: $('rotateBack').checked,
+    chartTitle: $('chartTitle').value,
+    wheelTitle: $('wheelTitle').value
   };
 }
 
@@ -1166,37 +1231,103 @@ function drawKey(S, x, y, w, h, cols, o) {
   });
 }
 
-function buildRefSVG(o, pxW, pxH) {
-  const [wi, hi] = pageInches(o);
-  const W = wi * 72, H = hi * 72;
-  const S = [];
-  REF_FONT = o.bodyFont || SVG_FONT;
-  S.push(R(0, 0, W, H, '#ffffff'));
-  const M = 36, sc = o.scale / 100;
-  const aw = (W - 2 * M) * sc, ah = (H - 2 * M) * sc;
-  const x0 = (W - aw) / 2, y0 = (H - ah) / 2;
-  let top = y0, bottom = y0 + ah;
-
-  if (o.titleOn && o.title.trim()) {
-    const ts = o.titleSize ? clamp(o.titleSize, 6, 72) : clamp(ah * 0.04, 12, 22);
-    S.push(T(W / 2, top + ts * 0.5, o.title.trim(), { size: ts, bold: true, family: o.titleFont }));
-    top += ts * 1.6;
-  }
+// Start-codon note + color legend along the bottom of a region; returns the new bottom edge.
+function drawRefFooter(S, x0, aw, bottom, o) {
   if (o.startNote && o.label !== 'blank') {
-    S.push(T(x0, bottom - 5, '* AUG codes for Methionine (Met) and also serves as the START codon.', { size: 9, anchor: 'start', fill: '#334155' }));
-    bottom -= 16;
+    const fs = aw < 420 ? 7.5 : 9;
+    S.push(T(x0, bottom - 5, '* AUG codes for Methionine (Met) and also serves as the START codon.', { size: fs, anchor: 'start', fill: '#334155' }));
+    bottom -= fs + 7;
   }
   const leg = legendList(o);
   if (leg.length) {
     drawLegend(S, x0 + aw / 2, bottom - 7, leg);
     bottom -= 22;
   }
+  return bottom;
+}
 
-  const landscape = W > H;
-  if (mode === 'wheel') drawWheel(S, x0, top, aw, bottom - top, o, landscape);
+// Draws one chart or wheel (with its title, and optionally its footer) inside the box X,Y,W,H.
+function drawRefPanel(S, X, Y, W, H, o, kind, p) {
+  const M = p.M, sc = p.sc;
+  const aw = (W - 2 * M) * sc, ah = (H - 2 * M) * sc;
+  const x0 = X + (W - aw) / 2, y0 = Y + (H - ah) / 2;
+  let top = y0, bottom = y0 + ah;
+  const title = (p.title || '').trim();
+  if (o.titleOn && title) {
+    const ts = o.titleSize ? clamp(o.titleSize, 6, 72) : clamp(ah * 0.04, 12, 22);
+    S.push(T(x0 + aw / 2, top + ts * 0.5, title, { size: ts, bold: true, family: o.titleFont }));
+    top += ts * 1.6;
+  }
+  if (p.footer) bottom = drawRefFooter(S, x0, aw, bottom, o);
+  const landscape = aw > (bottom - top) * 1.05;
+  if (kind === 'wheel') drawWheel(S, x0, top, aw, bottom - top, o, landscape);
   else drawChart(S, x0, top, aw, bottom - top, o, landscape);
+}
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${pxW || W}" height="${pxH || H}" viewBox="0 0 ${W} ${H}">${S.join('')}</svg>`;
+// Every printed page for the current tool, as SVG strings (1 page, or front + back).
+function buildRefPages(o, pxW, pxH) {
+  const [wi, hi] = pageInches(o);
+  const W = wi * 72, H = hi * 72;
+  REF_FONT = o.bodyFont || SVG_FONT;
+  const sc = o.scale / 100;
+  const page = (draw, rotate) => {
+    const S = [];
+    draw(S);
+    const body = rotate ? `<g transform="rotate(180 ${W / 2} ${H / 2})">${S.join('')}</g>` : S.join('');
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${pxW || W}" height="${pxH || H}" viewBox="0 0 ${W} ${H}">${R(0, 0, W, H, '#ffffff')}${body}</svg>`;
+  };
+
+  if (mode !== 'combo') {
+    return [page(S => drawRefPanel(S, 0, 0, W, H, o, mode, { M: 36, sc, title: o.title, footer: true }))];
+  }
+
+  if (o.layout === 'single') {
+    return [page(S => {
+      const M = 36, aw = (W - 2 * M) * sc, ah = (H - 2 * M) * sc;
+      const x0 = (W - aw) / 2, y0 = (H - ah) / 2;
+      const bottom = drawRefFooter(S, x0, aw, y0 + ah, o);
+      const h = bottom - y0, gap = 22, f = o.split / 100;
+      const p = { M: 0, sc: 1, footer: false };
+      if (W > H) {
+        const cw = (aw - gap) * f;
+        drawRefPanel(S, x0, y0, cw, h, o, 'chart', Object.assign({ title: o.chartTitle }, p));
+        drawRefPanel(S, x0 + cw + gap, y0, aw - cw - gap, h, o, 'wheel', Object.assign({ title: o.wheelTitle }, p));
+      } else {
+        const ch = (h - gap) * f;
+        drawRefPanel(S, x0, y0, aw, ch, o, 'chart', Object.assign({ title: o.chartTitle }, p));
+        drawRefPanel(S, x0, y0 + ch + gap, aw, h - ch - gap, o, 'wheel', Object.assign({ title: o.wheelTitle }, p));
+      }
+    })];
+  }
+
+  if (o.layout === 'duplex') {
+    return [
+      page(S => drawRefPanel(S, 0, 0, W, H, o, 'chart', { M: 36, sc, title: o.chartTitle, footer: true })),
+      page(S => drawRefPanel(S, 0, 0, W, H, o, 'wheel', { M: 36, sc, title: o.wheelTitle, footer: true }), o.rotateBack)
+    ];
+  }
+
+  // Half-sheets: landscape paper -> left/right halves; portrait paper -> top/bottom halves.
+  const halves = W > H ? [[0, 0, W / 2, H], [W / 2, 0, W / 2, H]] : [[0, 0, W, H / 2], [0, H / 2, W, H / 2]];
+  const cut = S => {
+    if (!o.cutLine) return;
+    const [x1, y1, x2, y2] = W > H ? [W / 2, 0, W / 2, H] : [0, H / 2, W, H / 2];
+    S.push(`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#94a3b8" stroke-width="0.75" stroke-dasharray="6 4"/>`);
+  };
+  const side = (kind, title) => S => {
+    halves.forEach(([x, y, w, h]) => drawRefPanel(S, x, y, w, h, o, kind, { M: 24, sc, title, footer: true }));
+    cut(S);
+  };
+  return [page(side('chart', o.chartTitle)), page(side('wheel', o.wheelTitle), o.rotateBack)];
+}
+
+function buildRefSVG(o, pxW, pxH) { return buildRefPages(o, pxW, pxH)[0]; }
+
+function refPageLabels(o) {
+  if (mode !== 'combo' || o.layout === 'single') return [''];
+  return o.layout === 'half'
+    ? ['Front — 2 charts (cut on the dashed line)', 'Back — 2 wheels']
+    : ['Front — Codon Chart', 'Back — Codon Wheel'];
 }
 
 /* ---------- Codon Chart ---------- */
@@ -1449,24 +1580,38 @@ function drawWheel(S, x, y, w, h, o, landscape) {
 function renderRef() {
   if (mode === 'problems') return;
   const o = refOpts();
-  $('refPreview').innerHTML = buildRefSVG(o);
+  const pages = buildRefPages(o), labels = refPageLabels(o);
+  $('refPreview').innerHTML = pages.map((svg, i) =>
+    `<div class="page-item">${labels[i] ? `<div class="page-label">${esc(labels[i])}</div>` : ''}<div class="page-frame">${svg}</div></div>`).join('');
   const [w, h] = pageInches(o);
   const paperName = { letter: 'Letter', legal: 'Legal', tabloid: 'Tabloid', a4: 'A4' }[o.paper];
-  $('refCaption').textContent = `${paperName} — ${w}" × ${h}" ${o.orient}` +
-    (mode === 'wheel' ? ' — read the wheel from the center outward (1st → 2nd → 3rd base).' : '');
+  let extra = mode === 'wheel' ? ' — read the wheel from the center outward (1st → 2nd → 3rd base).' : '';
+  if (mode === 'combo' && o.layout !== 'single') {
+    const halfW = w > h ? w / 2 : w, halfH = w > h ? h : h / 2;
+    extra = ' — print double-sided' + (o.layout === 'half' ? `, then cut each sheet in half (each half is ${halfW}" × ${halfH}").` : '.');
+    $('duplexHint').textContent = `In the print dialog, turn on two-sided printing and choose "flip on ${w > h ? 'short' : 'long'} edge." ` +
+      'If the back still comes out upside down, check the box above and print again.';
+  }
+  $('refCaption').textContent = `${paperName} — ${w}" × ${h}" ${o.orient}` + extra;
   fitPreview();
 }
 
 function fitPreview() {
-  const svg = $('refPreview').querySelector('svg');
-  if (!svg) return;
+  const svgs = $('refPreview').querySelectorAll('.page-frame svg');
+  if (!svgs.length) return;
   const panel = $('stage-panel');
+  const n = svgs.length, gap = 18;
   const availW = panel.clientWidth - 40;
-  const availH = panel.clientHeight - 150;
+  const availH = panel.clientHeight - 150 - (n > 1 ? 20 : 0);
   const [w, h] = pageInches(refOpts());
-  const sc = Math.max(10, Math.min(availW / w, Math.max(availH, 260) / h));
-  svg.setAttribute('width', Math.round(w * sc));
-  svg.setAttribute('height', Math.round(h * sc));
+  // Side by side if that gives bigger pages; otherwise stacked (scroll).
+  const side = Math.min((availW - gap * (n - 1)) / n / w, Math.max(availH, 260) / h);
+  const stack = Math.min(availW / w, Math.max(availH, 260) / h) * (n > 1 ? 0.6 : 1);
+  const sc = Math.max(10, Math.max(side, stack));
+  svgs.forEach(svg => {
+    svg.setAttribute('width', Math.round(w * sc));
+    svg.setAttribute('height', Math.round(h * sc));
+  });
 }
 window.addEventListener('resize', () => { if (mode !== 'problems') fitPreview(); });
 
@@ -1487,13 +1632,17 @@ function svgToCanvas(svgStr, w, h) {
   });
 }
 
-async function refCanvas(dpi) {
+async function refCanvases(dpi) {
   const o = refOpts();
   const [w, h] = pageInches(o);
   const pw = Math.round(w * dpi), ph = Math.round(h * dpi);
-  return svgToCanvas(buildRefSVG(o, pw, ph), pw, ph);
+  return Promise.all(buildRefPages(o, pw, ph).map(svg => svgToCanvas(svg, pw, ph)));
 }
-function refFileBase() { return (mode === 'wheel' ? 'CodonWheel_' : 'CodonChart_') + getTimestamp(); }
+async function refCanvas(dpi) { return (await refCanvases(dpi))[0]; }
+function refFileBase() {
+  const name = { wheel: 'CodonWheel_', combo: 'CodonReferenceSheet_' }[mode] || 'CodonChart_';
+  return name + getTimestamp();
+}
 
 async function downloadRefPDF() {
   if (!(window.jspdf && window.jspdf.jsPDF)) {
@@ -1504,11 +1653,15 @@ async function downloadRefPDF() {
   try {
     const o = refOpts();
     const [w, h] = pageInches(o);
-    const c = await refCanvas(300);
-    const pdf = new window.jspdf.jsPDF({ orientation: w > h ? 'landscape' : 'portrait', unit: 'in', format: [Math.min(w, h), Math.max(w, h)] });
-    pdf.addImage(c.toDataURL('image/png'), 'PNG', 0, 0, w, h, undefined, 'FAST');
+    const cs = await refCanvases(300);
+    const orientation = w > h ? 'landscape' : 'portrait';
+    const pdf = new window.jspdf.jsPDF({ orientation, unit: 'in', format: [Math.min(w, h), Math.max(w, h)] });
+    cs.forEach((c, i) => {
+      if (i) pdf.addPage([Math.min(w, h), Math.max(w, h)], orientation);
+      pdf.addImage(c.toDataURL('image/png'), 'PNG', 0, 0, w, h, undefined, 'FAST');
+    });
     pdf.save(refFileBase() + '.pdf');
-    showFeedback('PDF downloaded!');
+    showFeedback(cs.length > 1 ? `PDF downloaded (${cs.length} pages) — print it double-sided.` : 'PDF downloaded!');
   } catch (e) {
     console.error(e);
     showFeedback('Could not build the PDF. Try Print → Save as PDF.', true);
@@ -1519,18 +1672,22 @@ function printRef() {
   const o = refOpts();
   const [w, h] = pageInches(o);
   setPrintPage(`@page { size: ${w}in ${h}in; margin: 0; }`);
-  const svg = buildRefSVG(o).replace(/width="[^"]*" height="[^"]*"/, `width="${w}in" height="${(h - 0.02).toFixed(2)}in"`);
-  $('print-area').innerHTML = svg;
+  $('print-area').innerHTML = buildRefPages(o).map(svg =>
+    svg.replace(/width="[^"]*" height="[^"]*"/, `width="${w}in" height="${(h - 0.02).toFixed(2)}in"`)).join('');
   window.print();
 }
 
 async function downloadRefPNG() {
-  const c = await refCanvas(200);
-  downloadDataURL(c.toDataURL('image/png'), refFileBase() + '.png');
+  const cs = await refCanvases(200);
+  const base = refFileBase();
+  if (cs.length === 1) { downloadDataURL(cs[0].toDataURL('image/png'), base + '.png'); return; }
+  const names = ['_Front', '_Back'];
+  cs.forEach((c, i) => setTimeout(() => downloadDataURL(c.toDataURL('image/png'), base + (names[i] || '_' + (i + 1)) + '.png'), i * 400));
 }
 async function copyRefPNG() {
-  const c = await refCanvas(150);
-  copyCanvas(c);
+  const cs = await refCanvases(150);
+  await copyCanvas(cs[0]);
+  if (cs.length > 1) showFeedback('Front side copied. Use Download PDF to get both sides.');
 }
 
 /* ════════════════════════════════════════════════
