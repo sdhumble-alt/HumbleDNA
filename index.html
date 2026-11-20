@@ -267,7 +267,7 @@ input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; flex-shrink: 
         <div id="app-subtitle">Codon Chart, Codon Wheel &amp; Protein Synthesis Problem Builder &mdash; Built by Steven Humble</div>
       </div>
     </div>
-    <div class="toolbar-ver">V 1.1.0 &mdash; 2026-11-18</div>
+    <div class="toolbar-ver">V 1.2.0 &mdash; 2026-11-20</div>
   </header>
 
   <main class="content">
@@ -531,12 +531,16 @@ input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; flex-shrink: 
             </div>
             <div class="opt-group-body">
               <div class="toggle-row">
-                <input type="checkbox" id="answerKey" checked onchange="renderProblems()">
+                <input type="checkbox" id="answerKey" checked onchange="toggleDisabled('canvasTicks', !this.checked); renderProblems()">
                 <label for="answerKey" style="font-weight:600; color:#1e429f;">Answer key (fill in blank rows)</label>
               </div>
               <div class="toggle-row" style="margin-bottom:0;">
                 <input type="checkbox" id="answerColor" checked onchange="renderProblems()">
                 <label for="answerColor">Show answers in blue</label>
+              </div>
+              <div class="toggle-row" style="margin:6px 0 0;">
+                <input type="checkbox" id="canvasTicks">
+                <label for="canvasTicks" title="Wraps each answer cell in backticks (`AUG`) when you click Copy as HTML Table, so Canvas turns them into fill-in-the-blank answers.">Add <code>`backticks`</code> to answers when copying (Canvas fill-in-the-blank)</label>
               </div>
             </div>
           </div>
@@ -590,6 +594,10 @@ input[type=checkbox] { width: 15px; height: 15px; cursor: pointer; flex-shrink: 
               <div class="toggle-row">
                 <input type="checkbox" id="colorBases" onchange="renderProblems()">
                 <label for="colorBases">Color-code bases (A, T/U, G, C)</label>
+              </div>
+              <div class="toggle-row">
+                <input type="checkbox" id="fullWidth" onchange="renderProblems()">
+                <label for="fullWidth">Table fills 100% width when pasted</label>
               </div>
             </div>
           </div>
@@ -1929,6 +1937,8 @@ function probOpts() {
     dirs: $('showDirs').checked,
     perLine: clamp(intVal('perLine', 12), 1, 40),
     colorBases: $('colorBases').checked,
+    canvasTicks: $('canvasTicks').checked,
+    fullWidth: $('fullWidth').checked,
     hiSS: $('probHiSS').checked,
     fs: clamp(intVal('probFontSize', 15), 8, 40),
     title: $('probTitle').value.trim(),
@@ -2027,7 +2037,8 @@ function buildSection(seq, trans, o, hlSet, aaChanged, caption) {
         } else {
           spans = baseSpans(strands[def.key], ch, hlSet, o, ansColor);
         }
-        cells.push({ spans: filled ? spans : [], ghost: spans, bg });
+        const isDash = spans.length === 1 && spans[0].t === '–';
+        cells.push({ spans: filled ? spans : [], ghost: spans, bg, answer: isAnswer && filled && !isDash });
       });
       rows.push({ cells });
     });
@@ -2118,16 +2129,24 @@ function layoutModel(m, o) {
   return { fs, padX, labelW, colW, rowH: Math.round(fs * 2.1), headH: Math.round(fs * 1.6) };
 }
 
-function modelToHTML(m, o) {
+function modelToHTML(m, o, forCopy) {
+  const ticks = !!(forCopy && o.canvasTicks && o.answerKey);
   const Lt = layoutModel(m, o);
   const fs = Lt.fs;
+  const labelMin = Math.ceil(Lt.labelW * 1.15);
   let h = `<div style="font-family:Arial,Helvetica,sans-serif;color:${TEXT_DARK};">`;
   if (m.title) h += `<div style="font-family:Georgia,'Times New Roman',serif;font-weight:bold;font-size:${Math.round(fs * 1.3)}px;margin:0 0 10px;">${esc(m.title)}</div>`;
   m.tables.forEach(t => {
     if (t.caption) h += `<div style="font-weight:bold;font-size:${fs}px;margin:12px 0 6px;">${esc(t.caption)}</div>`;
     const tw = Lt.labelW + Lt.colW * t.ncols;
-    h += `<table style="border-collapse:collapse;table-layout:fixed;width:${tw}px;margin:0 0 12px 0;font-family:Arial,Helvetica,sans-serif;font-size:${fs}px;">`;
-    h += `<colgroup><col style="width:${Lt.labelW}px">` + `<col style="width:${Lt.colW}px">`.repeat(t.ncols) + '</colgroup>';
+    if (o.fullWidth) {
+      // Auto layout: label column fits its text, codon columns share the remaining width
+      h += `<table width="100%" style="border-collapse:collapse;width:100%;margin:0 0 12px 0;font-family:Arial,Helvetica,sans-serif;font-size:${fs}px;">`;
+      h += `<colgroup><col width="${labelMin}" style="width:${labelMin}px;min-width:${labelMin}px"></colgroup>`;
+    } else {
+      h += `<table style="border-collapse:collapse;table-layout:fixed;width:${tw}px;margin:0 0 12px 0;font-family:Arial,Helvetica,sans-serif;font-size:${fs}px;">`;
+      h += `<colgroup><col style="width:${Lt.labelW}px">` + `<col style="width:${Lt.colW}px">`.repeat(t.ncols) + '</colgroup>';
+    }
     t.rows.forEach(r => {
       h += '<tr>';
       r.cells.forEach((c, ci) => {
@@ -2140,15 +2159,23 @@ function modelToHTML(m, o) {
           'vertical-align:middle',
           `background:${bg}`,
           'white-space:nowrap'
-        ].join(';');
-        const inner = c.spans.length ? c.spans.map(sp => {
+        ].concat(ci === 0 ? [`width:${labelMin}px`, `min-width:${labelMin}px`, 'word-break:keep-all', 'overflow-wrap:normal'] : []).join(';');
+        let inner = c.spans.length ? c.spans.map(sp => {
           const f = spanFont(sp, fs);
           const st = [`color:${sp.color || TEXT_DARK}`, `font-size:${f.size}px`, `font-weight:${f.bold ? 'bold' : 'normal'}`];
           if (sp.f === 'mono') st.push(`font-family:'Courier New',Courier,monospace`);
           if (sp.bg) st.push(`background:${sp.bg}`);
           return `<span style="${st.join(';')}">${esc(sp.t).replace(/ /g, '&nbsp;')}</span>`;
         }).join('') : '&nbsp;';
-        h += `<td style="${style}">${inner}</td>`;
+        if (ticks && c.answer) {
+          // One plain run of text per blank so Canvas reads `ANSWER` as a single fill-in-the-blank
+          const sp0 = c.spans[0], f0 = spanFont(sp0, fs);
+          const ff = sp0.f === 'mono' ? `;font-family:'Courier New',Courier,monospace` : '';
+          inner = `<span style="color:${sp0.color === TEXT_DARK ? TEXT_DARK : (o.answerColor ? ANSWER_COLOR : TEXT_DARK)};font-size:${f0.size}px;font-weight:${f0.bold ? 'bold' : 'normal'}${ff}">\`${esc(c.spans.map(x => x.t).join(''))}\`</span>`;
+        }
+        // align/valign attributes survive LMS editors (like Canvas) that strip inline styles
+        const attrs = ci === 0 ? ` width="${labelMin}" nowrap align="left" valign="middle"` : ' align="center" valign="middle"';
+        h += `<td${attrs} style="${style}">${inner}</td>`;
       });
       h += '</tr>';
     });
@@ -2161,12 +2188,16 @@ function modelToHTML(m, o) {
   return h;
 }
 
-function modelToPlain(m) {
+function modelToPlain(m, o) {
+  const ticks = !!(o && o.canvasTicks && o.answerKey);
   const lines = [];
   if (m.title) lines.push(m.title, '');
   m.tables.forEach(t => {
     if (t.caption) lines.push(t.caption);
-    t.rows.forEach(r => lines.push(r.cells.map(c => c.spans.map(s => s.t).join('').trim()).join('\t')));
+    t.rows.forEach(r => lines.push(r.cells.map(c => {
+      const txt = c.spans.map(s => s.t).join('').trim();
+      return (ticks && c.answer && txt) ? '`' + txt + '`' : txt;
+    }).join('\t')));
     lines.push('');
   });
   m.notes.forEach(n => lines.push(n.bold + n.text));
@@ -2293,8 +2324,9 @@ function problemCanvas(scale) {
 
 function copyProblemHTML() {
   if (!problemModel) return;
-  const html = modelToHTML(problemModel, probOpts());
-  const plain = modelToPlain(problemModel);
+  const o = probOpts();
+  const html = modelToHTML(problemModel, o, true);
+  const plain = modelToPlain(problemModel, o);
   const done = () => showFeedback('HTML table copied! Paste into Docs, Word, Slides, or your LMS.');
   const fail = () => showFeedback('Your browser blocked clipboard access. Try again, or use Download PNG.', true);
   try {
